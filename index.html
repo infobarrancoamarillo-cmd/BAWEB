@@ -1,0 +1,1945 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barranco Amarillo — Productora audiovisual | Real Estate, Tours 3D, Videoclips</title>
+<meta name="description" content="Productora audiovisual con 7 años de trayectoria. Vídeo para real estate, tours virtuales 3D, videoclips, publicidad y ficción. Hacemos que se vea como cine.">
+<meta property="og:title" content="Barranco Amarillo — Productora audiovisual">
+<meta property="og:description" content="Hacemos que se vea como cine. Real estate, publicidad, videoclips y ficción.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:url" content="https://infobarrancoamarillo-cmd.github.io/BAWEB/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Roboto+Slab:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   BARRANCO AMARILLO — V3 "Sala de cine"
+   Identidad blindada · un solo archivo · sin dependencias
+   ========================================================================== */
+:root{
+  --amarillo:       #F1C741;  /* Pantone 123C — EL acento */
+  --negro:          #1E1B1A;  /* Pantone Neutral Black C */
+  --negro-profundo: #121010;
+  --naranja:        #E56425;  /* Pantone 165C — micro-acento solo */
+
+  /* Tokens semánticos — nunca hex sueltos en componentes */
+  --superficie-base:    var(--negro-profundo);
+  --superficie-elevada: var(--negro);
+  --acento-proyector:   var(--amarillo);
+  --acento-calor:       var(--naranja);
+  --tinta-alta:         #F7F5F2;
+  --tinta-media:        rgba(247,245,242,0.6);
+  --linea-hairline:     rgba(247,245,242,0.08);
+
+  --nav-h: 76px;
+  --ease-cine: cubic-bezier(0.16,1,0.3,1);
+  --contenedor: 1200px;
+}
+
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+
+html{
+  scroll-behavior:smooth;
+  -webkit-text-size-adjust:100%;
+}
+body{
+  font-family:'Roboto',sans-serif;
+  font-size:16px;
+  line-height:1.5;
+  font-weight:400;
+  color:var(--tinta-alta);
+  background:var(--superficie-base);
+  overflow-x:hidden;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; }
+button{ font:inherit; cursor:pointer; }
+:focus-visible{
+  outline:2px solid var(--acento-proyector);
+  outline-offset:3px;
+  border-radius:2px;
+}
+.seccion-clara :focus-visible{ outline-color:var(--superficie-elevada); }
+::selection{ background:var(--acento-proyector); color:var(--superficie-elevada); }
+
+section{ scroll-margin-top:var(--nav-h); }
+
+.contenedor{
+  width:100%;
+  max-width:var(--contenedor);
+  margin-inline:auto;
+  padding-inline:20px;
+}
+@media (min-width:768px){ .contenedor{ padding-inline:40px; } }
+
+/* ---- Tipografía editorial ---- */
+.eyebrow{
+  font-family:'Roboto',sans-serif;
+  font-weight:500;
+  font-size:0.75rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.eyebrow .rombo{ flex:none; }
+h1,h2,h3{ font-family:'Roboto Slab',serif; color:var(--tinta-alta); }
+h1{
+  font-weight:800;
+  font-size:clamp(48px,8.5vw,96px);
+  line-height:1.02;
+  letter-spacing:-0.02em;
+}
+h2{
+  font-weight:800;
+  font-size:clamp(34px,5.5vw,64px);
+  line-height:1.05;
+  letter-spacing:-0.015em;
+  max-width:16ch;
+}
+h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
+
+.rombo{
+  width:10px; height:10px;
+  background:var(--acento-proyector);
+  transform:rotate(45deg);
+  display:inline-block;
+}
+
+/* ---- Reveal (IntersectionObserver) ---- */
+.revelar{
+  opacity:0;
+  transform:translateY(18px);
+  transition:opacity 300ms var(--ease-cine), transform 300ms var(--ease-cine);
+}
+.revelar.visible{ opacity:1; transform:none; }
+
+/* ---- Botones ---- */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  min-height:48px;
+  padding:0 28px;
+  font-weight:700;
+  font-size:0.9375rem;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  text-decoration:none;
+  border:1px solid transparent;
+  transition:transform 200ms var(--ease-cine), background-color 200ms var(--ease-cine), color 200ms var(--ease-cine), border-color 200ms var(--ease-cine);
+}
+.btn:hover{ transform:translateY(-2px); }
+.btn-primario{
+  background:var(--acento-proyector);
+  color:var(--superficie-elevada);
+}
+.btn-primario:hover{ background:var(--tinta-alta); }
+.btn-secundario{
+  background:transparent;
+  color:var(--tinta-alta);
+  border-color:var(--linea-hairline);
+}
+.btn-secundario:hover{ border-color:var(--tinta-alta); }
+.seccion-clara .btn-primario{
+  background:var(--superficie-elevada);
+  color:var(--tinta-alta);
+}
+
+/* ==========================================================================
+   NAV
+   ========================================================================== */
+.nav{
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:100;
+  height:var(--nav-h);
+  display:flex;
+  align-items:center;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  background:rgba(18,16,16,0.55);
+  border-bottom:1px solid transparent;
+  transition:border-color 300ms var(--ease-cine), background-color 300ms var(--ease-cine);
+}
+.nav.con-scroll{
+  border-bottom-color:var(--linea-hairline);
+  background:rgba(18,16,16,0.82);
+}
+.nav-inner{
+  width:100%;
+  max-width:var(--contenedor);
+  margin-inline:auto;
+  padding-inline:20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+}
+@media (min-width:768px){ .nav-inner{ padding-inline:40px; } }
+
+/* Logo — wordmark placeholder */
+/* TODO: sustituir por SVG oficial */
+.marca{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-decoration:none;
+  min-height:44px;
+}
+.marca-texto{
+  font-family:'Roboto',sans-serif;
+  font-weight:900;
+  font-size:0.9375rem;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--tinta-alta);
+  line-height:1.1;
+}
+.marca-texto em{
+  font-style:normal;
+  color:var(--acento-proyector);
+}
+
+.nav-links{
+  display:none;
+  align-items:center;
+  gap:6px;
+  list-style:none;
+}
+@media (min-width:1100px){ .nav-links{ display:flex; } }
+.nav-links a{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  min-height:44px;
+  padding:0 14px;
+  font-size:0.8125rem;
+  font-weight:500;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  text-decoration:none;
+  color:var(--tinta-media);
+  transition:color 200ms var(--ease-cine);
+}
+.nav-links a::before{
+  content:"";
+  width:6px; height:6px;
+  background:var(--acento-proyector);
+  transform:rotate(45deg) scale(0);
+  transition:transform 200ms var(--ease-cine);
+}
+.nav-links a:hover{ color:var(--tinta-alta); }
+.nav-links a.activo{ color:var(--tinta-alta); }
+.nav-links a.activo::before{ transform:rotate(45deg) scale(1); }
+
+.nav-cta{ display:none; }
+@media (min-width:1100px){ .nav-cta{ display:inline-flex; min-height:44px; padding:0 22px; } }
+
+/* Hamburguesa */
+.hamburguesa{
+  display:inline-flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:6px;
+  width:48px; height:48px;
+  padding:12px;
+  background:transparent;
+  border:1px solid var(--linea-hairline);
+}
+@media (min-width:1100px){ .hamburguesa{ display:none; } }
+.hamburguesa span{
+  display:block;
+  height:2px;
+  background:var(--tinta-alta);
+  transition:transform 200ms var(--ease-cine), opacity 200ms var(--ease-cine);
+}
+.hamburguesa[aria-expanded="true"] span:nth-child(1){ transform:translateY(8px) rotate(45deg); }
+.hamburguesa[aria-expanded="true"] span:nth-child(2){ opacity:0; }
+.hamburguesa[aria-expanded="true"] span:nth-child(3){ transform:translateY(-8px) rotate(-45deg); }
+
+/* Panel móvil */
+.panel-movil{
+  position:fixed;
+  inset:0;
+  z-index:99;
+  background:var(--superficie-base);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:100px 24px 40px;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity 250ms var(--ease-cine), visibility 250ms;
+}
+.panel-movil.abierto{ opacity:1; visibility:visible; }
+.panel-movil ul{ list-style:none; display:flex; flex-direction:column; gap:4px; }
+.panel-movil nav a{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  min-height:56px;
+  font-family:'Roboto Slab',serif;
+  font-weight:600;
+  font-size:clamp(28px,7vw,40px);
+  text-decoration:none;
+  color:var(--tinta-alta);
+}
+.panel-movil nav a::before{
+  content:"";
+  width:8px; height:8px;
+  background:var(--acento-proyector);
+  transform:rotate(45deg) scale(0);
+  transition:transform 200ms var(--ease-cine);
+}
+.panel-movil nav a.activo::before,
+.panel-movil nav a:hover::before{ transform:rotate(45deg) scale(1); }
+.panel-movil .btn{ margin-top:32px; align-self:flex-start; }
+
+/* ==========================================================================
+   HERO
+   ========================================================================== */
+.hero{
+  position:relative;
+  min-height:100vh;
+  min-height:100svh;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+  background:var(--superficie-base);
+}
+/* TODO: sustituir canvas Simplex por <video> del showreel cuando esté listo */
+#canvas-grano{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:0;
+}
+.hero-contenido{
+  position:relative;
+  z-index:1;
+  padding-block:140px 100px;
+}
+.hero h1{
+  margin-top:28px;
+  max-width:12ch;
+}
+.hero-sub{
+  margin-top:24px;
+  font-weight:300;
+  font-size:clamp(17px,2vw,21px);
+  color:var(--tinta-media);
+  max-width:44ch;
+}
+.hero-ctas{
+  margin-top:44px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+}
+.hero-pie{
+  position:absolute;
+  bottom:28px;
+  left:0; right:0;
+  z-index:1;
+  display:flex;
+  justify-content:center;
+}
+.hero-pie a{
+  display:inline-flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  min-width:44px; min-height:44px;
+  justify-content:center;
+  font-size:0.6875rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  text-decoration:none;
+  color:var(--tinta-media);
+}
+.hero-pie svg{ transition:transform 200ms var(--ease-cine); }
+.hero-pie a:hover svg{ transform:translateY(4px); }
+
+/* ==========================================================================
+   SECCIONES GENERALES
+   ========================================================================== */
+.seccion{ padding-block:110px; position:relative; }
+@media (min-width:768px){ .seccion{ padding-block:150px; } }
+.seccion-cabecera{ margin-bottom:64px; }
+.seccion-cabecera h2{ margin-top:24px; }
+.seccion-cabecera p.entradilla{
+  margin-top:22px;
+  font-weight:300;
+  font-size:clamp(16px,1.8vw,19px);
+  color:var(--tinta-media);
+  max-width:52ch;
+}
+
+/* ==========================================================================
+   REAL ESTATE
+   ========================================================================== */
+#real-estate{ background:var(--superficie-elevada); border-top:1px solid var(--linea-hairline); }
+.tarjetas-re{
+  display:grid;
+  gap:1px;
+  background:var(--linea-hairline);
+  border:1px solid var(--linea-hairline);
+}
+@media (min-width:768px){ .tarjetas-re{ grid-template-columns:repeat(3,1fr); } }
+.tarjeta-re{
+  background:var(--superficie-elevada);
+  padding:40px 32px 44px;
+  transition:background-color 250ms var(--ease-cine);
+}
+.tarjeta-re:hover{ background:var(--superficie-base); }
+.tarjeta-re svg{ color:var(--acento-proyector); }
+.tarjeta-re h3{ margin-top:22px; }
+.tarjeta-re p{ margin-top:12px; color:var(--tinta-media); font-size:0.9375rem; }
+
+/* Planes */
+.planes{
+  margin-top:80px;
+  display:grid;
+  gap:24px;
+}
+@media (min-width:768px){ .planes{ grid-template-columns:1fr 1fr; } }
+.plan{
+  border:1px solid var(--linea-hairline);
+  padding:44px 36px;
+  background:var(--superficie-base);
+  display:flex;
+  flex-direction:column;
+}
+.plan-nombre{
+  font-size:0.75rem;
+  font-weight:500;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+}
+.plan-precio{
+  margin-top:18px;
+  font-family:'Roboto Slab',serif;
+  font-weight:800;
+  font-size:clamp(40px,5vw,56px);
+  line-height:1;
+}
+.plan-precio small{
+  font-family:'Roboto',sans-serif;
+  font-weight:300;
+  font-size:1rem;
+  color:var(--tinta-media);
+}
+.plan ul{
+  margin-top:28px;
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.plan li{
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+  font-size:0.9375rem;
+  color:var(--tinta-media);
+}
+.plan li::before{
+  content:"";
+  flex:none;
+  width:6px; height:6px;
+  background:var(--acento-proyector);
+  transform:rotate(45deg) translateY(-1px);
+}
+.statement{
+  margin-top:56px;
+  font-family:'Roboto Slab',serif;
+  font-weight:600;
+  font-size:clamp(22px,3.2vw,32px);
+  color:var(--acento-proyector);
+  max-width:24ch;
+}
+.re-cta{ margin-top:44px; }
+
+/* ==========================================================================
+   TOURS 3D
+   ========================================================================== */
+#tours-3d{
+  background:var(--superficie-base);
+  border-top:1px solid var(--linea-hairline);
+  overflow:hidden;
+}
+#canvas-termico{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:0;
+}
+#tours-3d .contenedor{ position:relative; z-index:1; pointer-events:none; }
+#tours-3d a, #tours-3d button{ pointer-events:auto; }
+
+/* Visor 16:9 simulado */
+.visor{
+  margin-top:8px;
+  border:1px solid var(--linea-hairline);
+  background:var(--superficie-elevada);
+  aspect-ratio:16/9;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+/* TODO: iframe Matterport */
+.visor-etiqueta{
+  text-align:center;
+  color:var(--tinta-media);
+  font-size:0.8125rem;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+}
+.visor-etiqueta svg{ color:var(--acento-proyector); }
+.visor-controles{
+  position:absolute;
+  bottom:16px;
+  left:16px;
+  right:16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.visor-controles .grupo{ display:flex; gap:8px; }
+.ctrl{
+  width:44px; height:44px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(18,16,16,0.7);
+  border:1px solid var(--linea-hairline);
+  color:var(--tinta-alta);
+  transition:border-color 200ms var(--ease-cine);
+}
+.ctrl:hover{ border-color:var(--acento-proyector); }
+
+.pasos{
+  margin-top:72px;
+  display:grid;
+  gap:40px;
+}
+@media (min-width:768px){ .pasos{ grid-template-columns:repeat(3,1fr); } }
+.paso{ position:relative; padding-top:24px; border-top:1px solid var(--linea-hairline); }
+.paso-num{
+  font-family:'Roboto Slab',serif;
+  font-weight:300;
+  font-size:0.875rem;
+  color:var(--acento-proyector);
+  letter-spacing:0.1em;
+}
+.paso h3{ margin-top:12px; }
+.paso p{ margin-top:10px; color:var(--tinta-media); font-size:0.9375rem; }
+.tours-cta{ margin-top:56px; }
+
+/* ==========================================================================
+   SERVICIOS
+   ========================================================================== */
+#servicios{ background:var(--superficie-elevada); border-top:1px solid var(--linea-hairline); }
+.servicios-grid{
+  display:grid;
+  gap:1px;
+  background:var(--linea-hairline);
+  border:1px solid var(--linea-hairline);
+}
+@media (min-width:768px){ .servicios-grid{ grid-template-columns:1fr 1fr; } }
+.servicio{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  min-height:260px;
+  padding:36px 32px;
+  background:var(--superficie-elevada);
+  text-decoration:none;
+  overflow:hidden;
+}
+@media (min-width:768px){ .servicio{ min-height:320px; } }
+.servicio::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(120% 90% at 20% 100%, rgba(241,199,65,0.07), transparent 60%);
+  opacity:0;
+  transform:scale(1.06);
+  transition:opacity 300ms var(--ease-cine), transform 300ms var(--ease-cine);
+}
+.servicio:hover::before{ opacity:1; transform:scale(1); }
+.servicio h3{
+  position:relative;
+  font-size:clamp(24px,3vw,32px);
+}
+.servicio p{
+  position:relative;
+  margin-top:10px;
+  color:var(--tinta-media);
+  font-size:0.9375rem;
+  max-width:36ch;
+}
+.servicio .flecha{
+  position:absolute;
+  top:32px; right:32px;
+  color:var(--tinta-media);
+  transition:transform 250ms var(--ease-cine), color 250ms var(--ease-cine);
+}
+.servicio:hover .flecha{
+  transform:translate(4px,-4px);
+  color:var(--acento-proyector);
+}
+
+/* ==========================================================================
+   PORTFOLIO
+   ========================================================================== */
+#portfolio{ background:var(--superficie-base); border-top:1px solid var(--linea-hairline); }
+.filtros{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:48px;
+}
+.chip{
+  min-height:44px;
+  padding:0 20px;
+  background:transparent;
+  border:1px solid var(--linea-hairline);
+  color:var(--tinta-media);
+  font-size:0.8125rem;
+  font-weight:500;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  transition:color 200ms var(--ease-cine), border-color 200ms var(--ease-cine), background-color 200ms var(--ease-cine);
+}
+.chip:hover{ color:var(--tinta-alta); border-color:var(--tinta-media); }
+.chip.activo{
+  background:var(--acento-proyector);
+  border-color:var(--acento-proyector);
+  color:var(--superficie-elevada);
+}
+.grid-portfolio{
+  display:grid;
+  gap:28px;
+}
+@media (min-width:768px){ .grid-portfolio{ grid-template-columns:1fr 1fr; gap:32px; } }
+.pieza{
+  background:transparent;
+  border:none;
+  padding:0;
+  text-align:left;
+  color:inherit;
+  display:block;
+  width:100%;
+}
+.pieza[hidden]{ display:none; }
+.pieza-marco{
+  position:relative;
+  aspect-ratio:16/9;
+  overflow:hidden;
+  border:1px solid var(--linea-hairline);
+  background:var(--superficie-elevada);
+}
+.pieza-marco img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform 300ms var(--ease-cine);
+}
+.pieza:hover .pieza-marco img,
+.pieza:focus-visible .pieza-marco img{ transform:scale(1.03); }
+.pieza-velo{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top, rgba(18,16,16,0.85), rgba(18,16,16,0.15) 55%, rgba(18,16,16,0.35));
+  transition:opacity 300ms var(--ease-cine);
+}
+.pieza:hover .pieza-velo,
+.pieza:focus-visible .pieza-velo{ opacity:0.55; }
+.pieza-play{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.pieza-play span{
+  width:64px; height:64px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--tinta-alta);
+  border-radius:50%;
+  color:var(--tinta-alta);
+  background:rgba(18,16,16,0.4);
+  transition:background-color 250ms var(--ease-cine), border-color 250ms var(--ease-cine), color 250ms var(--ease-cine);
+}
+.pieza:hover .pieza-play span,
+.pieza:focus-visible .pieza-play span{
+  background:var(--acento-proyector);
+  border-color:var(--acento-proyector);
+  color:var(--superficie-elevada);
+}
+.pieza-info{ margin-top:16px; display:flex; align-items:baseline; justify-content:space-between; gap:16px; }
+.pieza-info h3{ font-size:clamp(19px,2.2vw,24px); }
+.pieza-info p{ margin-top:4px; color:var(--tinta-media); font-size:0.875rem; }
+.pieza-etiqueta{
+  flex:none;
+  font-size:0.6875rem;
+  font-weight:500;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+  border:1px solid var(--linea-hairline);
+  padding:6px 12px;
+}
+
+/* Lightbox */
+.lightbox{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(18,16,16,0.92);
+}
+.lightbox[hidden]{ display:none; }
+.lb-marco{
+  position:relative;
+  width:min(1100px,100%);
+  aspect-ratio:16/9;
+  background:var(--superficie-elevada);
+  border:1px solid var(--linea-hairline);
+}
+.lb-marco iframe{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:0;
+}
+.lb-cerrar{
+  position:absolute;
+  top:-56px;
+  right:0;
+  width:44px; height:44px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:transparent;
+  border:1px solid var(--linea-hairline);
+  color:var(--tinta-alta);
+  transition:border-color 200ms var(--ease-cine), color 200ms var(--ease-cine);
+}
+.lb-cerrar:hover{ border-color:var(--acento-proyector); color:var(--acento-proyector); }
+
+/* ==========================================================================
+   ESTUDIO — única sección clara
+   ========================================================================== */
+#estudio{
+  background:var(--acento-proyector);
+  color:var(--superficie-elevada);
+}
+#estudio .eyebrow{ color:rgba(30,27,26,0.65); }
+#estudio .eyebrow .rombo{ background:var(--superficie-elevada); }
+#estudio h2{ color:var(--superficie-elevada); }
+.estudio-cuerpo{
+  margin-top:40px;
+  display:grid;
+  gap:40px;
+}
+@media (min-width:768px){ .estudio-cuerpo{ grid-template-columns:1fr 1fr; gap:80px; } }
+.estudio-cuerpo p{
+  font-size:clamp(16px,1.8vw,19px);
+  font-weight:400;
+  color:rgba(30,27,26,0.85);
+  max-width:48ch;
+}
+.estudio-datos{
+  display:flex;
+  flex-direction:column;
+  gap:28px;
+}
+.dato{ border-top:1px solid rgba(30,27,26,0.25); padding-top:18px; }
+.dato strong{
+  display:block;
+  font-family:'Roboto Slab',serif;
+  font-weight:800;
+  font-size:clamp(28px,3.4vw,40px);
+  line-height:1;
+}
+.dato span{
+  display:block;
+  margin-top:8px;
+  font-size:0.8125rem;
+  font-weight:500;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:rgba(30,27,26,0.65);
+}
+
+/* ==========================================================================
+   CONTACTO
+   ========================================================================== */
+#contacto{ background:var(--superficie-base); }
+.contacto-grid{
+  display:grid;
+  gap:56px;
+}
+@media (min-width:1100px){ .contacto-grid{ grid-template-columns:1fr 1fr; gap:80px; } }
+.contacto-col h3{ font-size:clamp(24px,3vw,32px); }
+.contacto-col > p{ margin-top:14px; color:var(--tinta-media); max-width:44ch; }
+
+/* Calendario placeholder */
+/* TODO: iframe Calendly */
+.calendario{
+  margin-top:32px;
+  border:1px solid var(--linea-hairline);
+  background:var(--superficie-elevada);
+  padding:36px 32px;
+}
+.calendario-cab{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:0.8125rem;
+  font-weight:500;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+  padding-bottom:20px;
+  border-bottom:1px solid var(--linea-hairline);
+}
+.calendario-dias{
+  margin-top:20px;
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+}
+.calendario-dias span{
+  aspect-ratio:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:0.8125rem;
+  color:var(--tinta-media);
+  border:1px solid transparent;
+}
+.calendario-dias span.libre{ border-color:var(--linea-hairline); color:var(--tinta-alta); }
+.calendario-dias span.hoy{
+  background:var(--acento-proyector);
+  color:var(--superficie-elevada);
+  font-weight:700;
+}
+.calendario .btn{ margin-top:28px; width:100%; }
+
+/* Formulario */
+.formulario{ margin-top:32px; display:flex; flex-direction:column; gap:22px; }
+.campo{ display:flex; flex-direction:column; gap:8px; }
+.campo label{
+  font-size:0.75rem;
+  font-weight:500;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+}
+.campo input,
+.campo select,
+.campo textarea{
+  font:inherit;
+  color:var(--tinta-alta);
+  background:var(--superficie-elevada);
+  border:1px solid var(--linea-hairline);
+  padding:14px 16px;
+  min-height:48px;
+  border-radius:0;
+  transition:border-color 200ms var(--ease-cine);
+  width:100%;
+}
+.campo select{
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23F7F5F2' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 16px center;
+}
+.campo textarea{ min-height:130px; resize:vertical; }
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus{ border-color:var(--acento-proyector); outline:none; }
+.campo input.invalido,
+.campo textarea.invalido{ border-color:var(--acento-calor); }
+.campo .error{
+  display:none;
+  font-size:0.8125rem;
+  color:var(--acento-calor);
+}
+.campo .error.visible{ display:block; }
+.form-confirmacion{
+  display:none;
+  border:1px solid var(--acento-proyector);
+  padding:20px 24px;
+  color:var(--tinta-alta);
+  font-size:0.9375rem;
+}
+.form-confirmacion.visible{ display:flex; align-items:baseline; gap:12px; }
+.form-confirmacion::before{
+  content:"";
+  flex:none;
+  width:8px; height:8px;
+  background:var(--acento-proyector);
+  transform:rotate(45deg);
+}
+
+/* ==========================================================================
+   FLOTANTES — WhatsApp + chat
+   ========================================================================== */
+.flotantes{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:150;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:12px;
+}
+.btn-whatsapp{
+  width:56px; height:56px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:var(--acento-proyector);
+  color:var(--superficie-elevada);
+  text-decoration:none;
+  border:2px solid var(--superficie-elevada);
+  box-shadow:0 6px 24px rgba(0,0,0,0.4);
+  transition:transform 200ms var(--ease-cine);
+}
+.btn-whatsapp:hover{ transform:translateY(-3px); }
+.btn-chat{
+  width:48px; height:48px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:var(--superficie-elevada);
+  border:1px solid var(--linea-hairline);
+  color:var(--tinta-alta);
+  transition:border-color 200ms var(--ease-cine);
+}
+.btn-chat:hover{ border-color:var(--acento-proyector); }
+/* TODO v2: Crisp/Tawk.to */
+.chat-panel{
+  position:fixed;
+  right:20px;
+  bottom:150px;
+  z-index:150;
+  width:min(320px, calc(100vw - 40px));
+  background:var(--superficie-elevada);
+  border:1px solid var(--linea-hairline);
+  padding:20px;
+  display:none;
+  flex-direction:column;
+  gap:14px;
+}
+.chat-panel.abierto{ display:flex; }
+.chat-panel h3{ font-size:1.0625rem; }
+.chat-panel p{ font-size:0.8125rem; color:var(--tinta-media); }
+.chat-panel textarea{
+  font:inherit;
+  font-size:0.9375rem;
+  color:var(--tinta-alta);
+  background:var(--superficie-base);
+  border:1px solid var(--linea-hairline);
+  padding:12px;
+  min-height:80px;
+  resize:vertical;
+  border-radius:0;
+}
+.chat-panel textarea:focus{ border-color:var(--acento-proyector); outline:none; }
+.chat-panel .btn{ min-height:44px; }
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.footer{
+  background:var(--superficie-elevada);
+  border-top:1px solid var(--linea-hairline);
+  padding-block:64px 40px;
+}
+.footer-grid{
+  display:grid;
+  gap:40px;
+}
+@media (min-width:768px){ .footer-grid{ grid-template-columns:2fr 1fr 1fr; } }
+.footer .marca-texto{ font-size:1.0625rem; }
+.footer-desc{ margin-top:12px; color:var(--tinta-media); font-size:0.875rem; }
+.footer h4{
+  font-size:0.75rem;
+  font-weight:500;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+  margin-bottom:16px;
+}
+.footer ul{ list-style:none; display:flex; flex-direction:column; gap:10px; }
+.footer a{
+  color:var(--tinta-alta);
+  text-decoration:none;
+  font-size:0.9375rem;
+  display:inline-flex;
+  align-items:center;
+  min-height:32px;
+  transition:color 200ms var(--ease-cine);
+}
+.footer a:hover{ color:var(--acento-proyector); }
+.footer-legal{
+  margin-top:56px;
+  padding-top:24px;
+  border-top:1px solid var(--linea-hairline);
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:16px;
+  font-size:0.8125rem;
+  color:var(--tinta-media);
+}
+.footer-legal nav{ display:flex; gap:24px; }
+.footer-legal a{ color:var(--tinta-media); font-size:0.8125rem; }
+/* TODO: dirección, redes definitivas */
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *,*::before,*::after{
+    animation-duration:0.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:0.01ms !important;
+  }
+  .revelar{ opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ======================= NAV ======================= -->
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="marca" href="#" aria-label="Barranco Amarillo — inicio">
+      <!-- TODO: sustituir por SVG oficial -->
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="5.5" y="5.5" width="13" height="13" transform="rotate(45 12 12)" fill="#F1C741"/>
+      </svg>
+      <span class="marca-texto">Barranco <em>Amarillo</em></span>
+    </a>
+
+    <nav aria-label="Principal">
+      <ul class="nav-links">
+        <li><a href="#real-estate">Real Estate</a></li>
+        <li><a href="#tours-3d">Tours 3D</a></li>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#estudio">Estudio</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <a class="btn btn-primario nav-cta" href="#contacto">Reservar llamada</a>
+
+    <button class="hamburguesa" id="hamburguesa" aria-expanded="false" aria-controls="panel-movil" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="panel-movil" id="panel-movil">
+  <nav aria-label="Menú móvil">
+    <ul>
+      <li><a href="#real-estate">Real Estate</a></li>
+      <li><a href="#tours-3d">Tours 3D</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#estudio">Estudio</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </nav>
+  <a class="btn btn-primario" href="#contacto">Reservar llamada</a>
+</div>
+
+<main>
+
+<!-- ======================= HERO ======================= -->
+<section class="hero" aria-label="Presentación">
+  <canvas id="canvas-grano" aria-hidden="true"></canvas>
+  <div class="contenedor hero-contenido">
+    <p class="eyebrow revelar"><span class="rombo" aria-hidden="true"></span>Productora audiovisual · 7 años</p>
+    <h1 class="revelar">Hacemos que se vea como cine.</h1>
+    <p class="hero-sub revelar">Real estate, publicidad, videoclips y ficción.</p>
+    <div class="hero-ctas revelar">
+      <a class="btn btn-primario" href="#contacto">Reservar llamada</a>
+      <a class="btn btn-secundario" href="#portfolio">Ver trabajo</a>
+    </div>
+  </div>
+  <div class="hero-pie">
+    <a href="#real-estate">
+      Desliza
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 4v16m0 0l-6-6m6 6l6-6"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ======================= REAL ESTATE ======================= -->
+<section class="seccion" id="real-estate" aria-labelledby="titulo-re">
+  <div class="contenedor">
+    <div class="seccion-cabecera">
+      <p class="eyebrow revelar"><span class="rombo" aria-hidden="true"></span>Real Estate</p>
+      <h2 id="titulo-re" class="revelar">Las casas no se venden solas. Los vídeos, casi.</h2>
+      <p class="entradilla revelar">Vídeo pensado para mover propiedades: menos adornos, más visitas cualificadas.</p>
+    </div>
+
+    <div class="tarjetas-re revelar">
+      <article class="tarjeta-re">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6h5v6"/></svg>
+        <h3>Vídeo de propiedad</h3>
+        <p>Recorrido cinematográfico de la vivienda. Luz natural, ritmo medido y planos que enseñan cómo se vive el espacio, no solo cómo se ve.</p>
+      </article>
+      <article class="tarjeta-re">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6.5 8-6.5s8 2.5 8 6.5"/></svg>
+        <h3>Vídeo de identidad del agente</h3>
+        <p>Tu cara es tu marca. Una pieza que cuenta quién eres y por qué confiarte una casa, pensada para perfil y captación.</p>
+      </article>
+      <article class="tarjeta-re">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3l2 5h5l-4 3.5L16.5 17 12 13.8 7.5 17 9 11.5 5 8h5z" opacity="0"/><path d="M4 12h4m8 0h4M12 4v4m0 8v4"/><circle cx="12" cy="12" r="3"/></svg>
+        <h3>Aéreas con dron</h3>
+        <p>La finca, la parcela y el barrio desde arriba. Contexto que las fotos de portal no pueden dar.</p>
+      </article>
+    </div>
+
+    <div class="planes">
+      <article class="plan revelar">
+        <p class="plan-nombre">Vídeo de Identidad</p>
+        <p class="plan-precio">350€</p>
+        <ul>
+          <li>Pieza de 60–90 segundos</li>
+          <li>1 día de rodaje</li>
+          <li>Entrega en 10 días hábiles</li>
+        </ul>
+      </article>
+      <article class="plan revelar">
+        <p class="plan-nombre">Propiedad Recurrente</p>
+        <p class="plan-precio">180€<small>/mes</small></p>
+        <ul>
+          <li>1 vídeo de 30 segundos al mes</li>
+          <li>Compromiso mínimo de 3 meses</li>
+          <li>Pensado para cartera activa</li>
+        </ul>
+      </article>
+    </div>
+
+    <p class="statement revelar">El precio no se negocia. El alcance sí.</p>
+    <div class="re-cta revelar">
+      <a class="btn btn-primario" href="#contacto">Hablemos de tu cartera</a>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= TOURS 3D ======================= -->
+<section class="seccion" id="tours-3d" aria-labelledby="titulo-tours">
+  <canvas id="canvas-termico" aria-hidden="true"></canvas>
+  <div class="contenedor">
+    <div class="seccion-cabecera">
+      <p class="eyebrow revelar"><span class="rombo" aria-hidden="true"></span>Tours 3D · Escaneo</p>
+      <h2 id="titulo-tours" class="revelar">Entra en la casa sin salir de donde estás.</h2>
+      <p class="entradilla revelar">Escaneamos la propiedad y la convertimos en un recorrido virtual que el comprador explora a su ritmo.</p>
+    </div>
+
+    <div class="visor revelar" role="img" aria-label="Vista previa del tour virtual 3D">
+      <!-- TODO: iframe Matterport -->
+      <div class="visor-etiqueta">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M12 2l8 4.5v11L12 22l-8-4.5v-11z"/><path d="M12 2v9m0 0l8-4.5M12 11l-8-4.5M12 22v-9"/></svg>
+        Tour virtual · próximamente
+      </div>
+      <div class="visor-controles" aria-hidden="true">
+        <div class="grupo">
+          <span class="ctrl"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 6l-6 6 6 6"/></svg></span>
+          <span class="ctrl"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 6l6 6-6 6"/></svg></span>
+        </div>
+        <div class="grupo">
+          <span class="ctrl"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16"/><path d="M4 10h16M10 4v16"/></svg></span>
+          <span class="ctrl"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pasos">
+      <div class="paso revelar">
+        <span class="paso-num">01</span>
+        <h3>Escaneamos</h3>
+        <p>Una visita. Capturamos cada estancia con cámara 3D, sin interrumpir la actividad de la vivienda.</p>
+      </div>
+      <div class="paso revelar">
+        <span class="paso-num">02</span>
+        <h3>Procesamos</h3>
+        <p>Convertimos la captura en un modelo navegable con plano de planta y medidas reales.</p>
+      </div>
+      <div class="paso revelar">
+        <span class="paso-num">03</span>
+        <h3>Entregamos</h3>
+        <p>Enlace listo para portal, web y WhatsApp. El comprador visita la casa antes de pisarla.</p>
+      </div>
+    </div>
+
+    <div class="tours-cta revelar">
+      <a class="btn btn-primario" href="#contacto">Quiero escanear una propiedad</a>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= SERVICIOS ======================= -->
+<section class="seccion" id="servicios" aria-labelledby="titulo-servicios">
+  <div class="contenedor">
+    <div class="seccion-cabecera">
+      <p class="eyebrow revelar"><span class="rombo" aria-hidden="true"></span>Servicios</p>
+      <h2 id="titulo-servicios" class="revelar">Todo lo que rodamos, lo rodamos como cine.</h2>
+    </div>
+
+    <div class="servicios-grid revelar">
+      <a class="servicio" href="#portfolio" data-filtro="musica">
+        <svg class="flecha" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+        <h3>Videoclips musicales</h3>
+        <p>Del directo al concepto. Piezas con identidad para artistas y salas.</p>
+      </a>
+      <a class="servicio" href="#portfolio" data-filtro="todo">
+        <svg class="flecha" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+        <h3>Publicidad</h3>
+        <p>Spots y piezas de campaña que venden sin gritar.</p>
+      </a>
+      <a class="servicio" href="#portfolio" data-filtro="documental">
+        <svg class="flecha" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+        <h3>Vídeo corporativo</h3>
+        <p>Empresas contadas con oficio documental, no con plantillas.</p>
+      </a>
+      <a class="servicio" href="#portfolio" data-filtro="ficcion">
+        <svg class="flecha" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+        <h3>Ficción / Cine</h3>
+        <p>Donde nacimos. Cortometrajes y narrativa con vocación de sala.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= PORTFOLIO ======================= -->
+<section class="seccion" id="portfolio" aria-labelledby="titulo-portfolio">
+  <div class="contenedor">
+    <div class="seccion-cabecera">
+      <p class="eyebrow revelar"><span class="rombo" aria-hidden="true"></span>Portfolio</p>
+      <h2 id="titulo-portfolio" class="revelar">El trabajo habla.</h2>
+    </div>
+
+    <div class="filtros revelar" role="group" aria-label="Filtrar portfolio por categoría">
+      <button class="chip activo" data-filtro="todo">Todo</button>
+      <button class="chip" data-filtro="ficcion">Ficción</button>
+      <button class="chip" data-filtro="documental">Documental</button>
+      <button class="chip" data-filtro="musica">Música en vivo</button>
+      <button class="chip" data-filtro="festival">Festival</button>
+    </div>
+
+    <div class="grid-portfolio" id="grid-portfolio"></div>
+  </div>
+</section>
+
+<!-- ======================= ESTUDIO ======================= -->
+<section class="seccion seccion-clara" id="estudio" aria-labelledby="titulo-estudio">
+  <div class="contenedor">
+    <p class="eyebrow revelar"><span class="rombo" aria-hidden="true"></span>El estudio</p>
+    <h2 id="titulo-estudio" class="revelar">Cada plano, justificado.</h2>
+    <div class="estudio-cuerpo">
+      <div class="revelar">
+        <p>Nacimos hace siete años rodando ficción y videoclips: proyectos donde cada encuadre tenía que ganarse su sitio. Hoy también rodamos real estate, publicidad y corporativo — pero la obsesión es la misma.</p>
+        <p style="margin-top:20px;">Si un plano no aporta, se cae. Si una casa merece luz de tarde, esperamos a la tarde. Así de simple, así de caro de conseguir, así de barato de notar.</p>
+      </div>
+      <div class="estudio-datos revelar">
+        <div class="dato"><strong>7 años</strong><span>de trayectoria</span></div>
+        <div class="dato"><strong>Ficción</strong><span>nuestro origen</span></div>
+        <div class="dato"><strong>Real estate</strong><span>nuestro presente</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= CONTACTO ======================= -->
+<section class="seccion" id="contacto" aria-labelledby="titulo-contacto">
+  <div class="contenedor">
+    <div class="seccion-cabecera">
+      <p class="eyebrow revelar"><span class="rombo" aria-hidden="true"></span>Contacto</p>
+      <h2 id="titulo-contacto" class="revelar">Cuéntanos qué quieres rodar.</h2>
+    </div>
+
+    <div class="contacto-grid">
+      <!-- Col A — Reserva llamada -->
+      <div class="contacto-col revelar">
+        <h3>Reserva una llamada</h3>
+        <p>Veinte minutos, sin compromiso. Nos cuentas el proyecto y te decimos si somos el equipo adecuado.</p>
+        <div class="calendario">
+          <!-- TODO: iframe Calendly -->
+          <div class="calendario-cab">
+            <span>Julio 2026</span>
+            <span>20 min</span>
+          </div>
+          <div class="calendario-dias" aria-hidden="true">
+            <span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span><span>D</span>
+            <span></span><span></span><span>15</span><span class="hoy">16</span><span class="libre">17</span><span></span><span></span>
+            <span class="libre">20</span><span class="libre">21</span><span>22</span><span class="libre">23</span><span class="libre">24</span><span></span><span></span>
+          </div>
+          <a class="btn btn-primario" href="mailto:infobarrancoamarillo@gmail.com?subject=Reservar%20llamada">Abrir agenda</a>
+        </div>
+      </div>
+
+      <!-- Col B — Formulario -->
+      <div class="contacto-col revelar">
+        <h3>Escríbenos</h3>
+        <p>Respondemos en menos de 24 horas laborables.</p>
+        <form class="formulario" id="form-contacto" novalidate>
+          <div class="campo">
+            <label for="f-nombre">Nombre</label>
+            <input type="text" id="f-nombre" name="nombre" autocomplete="name" required>
+            <span class="error" id="err-nombre">Dinos cómo te llamas.</span>
+          </div>
+          <div class="campo">
+            <label for="f-email">Email</label>
+            <input type="email" id="f-email" name="email" autocomplete="email" required>
+            <span class="error" id="err-email">Necesitamos un email válido para responderte.</span>
+          </div>
+          <div class="campo">
+            <label for="f-tipo">Tipo de proyecto</label>
+            <select id="f-tipo" name="tipo">
+              <option value="Real estate">Real estate</option>
+              <option value="Tour 3D">Tour 3D</option>
+              <option value="Videoclip">Videoclip</option>
+              <option value="Publicidad">Publicidad</option>
+              <option value="Corporativo">Corporativo</option>
+              <option value="Ficción">Ficción</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="f-mensaje">Mensaje</label>
+            <textarea id="f-mensaje" name="mensaje" required></textarea>
+            <span class="error" id="err-mensaje">Cuéntanos algo del proyecto, aunque sean dos líneas.</span>
+          </div>
+          <button type="submit" class="btn btn-primario">Enviar mensaje</button>
+          <p class="form-confirmacion" id="form-confirmacion" role="status">Se está abriendo tu aplicación de correo con el mensaje listo. Si no se abre, escríbenos a infobarrancoamarillo@gmail.com.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ======================= FOOTER ======================= -->
+<footer class="footer">
+  <div class="contenedor">
+    <div class="footer-grid">
+      <div>
+        <a class="marca" href="#" aria-label="Barranco Amarillo — inicio">
+          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <rect x="5.5" y="5.5" width="13" height="13" transform="rotate(45 12 12)" fill="#F1C741"/>
+          </svg>
+          <span class="marca-texto">Barranco <em>Amarillo</em></span>
+        </a>
+        <p class="footer-desc">Productora audiovisual.<br>Real estate, tours 3D, videoclips, publicidad y ficción.</p>
+        <!-- TODO: dirección, redes definitivas -->
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <ul>
+          <li><a href="mailto:infobarrancoamarillo@gmail.com">infobarrancoamarillo@gmail.com</a></li>
+          <li><a href="https://www.instagram.com/barrancoamarillo" target="_blank" rel="noopener">Instagram @barrancoamarillo</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#" aria-disabled="true">Aviso legal</a></li>
+          <li><a href="#" aria-disabled="true">Privacidad</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-legal">
+      <span>© 2026 Barranco Amarillo</span>
+      <nav aria-label="Legal">
+        <a href="#">Aviso legal</a>
+        <a href="#">Privacidad</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<!-- ======================= FLOTANTES ======================= -->
+<!-- TODO: número real de WhatsApp -->
+<div class="flotantes">
+  <button class="btn-chat" id="btn-chat" aria-expanded="false" aria-controls="chat-panel" aria-label="Abrir chat">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 12a8 8 0 01-8 8H4l2.5-3A8 8 0 1121 12z"/></svg>
+  </button>
+  <a class="btn-whatsapp" href="https://wa.me/34XXXXXXXXX?text=Hola,%20quiero%20informaci%C3%B3n" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a9.9 9.9 0 00-8.5 15.1L2 22l5.1-1.4A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1112 20.2zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.6.1a6.7 6.7 0 01-2-1.2 7.4 7.4 0 01-1.4-1.7c-.1-.3 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5a.5.5 0 000-.5c-.1-.1-.6-1.4-.8-1.9s-.4-.4-.6-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2 5.2 5.2 0 001.1 2.8 11.9 11.9 0 004.6 4 15.6 15.6 0 001.5.6 3.7 3.7 0 001.7.1 2.8 2.8 0 001.8-1.3 2.3 2.3 0 00.2-1.3c-.1-.1-.3-.2-.6-.3z"/></svg>
+  </a>
+</div>
+
+<!-- TODO v2: Crisp/Tawk.to -->
+<div class="chat-panel" id="chat-panel" role="dialog" aria-label="Chat">
+  <h3>¿Hablamos?</h3>
+  <p>Escríbenos y seguimos por WhatsApp.</p>
+  <textarea id="chat-mensaje" aria-label="Tu mensaje" placeholder="Hola, quiero información sobre…"></textarea>
+  <button class="btn btn-primario" id="chat-enviar">Enviar por WhatsApp</button>
+</div>
+
+<!-- ======================= LIGHTBOX ======================= -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Reproductor de vídeo" hidden>
+  <div class="lb-marco">
+    <button class="lb-cerrar" id="lb-cerrar" aria-label="Cerrar vídeo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="lb-video" id="lb-video"></div>
+  </div>
+</div>
+
+<script>
+/* ==========================================================================
+   BARRANCO AMARILLO — JS vanilla, sin dependencias
+   ========================================================================== */
+(function(){
+"use strict";
+
+var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- NAV: scroll, hamburguesa, sección activa ---------- */
+var nav = document.getElementById("nav");
+var hamburguesa = document.getElementById("hamburguesa");
+var panelMovil = document.getElementById("panel-movil");
+
+function alScroll(){
+  nav.classList.toggle("con-scroll", window.scrollY > 8);
+}
+window.addEventListener("scroll", alScroll, { passive:true });
+alScroll();
+
+function cerrarPanel(){
+  panelMovil.classList.remove("abierto");
+  hamburguesa.setAttribute("aria-expanded", "false");
+  hamburguesa.setAttribute("aria-label", "Abrir menú");
+  document.body.style.overflow = "";
+}
+hamburguesa.addEventListener("click", function(){
+  var abierto = panelMovil.classList.toggle("abierto");
+  hamburguesa.setAttribute("aria-expanded", String(abierto));
+  hamburguesa.setAttribute("aria-label", abierto ? "Cerrar menú" : "Abrir menú");
+  document.body.style.overflow = abierto ? "hidden" : "";
+});
+panelMovil.querySelectorAll("a").forEach(function(a){
+  a.addEventListener("click", cerrarPanel);
+});
+
+/* Anclas internas — scrollIntoView (respeta scroll-margin-top) con
+   comprobación: si el smooth nativo está desactivado, salto directo */
+function irA(destino){
+  if(reduceMotion){
+    destino.scrollIntoView({ behavior: "instant", block: "start" });
+    return;
+  }
+  var antes = window.scrollY;
+  destino.scrollIntoView({ behavior: "smooth", block: "start" });
+  setTimeout(function(){
+    var objetivo = destino.getBoundingClientRect().top;
+    if(Math.abs(window.scrollY - antes) < 2 && Math.abs(objetivo) > 120){
+      destino.scrollIntoView({ behavior: "instant", block: "start" });
+    }
+  }, 280);
+}
+document.addEventListener("click", function(ev){
+  var a = ev.target.closest('a[href^="#"]');
+  if(!a) return;
+  var id = a.getAttribute("href").slice(1);
+  ev.preventDefault();
+  if(!id){ irA(document.documentElement); return; }
+  var destino = document.getElementById(id);
+  if(!destino) return;
+  irA(destino);
+  if(history.pushState) history.pushState(null, "", "#" + id);
+});
+
+/* Sección activa → rombo en nav */
+var linksNav = document.querySelectorAll('.nav-links a, .panel-movil a');
+var secciones = document.querySelectorAll("main section[id]");
+var obsNav = new IntersectionObserver(function(entradas){
+  entradas.forEach(function(e){
+    if(!e.isIntersecting) return;
+    var id = e.target.id;
+    linksNav.forEach(function(a){
+      a.classList.toggle("activo", a.getAttribute("href") === "#" + id);
+    });
+  });
+}, { rootMargin: "-40% 0px -55% 0px" });
+secciones.forEach(function(s){ obsNav.observe(s); });
+
+/* ---------- Reveal on scroll ---------- */
+var revelables = document.querySelectorAll(".revelar");
+if(reduceMotion){
+  revelables.forEach(function(el){ el.classList.add("visible"); });
+}else{
+  var obsRevelar = new IntersectionObserver(function(entradas){
+    entradas.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add("visible");
+        obsRevelar.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revelables.forEach(function(el){ obsRevelar.observe(el); });
+}
+
+/* ==========================================================================
+   SIMPLEX — grano fílmico (traducción vanilla WebGL del DitheringShader)
+   shape="ripple" · dither 2x2 · pxSize 2 · colores de marca, opacidad baja
+   ========================================================================== */
+(function(){
+  var canvas = document.getElementById("canvas-grano");
+  if(!canvas) return;
+  var gl = canvas.getContext("webgl", { antialias:false, alpha:false });
+  if(!gl){ canvas.style.display = "none"; return; }
+
+  var vsrc = "attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}";
+  var fsrc = [
+    "precision mediump float;",
+    "uniform float u_t;uniform vec2 u_res;",
+    "vec3 permute(vec3 x){return mod(((x*34.0)+1.0)*x,289.0);}",
+    "float snoise(vec2 v){",
+    " const vec4 C=vec4(0.211324865405187,0.366025403784439,-0.577350269189626,0.024390243902439);",
+    " vec2 i=floor(v+dot(v,C.yy));vec2 x0=v-i+dot(i,C.xx);",
+    " vec2 i1=(x0.x>x0.y)?vec2(1.,0.):vec2(0.,1.);",
+    " vec4 x12=x0.xyxy+C.xxzz;x12.xy-=i1;i=mod(i,289.);",
+    " vec3 p=permute(permute(i.y+vec3(0.,i1.y,1.))+i.x+vec3(0.,i1.x,1.));",
+    " vec3 m=max(0.5-vec3(dot(x0,x0),dot(x12.xy,x12.xy),dot(x12.zw,x12.zw)),0.);",
+    " m=m*m;m=m*m;",
+    " vec3 x=2.*fract(p*C.www)-1.;vec3 h=abs(x)-0.5;vec3 ox=floor(x+0.5);vec3 a0=x-ox;",
+    " m*=1.79284291400159-0.85373472095314*(a0*a0+h*h);",
+    " vec3 g;g.x=a0.x*x0.x+h.x*x0.y;g.yz=a0.yz*x12.xz+h.yz*x12.yw;",
+    " return 130.*dot(m,g);}",
+    "void main(){",
+    " float px=2.0;", // pxSize 2
+    " vec2 bloque=floor(gl_FragCoord.xy/px);",
+    " vec2 uv=(bloque*px-0.5*u_res)/min(u_res.x,u_res.y);",
+    " float d=length(uv);",
+    " float n=snoise(uv*6.0+u_t*0.12);",
+    " float g=snoise(uv*70.0+vec2(u_t*1.6,u_t*0.9));", // grano fino de emulsión
+    " float onda=sin(d*9.0-u_t*1.2+n*3.0)*0.30+0.5+g*0.28;", // shape ripple, speed 1.2
+    " vec2 b=mod(bloque,2.0);",
+    " float m2=(b.x==0.0&&b.y==0.0)?0.0:(b.x==1.0&&b.y==0.0)?2.0:(b.x==0.0&&b.y==1.0)?3.0:1.0;", // Bayer 2x2
+    " float umbral=(m2+0.5)/4.0;",
+    " float enc=step(umbral,onda);",
+    " vec3 fondo=vec3(0.0706,0.0627,0.0627);",   // --negro-profundo #121010
+    " vec3 frente=vec3(0.9451,0.7804,0.2549);",  // --amarillo #F1C741
+    " gl_FragColor=vec4(mix(fondo,frente,enc*0.055),1.0);}" // textura, no protagonista
+  ].join("\n");
+
+  function compilar(tipo, src){
+    var s = gl.createShader(tipo);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)){ throw gl.getShaderInfoLog(s); }
+    return s;
+  }
+  var prog;
+  try{
+    prog = gl.createProgram();
+    gl.attachShader(prog, compilar(gl.VERTEX_SHADER, vsrc));
+    gl.attachShader(prog, compilar(gl.FRAGMENT_SHADER, fsrc));
+    gl.linkProgram(prog);
+    if(!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw "link";
+  }catch(e){ canvas.style.display = "none"; return; }
+  gl.useProgram(prog);
+
+  var buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+  var locP = gl.getAttribLocation(prog, "p");
+  gl.enableVertexAttribArray(locP);
+  gl.vertexAttribPointer(locP, 2, gl.FLOAT, false, 0, 0);
+  var locT = gl.getUniformLocation(prog, "u_t");
+  var locR = gl.getUniformLocation(prog, "u_res");
+
+  function medir(){
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var w = canvas.clientWidth, h = canvas.clientHeight;
+    if(canvas.width !== w*dpr || canvas.height !== h*dpr){
+      canvas.width = w*dpr; canvas.height = h*dpr;
+      gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+  }
+  function pintar(t){
+    medir();
+    gl.uniform1f(locT, t/1000);
+    gl.uniform2f(locR, canvas.width, canvas.height);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+  if(reduceMotion){
+    // Un solo fotograma estático: textura sin movimiento
+    requestAnimationFrame(function(){ pintar(0); });
+    window.addEventListener("resize", function(){ pintar(0); });
+  }else{
+    var visible = true;
+    new IntersectionObserver(function(e){ visible = e[0].isIntersecting; }).observe(canvas);
+    (function bucle(t){
+      if(visible) pintar(t);
+      requestAnimationFrame(bucle);
+    })(0);
+  }
+})();
+
+/* ==========================================================================
+   THERMODYNAMIC GRID — rejilla térmica (traducción vanilla)
+   resolution 25 · coolingFactor 0.98 · paleta de marca
+   ========================================================================== */
+(function(){
+  var canvas = document.getElementById("canvas-termico");
+  var seccion = document.getElementById("tours-3d");
+  if(!canvas || !seccion) return;
+  var ctx = canvas.getContext("2d");
+  var resolucion = 25, enfriamiento = 0.98;
+  var cols = 0, filas = 0, grid = [];
+
+  function medir(){
+    var w = seccion.clientWidth, h = seccion.clientHeight;
+    canvas.width = w; canvas.height = h;
+    cols = Math.ceil(w / resolucion);
+    filas = Math.ceil(h / resolucion);
+    grid = new Float32Array(cols * filas);
+  }
+  medir();
+  window.addEventListener("resize", medir);
+
+  // Frío → negro profundo · medio → negro marca · caliente → amarillo · pico → naranja
+  function colorTermico(t){
+    if(t > 0.85){
+      // Pico: mezcla hacia naranja de marca (#E56425), solo el punto más caliente
+      var k = (t - 0.85) / 0.15;
+      var r = Math.round(241 + (229 - 241) * k);
+      var g = Math.round(199 + (100 - 199) * k);
+      var b = Math.round(65  + (37  - 65)  * k);
+      return "rgb(" + r + "," + g + "," + b + ")";
+    }
+    var r2 = Math.min(255, Math.max(0, t * 241));
+    var g2 = Math.min(255, Math.max(0, t * 199 - 50));
+    var b2 = Math.min(255, Math.max(0, t * 65 - 100));
+    return "rgb(" + Math.round(r2 + 18) + "," + Math.round(g2 + 27) + "," + Math.round(b2 + 26) + ")";
+  }
+
+  function inyectar(col, fila, fuerza){
+    for(var dy = -2; dy <= 2; dy++){
+      for(var dx = -2; dx <= 2; dx++){
+        var c = col + dx, f = fila + dy;
+        if(c < 0 || c >= cols || f < 0 || f >= filas) continue;
+        var dist = Math.sqrt(dx*dx + dy*dy);
+        if(dist > 2.2) continue;
+        var idx = c + f * cols;
+        grid[idx] = Math.min(1, grid[idx] + fuerza * (1 - dist / 3));
+      }
+    }
+  }
+
+  seccion.addEventListener("mousemove", function(ev){
+    var rect = seccion.getBoundingClientRect();
+    var col = Math.floor((ev.clientX - rect.left) / resolucion);
+    var fila = Math.floor((ev.clientY - rect.top) / resolucion);
+    inyectar(col, fila, 0.9);
+  });
+
+  // Fallback móvil: sin cursor, la rejilla pulsa sola
+  var esMovil = window.matchMedia("(hover: none)").matches;
+  var pulso = null;
+  if(esMovil && !reduceMotion){
+    pulso = setInterval(function(){
+      inyectar(Math.floor(cols/2), Math.floor(filas/2), 0.8);
+      // Punto errante secundario para que el pulso no sea monótono
+      inyectar(Math.floor(Math.random()*cols), Math.floor(Math.random()*filas), 0.5);
+    }, 2000);
+  }
+  seccion.addEventListener("touchstart", function(ev){
+    var rect = seccion.getBoundingClientRect();
+    var t = ev.touches[0];
+    inyectar(Math.floor((t.clientX-rect.left)/resolucion), Math.floor((t.clientY-rect.top)/resolucion), 0.9);
+  }, { passive:true });
+
+  function estructuraFria(){
+    ctx.fillStyle = "rgba(247,245,242,0.05)";
+    for(var f = 0; f < filas; f += 2){
+      for(var c = 0; c < cols; c += 2){
+        ctx.fillRect(c*resolucion + resolucion/2 - 1, f*resolucion + resolucion/2 - 1, 2, 2);
+      }
+    }
+  }
+
+  function fotograma(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    estructuraFria();
+    for(var f = 0; f < filas; f++){
+      for(var c = 0; c < cols; c++){
+        var idx = c + f * cols;
+        var temp = grid[idx] * enfriamiento;
+        grid[idx] = temp < 0.001 ? 0 : temp;
+        if(temp <= 0.05) continue;
+        var lado = resolucion * (0.8 + temp * 0.5) * temp;
+        ctx.fillStyle = colorTermico(temp);
+        ctx.globalAlpha = Math.min(1, temp * 1.4);
+        ctx.fillRect(
+          c*resolucion + (resolucion - lado)/2,
+          f*resolucion + (resolucion - lado)/2,
+          lado, lado
+        );
+        ctx.globalAlpha = 1;
+      }
+    }
+  }
+
+  if(reduceMotion){
+    estructuraFria(); // estático: solo la estructura de puntos, sin bucle
+  }else{
+    var visible = true;
+    new IntersectionObserver(function(e){ visible = e[0].isIntersecting; }).observe(seccion);
+    (function bucle(){
+      if(visible) fotograma();
+      requestAnimationFrame(bucle);
+    })();
+  }
+})();
+
+/* ==========================================================================
+   PORTFOLIO — grid, filtros, lightbox
+   ========================================================================== */
+var PORTFOLIO = [
+  { id: "snjU4GVItZ4",  titulo: "Por la Victoria",      categoria: "ficcion",    etiqueta: "Ficción",        sub: "Cortometraje · Barranco Amarillo" },
+  { id: "Aw8yax0awz8",  titulo: "Aprendiendo a ver",    categoria: "documental", etiqueta: "Documental",     sub: "Documental · Barranco Amarillo" },
+  { id: "3Z0uXsxeu4M",  titulo: "Eso que no decimos",   categoria: "ficcion",    etiqueta: "Ficción",        sub: "Cortometraje · Barranco Amarillo" },
+  { id: "KrFNvViIXfw",  titulo: "La Vida Bohème",       categoria: "musica",     etiqueta: "Música en vivo", sub: "Resumen de concierto" },
+  { id: "5H13hWWk5DY",  titulo: "Okills",               categoria: "musica",     etiqueta: "Música en vivo", sub: "Resumen de concierto" },
+  { id: "-9ta4nxsNxk",  titulo: "Caramelos de Cianuro", categoria: "musica",     etiqueta: "Música en vivo", sub: "Resumen de concierto" },
+  { id: "AGacB0lB9fk",  titulo: "Anakena",              categoria: "musica",     etiqueta: "Música en vivo", sub: "Resumen de concierto" },
+  { id: "zwEpptfxsuQ",  titulo: "Sunset Roll",          categoria: "festival",   etiqueta: "Festival",       sub: "Aftermovie · Festival completo" }
+];
+
+var gridEl = document.getElementById("grid-portfolio");
+PORTFOLIO.forEach(function(pieza){
+  var btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "pieza revelar";
+  btn.setAttribute("data-categoria", pieza.categoria);
+  // Ojo: hay un ID que empieza por guion (-9ta4nxsNxk) — siempre via dataset/setAttribute
+  btn.setAttribute("data-video", pieza.id);
+  btn.setAttribute("aria-label", "Reproducir: " + pieza.titulo);
+
+  var img = document.createElement("img");
+  img.src = "https://i.ytimg.com/vi/" + pieza.id + "/maxresdefault.jpg";
+  img.alt = "Fotograma de " + pieza.titulo;
+  img.loading = "lazy";
+  function usarFallback(){
+    img.removeEventListener("error", usarFallback);
+    img.removeEventListener("load", comprobarPlaceholder);
+    img.src = "https://i.ytimg.com/vi/" + pieza.id + "/hqdefault.jpg";
+  }
+  function comprobarPlaceholder(){
+    // maxresdefault inexistente puede responder 200 con un placeholder de 120x90
+    if(img.naturalWidth < 320) usarFallback();
+  }
+  img.addEventListener("error", usarFallback);
+  img.addEventListener("load", comprobarPlaceholder);
+
+  var marco = document.createElement("div");
+  marco.className = "pieza-marco";
+  marco.appendChild(img);
+
+  var velo = document.createElement("div");
+  velo.className = "pieza-velo";
+  marco.appendChild(velo);
+
+  var play = document.createElement("div");
+  play.className = "pieza-play";
+  play.innerHTML = '<span><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>';
+  marco.appendChild(play);
+
+  var info = document.createElement("div");
+  info.className = "pieza-info";
+  var textos = document.createElement("div");
+  var h3 = document.createElement("h3"); h3.textContent = pieza.titulo;
+  var p = document.createElement("p"); p.textContent = pieza.sub;
+  textos.appendChild(h3); textos.appendChild(p);
+  var tag = document.createElement("span");
+  tag.className = "pieza-etiqueta"; tag.textContent = pieza.etiqueta;
+  info.appendChild(textos); info.appendChild(tag);
+
+  btn.appendChild(marco);
+  btn.appendChild(info);
+  gridEl.appendChild(btn);
+
+  if(reduceMotion){ btn.classList.add("visible"); }
+});
+
+// Observa las piezas recién creadas para el reveal
+if(!reduceMotion){
+  var obsPiezas = new IntersectionObserver(function(entradas){
+    entradas.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add("visible"); obsPiezas.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  gridEl.querySelectorAll(".pieza").forEach(function(el){ obsPiezas.observe(el); });
+}
+
+/* Filtros */
+var chips = document.querySelectorAll(".chip");
+function aplicarFiltro(filtro){
+  chips.forEach(function(ch){
+    ch.classList.toggle("activo", ch.getAttribute("data-filtro") === filtro);
+  });
+  gridEl.querySelectorAll(".pieza").forEach(function(pz){
+    var coincide = (filtro === "todo") || (pz.getAttribute("data-categoria") === filtro);
+    pz.hidden = !coincide;
+  });
+}
+chips.forEach(function(ch){
+  ch.addEventListener("click", function(){ aplicarFiltro(ch.getAttribute("data-filtro")); });
+});
+
+/* Servicios → ancla a portfolio con filtro activo */
+document.querySelectorAll(".servicio").forEach(function(sv){
+  sv.addEventListener("click", function(){
+    aplicarFiltro(sv.getAttribute("data-filtro") || "todo");
+  });
+});
+
+/* Lightbox — iframe creado al clic, destruido al cerrar */
+var lightbox = document.getElementById("lightbox");
+var lbVideo = document.getElementById("lb-video");
+var lbCerrar = document.getElementById("lb-cerrar");
+var origenFoco = null;
+
+function abrirLightbox(videoId, desde){
+  origenFoco = desde || null;
+  var iframe = document.createElement("iframe");
+  iframe.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(videoId) + "?autoplay=1&rel=0";
+  iframe.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+  iframe.setAttribute("allowfullscreen", "");
+  iframe.title = "Reproductor de YouTube";
+  lbVideo.appendChild(iframe);
+  lightbox.hidden = false;
+  document.body.style.overflow = "hidden";
+  lbCerrar.focus();
+}
+function cerrarLightbox(){
+  lbVideo.innerHTML = ""; // destruye el iframe → corta el audio
+  lightbox.hidden = true;
+  document.body.style.overflow = "";
+  if(origenFoco){ origenFoco.focus(); origenFoco = null; }
+}
+gridEl.addEventListener("click", function(ev){
+  var pieza = ev.target.closest(".pieza");
+  if(!pieza) return;
+  abrirLightbox(pieza.getAttribute("data-video"), pieza);
+});
+lbCerrar.addEventListener("click", cerrarLightbox);
+lightbox.addEventListener("click", function(ev){
+  if(ev.target === lightbox) cerrarLightbox();
+});
+document.addEventListener("keydown", function(ev){
+  if(ev.key === "Escape"){
+    if(!lightbox.hidden) cerrarLightbox();
+    if(panelMovil.classList.contains("abierto")) cerrarPanel();
+  }
+});
+
+/* ==========================================================================
+   FORMULARIO — validación on-blur, errores bajo cada campo, mailto
+   ========================================================================== */
+var form = document.getElementById("form-contacto");
+var confirmacion = document.getElementById("form-confirmacion");
+
+function validarCampo(input, errorEl, prueba){
+  var ok = prueba(input.value.trim());
+  input.classList.toggle("invalido", !ok);
+  errorEl.classList.toggle("visible", !ok);
+  return ok;
+}
+var fNombre = document.getElementById("f-nombre");
+var fEmail = document.getElementById("f-email");
+var fTipo = document.getElementById("f-tipo");
+var fMensaje = document.getElementById("f-mensaje");
+var reEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+fNombre.addEventListener("blur", function(){ if(fNombre.value) validarCampo(fNombre, document.getElementById("err-nombre"), function(v){ return v.length > 1; }); });
+fEmail.addEventListener("blur", function(){ if(fEmail.value) validarCampo(fEmail, document.getElementById("err-email"), function(v){ return reEmail.test(v); }); });
+fMensaje.addEventListener("blur", function(){ if(fMensaje.value) validarCampo(fMensaje, document.getElementById("err-mensaje"), function(v){ return v.length > 5; }); });
+
+form.addEventListener("submit", function(ev){
+  ev.preventDefault();
+  var okNombre = validarCampo(fNombre, document.getElementById("err-nombre"), function(v){ return v.length > 1; });
+  var okEmail = validarCampo(fEmail, document.getElementById("err-email"), function(v){ return reEmail.test(v); });
+  var okMensaje = validarCampo(fMensaje, document.getElementById("err-mensaje"), function(v){ return v.length > 5; });
+  if(!okNombre || !okEmail || !okMensaje){
+    (okNombre ? (okEmail ? fMensaje : fEmail) : fNombre).focus();
+    return;
+  }
+  var asunto = "Proyecto: " + fTipo.value + " — " + fNombre.value.trim();
+  var cuerpo = "Nombre: " + fNombre.value.trim() +
+    "\nEmail: " + fEmail.value.trim() +
+    "\nTipo de proyecto: " + fTipo.value +
+    "\n\n" + fMensaje.value.trim();
+  window.location.href = "mailto:infobarrancoamarillo@gmail.com" +
+    "?subject=" + encodeURIComponent(asunto) +
+    "&body=" + encodeURIComponent(cuerpo);
+  confirmacion.classList.add("visible");
+});
+
+/* ==========================================================================
+   CHAT FLOTANTE — redirige a WhatsApp con texto precargado
+   ========================================================================== */
+var btnChat = document.getElementById("btn-chat");
+var chatPanel = document.getElementById("chat-panel");
+var chatEnviar = document.getElementById("chat-enviar");
+var chatMensaje = document.getElementById("chat-mensaje");
+
+btnChat.addEventListener("click", function(){
+  var abierto = chatPanel.classList.toggle("abierto");
+  btnChat.setAttribute("aria-expanded", String(abierto));
+  btnChat.setAttribute("aria-label", abierto ? "Cerrar chat" : "Abrir chat");
+  if(abierto) chatMensaje.focus();
+});
+chatEnviar.addEventListener("click", function(){
+  var texto = chatMensaje.value.trim() || "Hola, quiero información";
+  // TODO: número real de WhatsApp
+  window.open("https://wa.me/34XXXXXXXXX?text=" + encodeURIComponent(texto), "_blank", "noopener");
+});
+
+})();
+</script>
+</body>
+</html>
