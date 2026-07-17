@@ -10,6 +10,7 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_ES">
 <meta property="og:url" content="https://infobarrancoamarillo-cmd.github.io/BAWEB/">
+<link rel="icon" type="image/png" href="assets/logo-simbolo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Roboto+Slab:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -183,28 +184,16 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
 }
 @media (min-width:768px){ .nav-inner{ padding-inline:40px; } }
 
-/* Logo — wordmark placeholder */
-/* TODO: sustituir por SVG oficial */
+/* Logo oficial */
 .marca{
   display:flex;
   align-items:center;
-  gap:12px;
   text-decoration:none;
   min-height:44px;
 }
-.marca-texto{
-  font-family:'Roboto',sans-serif;
-  font-weight:900;
-  font-size:0.9375rem;
-  letter-spacing:0.14em;
-  text-transform:uppercase;
-  color:var(--tinta-alta);
-  line-height:1.1;
-}
-.marca-texto em{
-  font-style:normal;
-  color:var(--acento-proyector);
-}
+.logo-nav{ height:36px; width:auto; display:block; }
+@media (max-width:767px){ .logo-nav{ height:28px; } }
+.logo-footer{ height:26px; width:auto; display:block; }
 
 .nav-links{
   display:none;
@@ -312,9 +301,9 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
   display:flex;
   align-items:center;
   overflow:hidden;
-  background:var(--superficie-base);
+  background:transparent;
 }
-/* TODO: sustituir canvas Simplex por <video> del showreel cuando esté listo */
+/* Canvas Simplex — ahora fallback del vídeo (se activa si el iframe falla) */
 #canvas-grano{
   position:absolute;
   inset:0;
@@ -323,9 +312,36 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
   pointer-events:none;
   z-index:0;
 }
+#canvas-grano[hidden]{ display:none; }
+/* Vídeo YouTube en background del hero */
+.hero-video-wrapper{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  z-index:0;
+  pointer-events:none;
+}
+.hero-video-wrapper iframe{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:120%;
+  height:120%;
+  min-width:177.78vh;  /* 16:9 */
+  min-height:56.25vw;  /* 16:9 */
+  border:0;
+}
+.hero-video-wrapper::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(18,16,16,0.55);
+  z-index:1;
+}
 .hero-contenido{
   position:relative;
-  z-index:1;
+  z-index:2;
   padding-block:140px 100px;
 }
 .hero h1{
@@ -349,7 +365,7 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
   position:absolute;
   bottom:28px;
   left:0; right:0;
-  z-index:1;
+  z-index:2;
   display:flex;
   justify-content:center;
 }
@@ -474,19 +490,9 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
    TOURS 3D
    ========================================================================== */
 #tours-3d{
-  background:var(--superficie-base);
+  background:transparent;
   border-top:1px solid var(--linea-hairline);
-  overflow:hidden;
 }
-#canvas-termico{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  z-index:0;
-}
-#tours-3d .contenedor{ position:relative; z-index:1; pointer-events:none; }
-#tours-3d a, #tours-3d button{ pointer-events:auto; }
 
 /* Visor 16:9 simulado */
 .visor{
@@ -610,7 +616,7 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
 /* ==========================================================================
    PORTFOLIO
    ========================================================================== */
-#portfolio{ background:var(--superficie-base); border-top:1px solid var(--linea-hairline); }
+#portfolio{ background:transparent; border-top:1px solid var(--linea-hairline); }
 .filtros{
   display:flex;
   flex-wrap:wrap;
@@ -800,7 +806,7 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
 /* ==========================================================================
    CONTACTO
    ========================================================================== */
-#contacto{ background:var(--superficie-base); }
+#contacto{ background:transparent; }
 .contacto-grid{
   display:grid;
   gap:56px;
@@ -992,7 +998,6 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
   gap:40px;
 }
 @media (min-width:768px){ .footer-grid{ grid-template-columns:2fr 1fr 1fr; } }
-.footer .marca-texto{ font-size:1.0625rem; }
 .footer-desc{ margin-top:12px; color:var(--tinta-media); font-size:0.875rem; }
 .footer h4{
   font-size:0.75rem;
@@ -1029,6 +1034,26 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
 /* TODO: dirección, redes definitivas */
 
 /* ==========================================================================
+   REJILLA TÉRMICA GLOBAL + CURSOR — solo desktop (ver JS)
+   ========================================================================== */
+#thermal-canvas{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:1;
+}
+main, .footer{ position:relative; z-index:2; }
+/* Cursor nativo oculto solo cuando el cursor personalizado está activo */
+@media (hover: hover){
+  body.cursor-activo,
+  body.cursor-activo a,
+  body.cursor-activo button,
+  body.cursor-activo [role="button"]{ cursor:none; }
+}
+
+/* ==========================================================================
    REDUCED MOTION
    ========================================================================== */
 @media (prefers-reduced-motion: reduce){
@@ -1044,15 +1069,14 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
 </head>
 <body>
 
+<!-- Rejilla térmica global — solo desktop, ver JS -->
+<canvas id="thermal-canvas" aria-hidden="true"></canvas>
+
 <!-- ======================= NAV ======================= -->
 <header class="nav" id="nav">
   <div class="nav-inner">
     <a class="marca" href="#" aria-label="Barranco Amarillo — inicio">
-      <!-- TODO: sustituir por SVG oficial -->
-      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <rect x="5.5" y="5.5" width="13" height="13" transform="rotate(45 12 12)" fill="#F1C741"/>
-      </svg>
-      <span class="marca-texto">Barranco <em>Amarillo</em></span>
+      <img class="logo-nav" src="assets/logo-imagotipo.png" alt="Barranco Amarillo" height="36">
     </a>
 
     <nav aria-label="Principal">
@@ -1092,7 +1116,20 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
 
 <!-- ======================= HERO ======================= -->
 <section class="hero" aria-label="Presentación">
-  <canvas id="canvas-grano" aria-hidden="true"></canvas>
+  <!-- TODO: restaurar Simplex si se prefiere textura sobre vídeo (fallback automático si el iframe falla) -->
+  <canvas id="canvas-grano" aria-hidden="true" hidden></canvas>
+  <div class="hero-video-wrapper" id="hero-video-wrapper">
+    <iframe
+      id="hero-video"
+      src="https://www.youtube.com/embed/KrFNvViIXfw?autoplay=1&amp;mute=1&amp;controls=0&amp;loop=1&amp;playlist=KrFNvViIXfw&amp;rel=0&amp;showinfo=0&amp;modestbranding=1&amp;iv_load_policy=3&amp;disablekb=1&amp;fs=0&amp;playsinline=1"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen
+      title="Showreel — La Vida Bohème"
+      aria-hidden="true"
+      tabindex="-1"
+    ></iframe>
+  </div>
   <div class="contenedor hero-contenido">
     <p class="eyebrow revelar"><span class="rombo" aria-hidden="true"></span>Productora audiovisual · 7 años</p>
     <h1 class="revelar">Hacemos que se vea como cine.</h1>
@@ -1167,7 +1204,6 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
 
 <!-- ======================= TOURS 3D ======================= -->
 <section class="seccion" id="tours-3d" aria-labelledby="titulo-tours">
-  <canvas id="canvas-termico" aria-hidden="true"></canvas>
   <div class="contenedor">
     <div class="seccion-cabecera">
       <p class="eyebrow revelar"><span class="rombo" aria-hidden="true"></span>Tours 3D · Escaneo</p>
@@ -1365,10 +1401,7 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
     <div class="footer-grid">
       <div>
         <a class="marca" href="#" aria-label="Barranco Amarillo — inicio">
-          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <rect x="5.5" y="5.5" width="13" height="13" transform="rotate(45 12 12)" fill="#F1C741"/>
-          </svg>
-          <span class="marca-texto">Barranco <em>Amarillo</em></span>
+          <img class="logo-footer" src="assets/logo-logotipo.png" alt="Barranco Amarillo" height="26">
         </a>
         <p class="footer-desc">Productora audiovisual.<br>Real estate, tours 3D, videoclips, publicidad y ficción.</p>
         <!-- TODO: dirección, redes definitivas -->
@@ -1524,8 +1557,12 @@ if(reduceMotion){
 /* ==========================================================================
    SIMPLEX — grano fílmico (traducción vanilla WebGL del DitheringShader)
    shape="ripple" · dither 2x2 · pxSize 2 · colores de marca, opacidad baja
+   V4: ya no arranca solo — es el fallback si el vídeo del hero falla
    ========================================================================== */
-(function(){
+var simplexIniciado = false;
+function iniciarSimplex(){
+  if(simplexIniciado) return;
+  simplexIniciado = true;
   var canvas = document.getElementById("canvas-grano");
   if(!canvas) return;
   var gl = canvas.getContext("webgl", { antialias:false, alpha:false });
@@ -1616,123 +1653,141 @@ if(reduceMotion){
       requestAnimationFrame(bucle);
     })(0);
   }
+}
+
+/* Fallback del hero: si el iframe de YouTube falla, se muestra el Simplex */
+(function(){
+  var heroVideo = document.getElementById("hero-video");
+  var wrapper = document.getElementById("hero-video-wrapper");
+  if(!heroVideo || !wrapper) return;
+  heroVideo.addEventListener("error", function(){
+    wrapper.style.display = "none";
+    var c = document.getElementById("canvas-grano");
+    if(c){ c.hidden = false; }
+    iniciarSimplex();
+  });
 })();
 
 /* ==========================================================================
-   THERMODYNAMIC GRID — rejilla térmica (traducción vanilla)
-   resolution 25 · coolingFactor 0.98 · paleta de marca
+   REJILLA TÉRMICA GLOBAL + CURSOR — un canvas fixed para toda la web
+   amarillo por defecto · lila en Tours 3D · solo desktop con cursor
    ========================================================================== */
 (function(){
-  var canvas = document.getElementById("canvas-termico");
-  var seccion = document.getElementById("tours-3d");
-  if(!canvas || !seccion) return;
-  var ctx = canvas.getContext("2d");
-  var resolucion = 25, enfriamiento = 0.98;
-  var cols = 0, filas = 0, grid = [];
+  if(reduceMotion) return;                                    // sin animación
+  if(window.matchMedia("(hover: none)").matches) return;      // sin canvas en touch
+
+  var canvas = document.getElementById("thermal-canvas");
+  if(!canvas) return;
+  var ctx = canvas.getContext("2d", { alpha:false });
+  var RESOLUCION = 28, ENFRIAMIENTO = 0.97;
+  var cols, filas, grid;
+  var raton = { x:-1000, y:-1000, px:-1000, py:-1000, activo:false };
+  var paleta = "amarillo";
+
+  // Amarillo: frío #1E1B1A → caliente #F1C741 · Lila: frío #1A1B1E → #9B6DFF
+  function color(t, p){
+    if(p === "amarillo"){
+      return "rgb(" + Math.round(18 + t*223) + "," + Math.round(27 + t*172) + "," + Math.round(26 + t*39) + ")";
+    }
+    return "rgb(" + Math.round(26 + t*129) + "," + Math.round(27 + t*82) + "," + Math.round(30 + t*225) + ")";
+  }
 
   function medir(){
-    var w = seccion.clientWidth, h = seccion.clientHeight;
-    canvas.width = w; canvas.height = h;
-    cols = Math.ceil(w / resolucion);
-    filas = Math.ceil(h / resolucion);
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    cols = Math.ceil(canvas.width / RESOLUCION);
+    filas = Math.ceil(canvas.height / RESOLUCION);
     grid = new Float32Array(cols * filas);
   }
-  medir();
   window.addEventListener("resize", medir);
+  medir();
 
-  // Frío → negro profundo · medio → negro marca · caliente → amarillo · pico → naranja
-  function colorTermico(t){
-    if(t > 0.85){
-      // Pico: mezcla hacia naranja de marca (#E56425), solo el punto más caliente
-      var k = (t - 0.85) / 0.15;
-      var r = Math.round(241 + (229 - 241) * k);
-      var g = Math.round(199 + (100 - 199) * k);
-      var b = Math.round(65  + (37  - 65)  * k);
-      return "rgb(" + r + "," + g + "," + b + ")";
-    }
-    var r2 = Math.min(255, Math.max(0, t * 241));
-    var g2 = Math.min(255, Math.max(0, t * 199 - 50));
-    var b2 = Math.min(255, Math.max(0, t * 65 - 100));
-    return "rgb(" + Math.round(r2 + 18) + "," + Math.round(g2 + 27) + "," + Math.round(b2 + 26) + ")";
-  }
+  document.addEventListener("mousemove", function(e){
+    raton.x = e.clientX; raton.y = e.clientY; raton.activo = true;
+  });
+  document.addEventListener("mouseleave", function(){ raton.activo = false; });
 
-  function inyectar(col, fila, fuerza){
-    for(var dy = -2; dy <= 2; dy++){
-      for(var dx = -2; dx <= 2; dx++){
-        var c = col + dx, f = fila + dy;
-        if(c < 0 || c >= cols || f < 0 || f >= filas) continue;
-        var dist = Math.sqrt(dx*dx + dy*dy);
-        if(dist > 2.2) continue;
-        var idx = c + f * cols;
-        grid[idx] = Math.min(1, grid[idx] + fuerza * (1 - dist / 3));
-      }
-    }
-  }
+  /* Cursor circular por encima de la rejilla */
+  document.body.classList.add("cursor-activo");
+  var cursor = document.createElement("div");
+  cursor.id = "cursor-dot";
+  cursor.setAttribute("aria-hidden", "true");
+  cursor.style.cssText = "position:fixed;top:0;left:0;width:12px;height:12px;border-radius:50%;border:2px solid #F1C741;pointer-events:none;z-index:9999;transition:border-color 400ms ease, width 150ms ease, height 150ms ease, opacity 200ms ease;will-change:transform;opacity:0;";
+  document.body.appendChild(cursor);
 
-  seccion.addEventListener("mousemove", function(ev){
-    var rect = seccion.getBoundingClientRect();
-    var col = Math.floor((ev.clientX - rect.left) / resolucion);
-    var fila = Math.floor((ev.clientY - rect.top) / resolucion);
-    inyectar(col, fila, 0.9);
+  var cx = 0, cy = 0;
+  (function moverCursor(){
+    cx += (raton.x - cx) * 0.14;
+    cy += (raton.y - cy) * 0.14;
+    cursor.style.transform = "translate(" + cx + "px," + cy + "px) translate(-50%,-50%)";
+    cursor.style.opacity = raton.activo ? "1" : "0";
+    requestAnimationFrame(moverCursor);
+  })();
+
+  /* Crece sobre clicables — delegado, cubre también las piezas dinámicas */
+  document.addEventListener("mouseover", function(e){
+    var clicable = e.target.closest('a, button, [role="button"]');
+    cursor.style.width = clicable ? "22px" : "12px";
+    cursor.style.height = clicable ? "22px" : "12px";
   });
 
-  // Fallback móvil: sin cursor, la rejilla pulsa sola
-  var esMovil = window.matchMedia("(hover: none)").matches;
-  var pulso = null;
-  if(esMovil && !reduceMotion){
-    pulso = setInterval(function(){
-      inyectar(Math.floor(cols/2), Math.floor(filas/2), 0.8);
-      // Punto errante secundario para que el pulso no sea monótono
-      inyectar(Math.floor(Math.random()*cols), Math.floor(Math.random()*filas), 0.5);
-    }, 2000);
+  /* Cambio de paleta al entrar en Tours 3D */
+  var tours = document.getElementById("tours-3d");
+  if(tours){
+    new IntersectionObserver(function(entradas){
+      entradas.forEach(function(e){
+        paleta = e.isIntersecting ? "lila" : "amarillo";
+        cursor.style.borderColor = paleta === "lila" ? "#9B6DFF" : "#F1C741";
+      });
+    }, { threshold: 0.2 }).observe(tours);
   }
-  seccion.addEventListener("touchstart", function(ev){
-    var rect = seccion.getBoundingClientRect();
-    var t = ev.touches[0];
-    inyectar(Math.floor((t.clientX-rect.left)/resolucion), Math.floor((t.clientY-rect.top)/resolucion), 0.9);
-  }, { passive:true });
 
-  function estructuraFria(){
-    ctx.fillStyle = "rgba(247,245,242,0.05)";
-    for(var f = 0; f < filas; f += 2){
-      for(var c = 0; c < cols; c += 2){
-        ctx.fillRect(c*resolucion + resolucion/2 - 1, f*resolucion + resolucion/2 - 1, 2, 2);
+  (function bucle(){
+    // Inyección de calor a lo largo del trayecto del cursor
+    if(raton.activo){
+      var dx = raton.x - raton.px, dy = raton.y - raton.py;
+      var dist = Math.sqrt(dx*dx + dy*dy);
+      var pasos = Math.ceil(dist / (RESOLUCION / 2));
+      for(var s = 0; s <= pasos; s++){
+        var t = pasos > 0 ? s / pasos : 0;
+        var col = Math.floor((raton.px + dx*t) / RESOLUCION);
+        var fila = Math.floor((raton.py + dy*t) / RESOLUCION);
+        for(var i = -2; i <= 2; i++){
+          for(var j = -2; j <= 2; j++){
+            var c = col + i, f = fila + j;
+            if(c < 0 || c >= cols || f < 0 || f >= filas) continue;
+            var d = Math.sqrt(i*i + j*j);
+            if(d > 2) continue;
+            var idx = c + f * cols;
+            grid[idx] = Math.min(1, grid[idx] + 0.35 * (1 - d/2));
+          }
+        }
       }
     }
-  }
+    raton.px = raton.x; raton.py = raton.y;
 
-  function fotograma(){
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    estructuraFria();
-    for(var f = 0; f < filas; f++){
-      for(var c = 0; c < cols; c++){
-        var idx = c + f * cols;
-        var temp = grid[idx] * enfriamiento;
-        grid[idx] = temp < 0.001 ? 0 : temp;
-        if(temp <= 0.05) continue;
-        var lado = resolucion * (0.8 + temp * 0.5) * temp;
-        ctx.fillStyle = colorTermico(temp);
-        ctx.globalAlpha = Math.min(1, temp * 1.4);
-        ctx.fillRect(
-          c*resolucion + (resolucion - lado)/2,
-          f*resolucion + (resolucion - lado)/2,
-          lado, lado
-        );
-        ctx.globalAlpha = 1;
+    // Render
+    ctx.fillStyle = "#121010";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    for(var f2 = 0; f2 < filas; f2++){
+      for(var c2 = 0; c2 < cols; c2++){
+        var k = c2 + f2 * cols;
+        var temp = grid[k];
+        grid[k] *= ENFRIAMIENTO;
+        if(temp > 0.05){
+          var lado = RESOLUCION * (0.75 + temp * 0.5);
+          var off = (RESOLUCION - lado) / 2;
+          ctx.fillStyle = color(temp, paleta);
+          ctx.fillRect(c2*RESOLUCION + off, f2*RESOLUCION + off, lado, lado);
+        }else if(c2 % 2 === 0 && f2 % 2 === 0){
+          // Estructura fría: gris oscuro en amarillo, azul noche en lila
+          ctx.fillStyle = paleta === "lila" ? "#1a1b2a" : "#1a1a1a";
+          ctx.fillRect(c2*RESOLUCION + RESOLUCION/2 - 1, f2*RESOLUCION + RESOLUCION/2 - 1, 2, 2);
+        }
       }
     }
-  }
-
-  if(reduceMotion){
-    estructuraFria(); // estático: solo la estructura de puntos, sin bucle
-  }else{
-    var visible = true;
-    new IntersectionObserver(function(e){ visible = e[0].isIntersecting; }).observe(seccion);
-    (function bucle(){
-      if(visible) fotograma();
-      requestAnimationFrame(bucle);
-    })();
-  }
+    requestAnimationFrame(bucle);
+  })();
 })();
 
 /* ==========================================================================
