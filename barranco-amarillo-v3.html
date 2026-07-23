@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barranco Amarillo — Productora Audiovisual</title>
+<meta name="description" content="Barranco Amarillo. Productora audiovisual: ficción, documental, música en vivo, festivales, vídeo para real estate y tours 3D.">
+
+<!-- ============================================================
+     BARRANCO AMARILLO — V3 · "SALA DE CINE"
+     Archivo único autocontenido. Design system: ui-ux-pro-max
+     (design-system/barranco-amarillo/MASTER.md + override de marca).
+     Dirección: Exaggerated Minimalism sobre base oscura; el amarillo
+     como haz de proyector; sistema claqueta como elemento firma.
+     Sin dependencias externas salvo Google Fonts.
+     ============================================================ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Slab:wght@400;700;900&display=swap" rel="stylesheet">
+
+<style>
+  /* ==================== TOKENS (único lugar con hex) ==================== */
+  :root{
+    --superficie-profunda:#121010;
+    --superficie-base:#1E1B1A;
+    --superficie-elevada:#282422;
+    --acento-proyector:#F1C741;
+    --sobre-acento:#1E1B1A;
+    --micro-acento:#E56425;
+    --tinta-alta:#F5EFE3;
+    --tinta-media:#B4ACA4;
+    --linea-hairline:rgba(245,239,227,.14);
+    --velo-sala:rgba(18,16,16,.95);
+    --velo-duotono-a:rgba(30,27,26,.85);
+    --velo-duotono-b:rgba(30,27,26,.25);
+    --velo-acento:rgba(241,199,65,.12);
+
+    --sans:'Roboto',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+    --slab:'Roboto Slab','Roboto',Georgia,serif;
+
+    --texto-display:clamp(3.4rem,9vw,8rem);
+    --texto-h2:clamp(2.4rem,6vw,5rem);
+    --texto-h3:clamp(1.35rem,2.5vw,1.75rem);
+    --texto-intro:1.25rem;
+    --texto-cuerpo:1rem;
+    --texto-claqueta:.78rem;
+    --texto-micro:.72rem;
+
+    --esp-1:24px; --esp-2:40px; --esp-3:64px; --esp-4:96px; --esp-5:160px;
+    --radio:2px;
+    --dur-entrada:.24s; --dur-salida:.15s;
+    --easing:cubic-bezier(.22,.9,.35,1);
+    --ancho-max:1240px;
+    --alto-nav:64px;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:calc(var(--alto-nav) + 16px)}
+  body{
+    font-family:var(--sans);font-size:var(--texto-cuerpo);line-height:1.6;
+    background:var(--superficie-base);color:var(--tinta-alta);
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block}
+  a{color:inherit}
+  h1,h2,h3{font-family:var(--slab)}
+  .wrap{max-width:var(--ancho-max);margin:0 auto;padding:0 clamp(20px,4vw,48px)}
+  :focus-visible{outline:3px solid var(--acento-proyector);outline-offset:3px}
+  ::selection{background:var(--acento-proyector);color:var(--sobre-acento)}
+
+  /* ==================== SISTEMA: rombo + claqueta ==================== */
+  .rombo{
+    display:inline-block;width:8px;height:8px;flex:0 0 auto;
+    background:var(--acento-proyector);transform:rotate(45deg);
+  }
+  .claqueta{
+    display:flex;align-items:center;gap:14px;
+    font-size:var(--texto-claqueta);font-weight:700;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--tinta-media);
+    margin-bottom:var(--esp-2);
+  }
+  .claqueta .num{color:var(--tinta-alta);white-space:nowrap}
+  .claqueta::after{content:"";flex:1;height:1px;background:var(--linea-hairline)}
+
+  .h-display{font-size:var(--texto-display);font-weight:900;line-height:.95;letter-spacing:-.02em}
+  .h-seccion{font-size:var(--texto-h2);font-weight:900;line-height:1;letter-spacing:-.015em;margin-bottom:var(--esp-2)}
+  .subrayado-haz{
+    background-image:linear-gradient(var(--acento-proyector),var(--acento-proyector));
+    background-repeat:no-repeat;background-position:0 92%;background-size:100% .07em;
+    font-style:normal;
+  }
+  .intro{font-size:var(--texto-intro);line-height:1.5;color:var(--tinta-media);max-width:34em}
+
+  /* ==================== BOTONES (sin pastillas) ==================== */
+  .btn{
+    display:inline-flex;align-items:center;gap:12px;min-height:48px;
+    padding:12px 26px;border-radius:var(--radio);cursor:pointer;
+    font-family:var(--sans);font-size:.85rem;font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;text-decoration:none;
+    transition:background var(--dur-entrada) var(--easing),color var(--dur-entrada) var(--easing);
+    border:1px solid transparent;
+  }
+  .btn-haz{background:var(--acento-proyector);color:var(--sobre-acento)}
+  .btn-haz:hover{background:var(--tinta-alta)}
+  .btn-linea{background:transparent;color:var(--tinta-alta);border-color:var(--linea-hairline)}
+  .btn-linea:hover{border-color:var(--acento-proyector);color:var(--acento-proyector)}
+  .btn .flecha{transition:transform var(--dur-entrada) var(--easing)}
+  .btn:hover .flecha{transform:translateX(4px)}
+
+  /* ==================== REVEAL (IntersectionObserver + CSS) ==================== */
+  .js [data-reveal]{opacity:0;transform:translateY(14px)}
+  .js [data-reveal].in{
+    opacity:1;transform:none;
+    transition:opacity var(--dur-entrada) var(--easing),transform var(--dur-entrada) var(--easing);
+    transition-delay:var(--retardo,0s);
+  }
+
+  /* ==================== NAV ==================== */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:60;height:var(--alto-nav);
+    background:color-mix(in srgb,var(--superficie-base) 92%,transparent);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--linea-hairline);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:100%}
+  /* TODO: sustituir por el SVG definitivo del logo (placeholder: rombo + wordmark) */
+  .logo{display:flex;align-items:center;gap:12px;text-decoration:none;min-height:44px}
+  .logo .rombo{width:11px;height:11px}
+  .logo-texto{font-family:var(--slab);font-weight:700;font-size:1rem;letter-spacing:.04em}
+  nav ul{display:flex;gap:4px;list-style:none}
+  nav ul a{
+    position:relative;display:inline-flex;align-items:center;min-height:44px;padding:0 12px;
+    font-size:var(--texto-micro);font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    text-decoration:none;color:var(--tinta-media);
+    transition:color var(--dur-entrada) var(--easing);
+  }
+  nav ul a:hover{color:var(--tinta-alta)}
+  nav ul a::after{
+    content:"";position:absolute;left:50%;bottom:4px;width:6px;height:6px;
+    background:var(--acento-proyector);transform:translateX(-50%) rotate(45deg) scale(0);
+    transition:transform var(--dur-entrada) var(--easing);
+  }
+  nav ul a[aria-current="true"]{color:var(--tinta-alta)}
+  nav ul a[aria-current="true"]::after{transform:translateX(-50%) rotate(45deg) scale(1)}
+  .nav-cta{min-height:44px;padding:10px 20px}
+  @media(max-width:1080px){nav ul{display:none}}
+
+  /* ==================== HERO — ESC.01 ==================== */
+  .hero{padding:calc(var(--alto-nav) + var(--esp-4)) 0 var(--esp-5)}
+  .hero-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:var(--esp-3);align-items:end}
+  .hero h1{margin:0 0 var(--esp-2)}
+  .hero .intro{margin-bottom:var(--esp-3)}
+  .hero-acciones{display:flex;gap:var(--esp-1);flex-wrap:wrap;align-items:center}
+  .hero-media{position:relative;margin-right:calc(-1 * clamp(20px,4vw,48px))} /* sangra al borde */
+  /* TODO: showreel propio pendiente (no incrustar YouTube en el hero) */
+  .pantalla{
+    aspect-ratio:16/9;position:relative;overflow:hidden;border-radius:var(--radio);
+    border:1px solid var(--linea-hairline);
+    background:linear-gradient(160deg,var(--superficie-elevada),var(--superficie-profunda) 75%);
+    display:grid;place-items:center;text-align:center;padding:var(--esp-1);
+  }
+  .pantalla-meta{
+    display:flex;gap:14px;align-items:center;margin-top:14px;
+    font-size:var(--texto-micro);font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--tinta-media);
+  }
+  .pantalla strong{font-family:var(--slab);font-size:1rem;display:block;margin-bottom:4px}
+  .pantalla small{color:var(--tinta-media);font-size:.85rem}
+  .play-glifo{
+    width:0;height:0;display:inline-block;
+    border-left:16px solid var(--acento-proyector);
+    border-top:10px solid transparent;border-bottom:10px solid transparent;
+    margin-bottom:14px;
+  }
+  @media(max-width:900px){
+    .hero{padding-top:calc(var(--alto-nav) + var(--esp-3));padding-bottom:var(--esp-4)}
+    .hero-grid{grid-template-columns:1fr}
+    .hero-media{margin-right:0}
+  }
+
+  /* ==================== SECCIONES BASE ==================== */
+  section{padding:var(--esp-4) 0}
+  .seccion-aire{padding:var(--esp-5) 0}
+  .sala{background:var(--superficie-profunda)}
+
+  /* ==================== SPLITS ASIMÉTRICOS (real estate / tours) ==================== */
+  .split{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--esp-3);align-items:center}
+  .split.invertido{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+  .lista-rodaje{list-style:none;margin:var(--esp-2) 0 var(--esp-2)}
+  .lista-rodaje li{display:flex;align-items:baseline;gap:14px;padding:10px 0;border-bottom:1px solid var(--linea-hairline)}
+  .lista-rodaje .rombo{width:6px;height:6px}
+  .cifra-gigante{
+    font-family:var(--slab);font-weight:900;font-size:clamp(4rem,10vw,9rem);
+    line-height:.9;letter-spacing:-.03em;
+  }
+  .cifra-gigante small{
+    display:block;font-family:var(--sans);font-weight:700;font-size:var(--texto-claqueta);
+    letter-spacing:.18em;text-transform:uppercase;color:var(--tinta-media);margin-top:14px;
+  }
+  /* TODO: incrustar tour 3D real cuando esté disponible */
+  @media(max-width:900px){
+    .split,.split.invertido{grid-template-columns:1fr}
+  }
+
+  /* ==================== SERVICIOS — créditos ==================== */
+  .creditos{list-style:none;border-top:1px solid var(--linea-hairline)}
+  .credito{
+    position:relative;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);
+    gap:var(--esp-1);align-items:baseline;
+    padding:var(--esp-1) var(--esp-1) var(--esp-1) var(--esp-1);
+    border-bottom:1px solid var(--linea-hairline);text-decoration:none;
+    transition:background var(--dur-entrada) var(--easing);
+  }
+  .credito::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:var(--acento-proyector);transform:scaleY(0);transform-origin:top;
+    transition:transform var(--dur-entrada) var(--easing);
+  }
+  .credito:hover{background:var(--superficie-elevada)}
+  .credito:hover::before,.credito:focus-visible::before{transform:scaleY(1)}
+  .credito h3{font-size:var(--texto-h3);font-weight:700;line-height:1.2}
+  .credito p{color:var(--tinta-media);max-width:36em}
+  .credito .ver{
+    display:inline-flex;align-items:center;gap:8px;margin-top:8px;min-height:24px;
+    font-size:var(--texto-micro);font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--tinta-alta);
+  }
+  .credito:hover .ver{color:var(--acento-proyector)}
+  @media(max-width:720px){.credito{grid-template-columns:1fr;gap:8px}}
+
+  /* ==================== PORTFOLIO — la sala ==================== */
+  .filtros{
+    display:flex;gap:10px;margin:var(--esp-2) 0 var(--esp-3);
+    overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;
+  }
+  .filtro{
+    flex:0 0 auto;min-height:44px;padding:10px 22px;cursor:pointer;white-space:nowrap;
+    font-family:var(--sans);font-size:var(--texto-micro);font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;
+    background:transparent;color:var(--tinta-media);
+    border:1px solid var(--linea-hairline);border-radius:var(--radio);
+    transition:background var(--dur-entrada) var(--easing),color var(--dur-entrada) var(--easing),border-color var(--dur-entrada) var(--easing);
+  }
+  .filtro:hover{color:var(--tinta-alta);border-color:var(--tinta-media)}
+  .filtro[aria-pressed="true"]{
+    background:var(--acento-proyector);color:var(--sobre-acento);border-color:var(--acento-proyector);
+  }
+  .grid-obra{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--esp-1);align-items:end}
+  .obra{
+    position:relative;display:block;width:100%;text-align:left;cursor:pointer;
+    background:transparent;border:0;padding:0;color:var(--tinta-alta);font-family:var(--sans);
+    transition:opacity var(--dur-entrada) var(--easing);
+  }
+  .obra.destacada{grid-column:span 2}
+  .obra.oculta{display:none}
+  .obra.entra{animation:obraEntra var(--dur-entrada) var(--easing) both}
+  @keyframes obraEntra{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .encuadre{
+    aspect-ratio:16/9;position:relative;overflow:hidden;border-radius:var(--radio);
+    background:linear-gradient(155deg,var(--superficie-elevada),var(--superficie-profunda) 70%);
+    border:1px solid var(--linea-hairline);
+  }
+  .encuadre img{width:100%;height:100%;object-fit:cover}
+  .encuadre::after{ /* velado duotono de marca */
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(15deg,var(--velo-duotono-a) 0%,var(--velo-duotono-b) 50%,var(--velo-acento) 100%);
+    transition:opacity var(--dur-entrada) var(--easing);
+  }
+  .obra:hover .encuadre::after,.obra:focus-visible .encuadre::after{opacity:.35}
+  .obra-play{ /* visible siempre: nada depende solo del hover */
+    position:absolute;right:0;bottom:0;z-index:2;
+    width:48px;height:44px;display:grid;place-items:center;
+    background:var(--acento-proyector);border-radius:var(--radio) 0 0 0;
+    transition:width var(--dur-entrada) var(--easing);
+  }
+  .obra-play::before{
+    content:"";width:0;height:0;
+    border-left:12px solid var(--sobre-acento);
+    border-top:7px solid transparent;border-bottom:7px solid transparent;
+    margin-left:2px;
+  }
+  .obra-ficha{display:flex;flex-direction:column;gap:4px;padding:14px 2px 4px}
+  .obra-cat{
+    display:flex;align-items:center;gap:10px;
+    font-size:var(--texto-micro);font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--micro-acento);
+  }
+  .obra-cat .rombo{width:5px;height:5px}
+  .obra-titulo{font-family:var(--slab);font-weight:700;font-size:1.1rem;line-height:1.25}
+  .obra-sub{font-size:.86rem;color:var(--tinta-media)}
+  @media(max-width:960px){
+    .grid-obra{grid-template-columns:repeat(2,1fr)}
+  }
+  @media(max-width:640px){
+    .grid-obra{grid-template-columns:1fr}
+    .obra.destacada{grid-column:auto}
+  }
+
+  /* ==================== LIGHTBOX ==================== */
+  .lightbox{
+    position:fixed;inset:0;z-index:100;display:none;
+    background:var(--velo-sala);
+    align-items:center;justify-content:center;padding:4vmin;
+  }
+  .lightbox.abierto{display:flex}
+  .lb-cuerpo{position:relative;width:min(1100px,100%)}
+  .lb-encuadre{
+    aspect-ratio:16/9;width:100%;background:var(--superficie-profunda);
+    border-radius:var(--radio);overflow:hidden;border:1px solid var(--linea-hairline);
+  }
+  .lb-encuadre iframe{width:100%;height:100%;border:0;display:block}
+  .lb-cerrar{
+    position:absolute;top:-56px;right:0;width:44px;height:44px;cursor:pointer;
+    display:grid;place-items:center;border-radius:var(--radio);
+    background:transparent;border:1px solid var(--linea-hairline);color:var(--tinta-alta);
+    transition:background var(--dur-salida) var(--easing),color var(--dur-salida) var(--easing),border-color var(--dur-salida) var(--easing);
+  }
+  .lb-cerrar:hover{background:var(--acento-proyector);color:var(--sobre-acento);border-color:var(--acento-proyector)}
+  .lb-titulo{
+    margin-top:14px;display:flex;align-items:center;gap:12px;
+    font-family:var(--slab);font-size:1rem;color:var(--tinta-media);
+  }
+
+  /* ==================== ESTUDIO ==================== */
+  .statement{
+    font-size:clamp(1.8rem,4.5vw,3.4rem);font-weight:900;line-height:1.15;
+    letter-spacing:-.01em;max-width:18em;margin-bottom:var(--esp-2);
+  }
+  .metadatos-rodaje{
+    display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center;
+    margin-top:var(--esp-3);padding-top:var(--esp-1);border-top:1px solid var(--linea-hairline);
+    font-size:var(--texto-claqueta);font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--tinta-media);
+  }
+  .metadatos-rodaje b{color:var(--tinta-alta);font-weight:900}
+  .metadatos-rodaje .rombo{width:6px;height:6px}
+
+  /* ==================== PRECIOS — intertítulo ==================== */
+  .intertitulo{text-align:center;max-width:820px;margin:0 auto}
+  .intertitulo h2{
+    font-size:clamp(2rem,5.5vw,4.2rem);font-weight:900;line-height:1.1;
+    letter-spacing:-.015em;margin-bottom:var(--esp-1);
+  }
+  .intertitulo p{color:var(--tinta-media);max-width:34em;margin:0 auto var(--esp-2)}
+
+  /* ==================== CONTACTO ==================== */
+  .contacto-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:var(--esp-3)}
+  .campo{margin-bottom:var(--esp-1)}
+  .campo label{
+    display:block;font-size:var(--texto-micro);font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px;
+  }
+  .campo input,.campo textarea{
+    width:100%;min-height:48px;padding:12px 16px;border-radius:var(--radio);
+    font-family:var(--sans);font-size:1rem;
+    background:var(--superficie-elevada);border:1px solid var(--linea-hairline);color:var(--tinta-alta);
+    transition:border-color var(--dur-salida) var(--easing);
+  }
+  .campo input:focus,.campo textarea:focus{outline:2px solid var(--acento-proyector);outline-offset:0;border-color:transparent}
+  .campo .ayuda{font-size:.82rem;color:var(--tinta-media);margin-top:6px}
+  .campo .error{display:none;font-size:.82rem;color:var(--micro-acento);margin-top:6px}
+  .campo.invalido input,.campo.invalido textarea{border-color:var(--micro-acento)}
+  .campo.invalido .error{display:block}
+  .form-estado{font-size:.9rem;color:var(--tinta-media);margin-top:14px;min-height:1.4em}
+  .contacto-item{display:flex;gap:14px;align-items:baseline;padding:var(--esp-1) 0;border-bottom:1px solid var(--linea-hairline)}
+  .contacto-item .rombo{width:6px;height:6px}
+  .contacto-item b{display:block;font-family:var(--slab);margin-bottom:2px}
+  .contacto-item span{color:var(--tinta-media);font-size:.92rem}
+  @media(max-width:900px){.contacto-grid{grid-template-columns:1fr}}
+
+  /* ==================== FOOTER ==================== */
+  footer{border-top:1px solid var(--linea-hairline);padding:var(--esp-2) 0;font-size:.85rem;color:var(--tinta-media)}
+  footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+  footer a{text-decoration:none}
+  footer a:hover{color:var(--acento-proyector)}
+
+  /* ==================== FLOTANTES ==================== */
+  .flotantes{position:fixed;right:20px;bottom:20px;z-index:80;display:flex;flex-direction:column;gap:12px;align-items:flex-end}
+  .fab{
+    width:52px;height:52px;border-radius:var(--radio);cursor:pointer;text-decoration:none;
+    display:grid;place-items:center;
+    background:var(--superficie-elevada);border:1px solid var(--linea-hairline);color:var(--tinta-alta);
+    transition:background var(--dur-entrada) var(--easing),color var(--dur-entrada) var(--easing),border-color var(--dur-entrada) var(--easing);
+  }
+  .fab:hover{background:var(--acento-proyector);color:var(--sobre-acento);border-color:var(--acento-proyector)}
+  .chat-panel{
+    position:fixed;right:20px;bottom:152px;z-index:80;width:min(320px,calc(100vw - 40px));
+    background:var(--superficie-elevada);border:1px solid var(--linea-hairline);border-radius:var(--radio);
+    display:none;overflow:hidden;
+  }
+  .chat-panel.abierto{display:block}
+  .chat-cabecera{
+    display:flex;align-items:center;gap:12px;padding:14px 18px;
+    background:var(--acento-proyector);color:var(--sobre-acento);
+    font-size:var(--texto-claqueta);font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  }
+  .chat-cabecera .rombo{background:var(--sobre-acento);width:6px;height:6px}
+  .chat-cuerpo{padding:18px}
+  .chat-msg{
+    background:var(--superficie-base);border:1px solid var(--linea-hairline);border-radius:var(--radio);
+    padding:12px 14px;font-size:.9rem;margin-bottom:14px;color:var(--tinta-alta);
+  }
+  .chat-cuerpo .btn{width:100%;justify-content:center}
+
+  /* ==================== MOVIMIENTO REDUCIDO ==================== */
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{transition:none!important;animation:none!important}
+    .js [data-reveal]{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== NAV ==================== -->
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#top" aria-label="Barranco Amarillo — inicio">
+      <span class="rombo" aria-hidden="true"></span>
+      <span class="logo-texto">Barranco Amarillo</span>
+    </a>
+    <nav aria-label="Principal">
+      <ul>
+        <li><a href="#realestate" data-seccion="realestate">Real Estate</a></li>
+        <li><a href="#tours3d" data-seccion="tours3d">Tours 3D</a></li>
+        <li><a href="#servicios" data-seccion="servicios">Servicios</a></li>
+        <li><a href="#portfolio" data-seccion="portfolio">Portfolio</a></li>
+        <li><a href="#estudio" data-seccion="estudio">Estudio</a></li>
+        <li><a href="#precios" data-seccion="precios">Precios</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn-linea nav-cta" href="#contacto">Hablemos</a>
+  </div>
+</header>
+
+<!-- ==================== ESC.01 · HERO ==================== -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <p class="claqueta" data-reveal><span class="num">ESC. 01</span> <span class="rombo" aria-hidden="true"></span> Int. estudio / día — Productora audiovisual · 7 años</p>
+    <div class="hero-grid">
+      <div>
+        <h1 class="h-display" data-reveal>Historias<br>con <em class="subrayado-haz">luz propia</em>.</h1>
+        <p class="intro" data-reveal>Ficción, documental, música en vivo y festivales. De la idea a la pantalla, con un equipo que cuida cada plano.</p>
+        <div class="hero-acciones" data-reveal>
+          <a class="btn btn-haz" href="#portfolio">Ver el trabajo <span class="flecha" aria-hidden="true">→</span></a>
+          <a class="btn btn-linea" href="#contacto">Cuéntanos tu proyecto</a>
+        </div>
+      </div>
+      <div class="hero-media" data-reveal>
+        <!-- TODO: showreel propio pendiente (no incrustar YouTube en el hero) -->
+        <div class="pantalla" role="img" aria-label="Espacio reservado para el showreel de Barranco Amarillo">
+          <div>
+            <span class="play-glifo" aria-hidden="true"></span>
+            <strong>Showreel próximamente</strong>
+            <small>El trabajo real está justo debajo</small>
+          </div>
+        </div>
+        <p class="pantalla-meta"><span class="rombo" aria-hidden="true"></span> 16:9 · Proyección continua</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ESC.02 · REAL ESTATE ==================== -->
+<section id="realestate" class="sala seccion-aire">
+  <div class="wrap">
+    <p class="claqueta" data-reveal><span class="num">ESC. 02</span> <span class="rombo" aria-hidden="true"></span> Ext. propiedad / día — Real Estate</p>
+    <div class="split">
+      <div>
+        <h2 class="h-seccion" data-reveal>Espacios que se venden solos</h2>
+        <p class="intro" data-reveal>Vídeo inmobiliario pensado para captar en los primeros cinco segundos.</p>
+        <ul class="lista-rodaje" data-reveal>
+          <li><span class="rombo" aria-hidden="true"></span>Rodaje con luz natural y estabilizado</li>
+          <li><span class="rombo" aria-hidden="true"></span>Tomas aéreas con dron</li>
+          <li><span class="rombo" aria-hidden="true"></span>Edición vertical y horizontal para portales y redes</li>
+        </ul>
+        <a class="btn btn-linea" href="#contacto" data-reveal>Pedir presupuesto</a>
+      </div>
+      <div data-reveal>
+        <p class="cifra-gigante">72&nbsp;h<small>de rodaje a entrega</small></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ESC.03 · TOURS 3D ==================== -->
+<section id="tours3d" class="seccion-aire">
+  <div class="wrap">
+    <p class="claqueta" data-reveal><span class="num">ESC. 03</span> <span class="rombo" aria-hidden="true"></span> Int. recorrido virtual — Tours 3D</p>
+    <div class="split invertido">
+      <div data-reveal>
+        <!-- TODO: incrustar tour 3D real cuando esté disponible -->
+        <div class="pantalla" role="img" aria-label="Espacio reservado para tour virtual 3D">
+          <div>
+            <span class="play-glifo" aria-hidden="true"></span>
+            <strong>Tour virtual 3D</strong>
+            <small>Demo interactiva próximamente</small>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h2 class="h-seccion" data-reveal>Camina por el espacio sin estar allí</h2>
+        <p class="intro" data-reveal>Recorridos virtuales inmersivos, medibles y compartibles con un enlace.</p>
+        <ul class="lista-rodaje" data-reveal>
+          <li><span class="rombo" aria-hidden="true"></span>Captura 3D de alta resolución</li>
+          <li><span class="rombo" aria-hidden="true"></span>Planos de planta y medidas integradas</li>
+          <li><span class="rombo" aria-hidden="true"></span>Compatible con móvil y visores VR</li>
+        </ul>
+        <a class="btn btn-linea" href="#contacto" data-reveal>Quiero un tour 3D</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ESC.04 · SERVICIOS ==================== -->
+<section id="servicios">
+  <div class="wrap">
+    <p class="claqueta" data-reveal><span class="num">ESC. 04</span> <span class="rombo" aria-hidden="true"></span> Créditos de producción</p>
+    <h2 class="h-seccion" data-reveal>Qué hacemos</h2>
+    <p class="intro" data-reveal style="margin-bottom:var(--esp-3)">Producción integral con equipo propio. Cada servicio enlaza con ejemplos reales del portfolio.</p>
+    <ul class="creditos">
+      <li data-reveal><a class="credito" href="#portfolio" data-goto-filtro="ficcion">
+        <h3>Ficción / Cine</h3>
+        <div><p>Cortometrajes y ficción con vocación de festival: desarrollo, rodaje y postproducción.</p><span class="ver">Ver piezas de ficción <span aria-hidden="true">→</span></span></div>
+      </a></li>
+      <li data-reveal><a class="credito" href="#portfolio" data-goto-filtro="documental">
+        <h3>Documental</h3>
+        <div><p>Historias reales contadas con tiempo, escucha y una cámara que no molesta.</p><span class="ver">Ver documental <span aria-hidden="true">→</span></span></div>
+      </a></li>
+      <li data-reveal><a class="credito" href="#portfolio" data-goto-filtro="musica">
+        <h3>Videoclips y música en vivo</h3>
+        <div><p>Conciertos multicámara y resúmenes con la energía del directo intacta.</p><span class="ver">Ver música en vivo <span aria-hidden="true">→</span></span></div>
+      </a></li>
+      <li data-reveal><a class="credito" href="#portfolio" data-goto-filtro="festival">
+        <h3>Festivales y eventos</h3>
+        <div><p>Aftermovies y cobertura completa: del backstage al último bis.</p><span class="ver">Ver festival <span aria-hidden="true">→</span></span></div>
+      </a></li>
+      <li data-reveal><a class="credito" href="#realestate">
+        <h3>Real Estate</h3>
+        <div><p>Vídeo inmobiliario que vende espacios: luz natural, ritmo y dron.</p><span class="ver">Más sobre Real Estate <span aria-hidden="true">→</span></span></div>
+      </a></li>
+      <li data-reveal><a class="credito" href="#tours3d">
+        <h3>Tours virtuales 3D</h3>
+        <div><p>Recorridos inmersivos para inmuebles, hoteles y espacios culturales.</p><span class="ver">Más sobre Tours 3D <span aria-hidden="true">→</span></span></div>
+      </a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ==================== ESC.05 · PORTFOLIO ==================== -->
+<section id="portfolio" class="sala seccion-aire">
+  <div class="wrap">
+    <p class="claqueta" data-reveal><span class="num">ESC. 05</span> <span class="rombo" aria-hidden="true"></span> Int. sala / noche — Proyección</p>
+    <h2 class="h-seccion" data-reveal>Trabajo real,<br>en pantalla</h2>
+    <p class="intro" data-reveal>Ocho piezas producidas o grabadas por Barranco Amarillo. Filtra por categoría y dale al play: el vídeo se abre aquí mismo.</p>
+
+    <div class="filtros" role="group" aria-label="Filtrar portfolio por categoría" data-reveal>
+      <button class="filtro" data-filtro="todo" aria-pressed="true">Todo</button>
+      <button class="filtro" data-filtro="ficcion" aria-pressed="false">Ficción</button>
+      <button class="filtro" data-filtro="documental" aria-pressed="false">Documental</button>
+      <button class="filtro" data-filtro="musica" aria-pressed="false">Música en vivo</button>
+      <button class="filtro" data-filtro="festival" aria-pressed="false">Festival</button>
+    </div>
+
+    <div class="grid-obra" id="grid-obra"><!-- tarjetas renderizadas desde PORTFOLIO (JS) --></div>
+  </div>
+</section>
+
+<!-- Lightbox (el iframe se crea solo al abrir y se elimina al cerrar) -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Reproductor de vídeo">
+  <div class="lb-cuerpo">
+    <button class="lb-cerrar" id="lb-cerrar" aria-label="Cerrar vídeo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="lb-encuadre" id="lb-encuadre"></div>
+    <p class="lb-titulo"><span class="rombo" aria-hidden="true"></span><span id="lb-titulo-texto"></span></p>
+  </div>
+</div>
+
+<!-- ==================== ESC.06 · ESTUDIO ==================== -->
+<section id="estudio">
+  <div class="wrap">
+    <p class="claqueta" data-reveal><span class="num">ESC. 06</span> <span class="rombo" aria-hidden="true"></span> Int. estudio / noche — El equipo</p>
+    <h2 class="statement" data-reveal>Somos una productora pequeña a propósito: los mismos ojos que escuchan tu idea están detrás de la cámara y en la sala de edición.</h2>
+    <p class="intro" data-reveal>Hacemos menos proyectos para hacerlos mejor.</p>
+    <p class="metadatos-rodaje" data-reveal>
+      <b>8+</b> producciones publicadas <span class="rombo" aria-hidden="true"></span>
+      <b>4</b> bandas grabadas en directo <span class="rombo" aria-hidden="true"></span>
+      <b>1</b> equipo, de la idea a la entrega
+    </p>
+  </div>
+</section>
+
+<!-- ==================== ESC.07 · PRECIOS ==================== -->
+<section id="precios" class="sala seccion-aire">
+  <div class="wrap">
+    <p class="claqueta" data-reveal><span class="num">ESC. 07</span> <span class="rombo" aria-hidden="true"></span> Intertítulo — Precios</p>
+    <div class="intertitulo">
+      <h2 data-reveal>El precio <em class="subrayado-haz">no se negocia</em>.<br>El alcance sí.</h2>
+      <p data-reveal>Cada proyecto tiene un presupuesto cerrado y justo. Si no encaja, ajustamos el alcance — nunca la calidad ni el precio por hora de trabajo.</p>
+      <a class="btn btn-haz" href="#contacto" data-reveal>Pedir presupuesto cerrado</a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ESC.08 · CONTACTO ==================== -->
+<section id="contacto">
+  <div class="wrap">
+    <p class="claqueta" data-reveal><span class="num">ESC. 08</span> <span class="rombo" aria-hidden="true"></span> Última toma — Contacto</p>
+    <h2 class="h-seccion" data-reveal>Cuéntanos<br>tu proyecto</h2>
+    <p class="intro" data-reveal style="margin-bottom:var(--esp-3)">Respondemos en menos de 24 horas laborables.</p>
+    <div class="contacto-grid">
+      <form id="form-contacto" novalidate>
+        <div class="campo">
+          <label for="f-nombre">Nombre</label>
+          <input id="f-nombre" type="text" name="nombre" autocomplete="name" required>
+          <p class="error" role="alert">Escribe tu nombre para poder responderte.</p>
+        </div>
+        <div class="campo">
+          <label for="f-email">Email</label>
+          <input id="f-email" type="email" name="email" autocomplete="email" required>
+          <p class="ayuda">Solo para responderte; no lo usaremos para nada más.</p>
+          <p class="error" role="alert">Ese email no parece válido — revisa el formato (nombre@dominio.com).</p>
+        </div>
+        <div class="campo">
+          <label for="f-msg">Tu proyecto</label>
+          <textarea id="f-msg" name="mensaje" rows="5" required></textarea>
+          <p class="ayuda">Dos líneas bastan: qué es, para cuándo y dónde se verá.</p>
+          <p class="error" role="alert">Cuéntanos al menos una línea sobre tu proyecto.</p>
+        </div>
+        <button class="btn btn-haz" type="submit">Enviar <span class="flecha" aria-hidden="true">→</span></button>
+        <p class="form-estado" id="form-estado" aria-live="polite"></p>
+      </form>
+      <div>
+        <div class="contacto-item">
+          <span class="rombo" aria-hidden="true"></span>
+          <div><b>Email</b><span>infobarrancoamarillo@gmail.com</span></div>
+          <!-- TODO: confirmar email definitivo -->
+        </div>
+        <div class="contacto-item">
+          <span class="rombo" aria-hidden="true"></span>
+          <div><b>Estudio</b><span>Dirección próximamente</span></div>
+          <!-- TODO: dirección definitiva -->
+        </div>
+        <div class="contacto-item">
+          <span class="rombo" aria-hidden="true"></span>
+          <div><b>Agenda una llamada</b><span>Reserva online próximamente</span></div>
+          <!-- TODO: enlazar Calendly -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <div class="wrap">
+    <span>© 2026 Barranco Amarillo · Productora audiovisual</span>
+    <a href="#top">Volver arriba ↑</a>
+  </div>
+</footer>
+
+<!-- ==================== FLOTANTES ==================== -->
+<div class="flotantes">
+  <button class="fab" id="chat-abrir" aria-label="Abrir chat" aria-expanded="false">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"/></svg>
+  </button>
+  <!-- TODO: sustituir por el número de WhatsApp real -->
+  <a class="fab" href="https://wa.me/34600000000" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2A10 10 0 002 12a9.9 9.9 0 001.5 5.3L2 22l4.8-1.4A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.2l-.3-.2-2.9.9.9-2.8-.2-.3A8.2 8.2 0 1112 20.2zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.6.1a6.7 6.7 0 01-2-1.2 7.4 7.4 0 01-1.4-1.7c-.1-.3 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5a.6.6 0 000-.5c0-.1-.6-1.4-.8-1.9s-.4-.4-.6-.4h-.5a1 1 0 00-.7.3 2.9 2.9 0 00-.9 2.1 5 5 0 001.1 2.7 11.4 11.4 0 004.4 3.8 14.6 14.6 0 001.5.6 3.6 3.6 0 001.6.1 2.7 2.7 0 001.8-1.3 2.2 2.2 0 00.2-1.3c-.1-.1-.3-.2-.6-.3z"/></svg>
+  </a>
+</div>
+
+<div class="chat-panel" id="chat-panel" role="dialog" aria-label="Chat de Barranco Amarillo">
+  <div class="chat-cabecera"><span class="rombo" aria-hidden="true"></span> Barranco Amarillo</div>
+  <div class="chat-cuerpo">
+    <div class="chat-msg">¿Tienes un proyecto entre manos? Lo más rápido es WhatsApp: cuéntanoslo y te respondemos hoy.</div>
+    <!-- TODO: sustituir por el número de WhatsApp real -->
+    <a class="btn btn-haz" href="https://wa.me/34600000000" target="_blank" rel="noopener">Abrir WhatsApp</a>
+  </div>
+</div>
+
+<script>
+document.documentElement.classList.add('js');
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ============================================================
+   PORTFOLIO — datos reales (migrado de V2)
+   Títulos provisionales: notas de Carlos (la política de red del
+   entorno de build bloqueó youtube.com/oembed).
+   ============================================================ */
+const PORTFOLIO = [
+  { id: "snjU4GVItZ4", titulo: "Por la Victoria", categoria: "ficcion", etiqueta: "Ficción", sub: "Cortometraje · Producción Barranco Amarillo" }, // <!-- TODO: confirmar título exacto de YouTube -->
+  { id: "Aw8yax0awz8", titulo: "Aprendiendo a ver", categoria: "documental", etiqueta: "Documental", sub: "Documental · Producción Barranco Amarillo" }, // <!-- TODO: confirmar título exacto de YouTube -->
+  { id: "3Z0uXsxeu4M", titulo: "Eso que no decimos", categoria: "ficcion", etiqueta: "Ficción", sub: "Cortometraje de ficción" }, // <!-- TODO: confirmar título exacto de YouTube -->
+  { id: "KrFNvViIXfw", titulo: "La Vida Bohème en concierto", categoria: "musica", etiqueta: "Música en vivo", sub: "Vídeo resumen de concierto" }, // <!-- TODO: confirmar título exacto de YouTube -->
+  { id: "5H13hWWk5DY", titulo: "Okills en concierto", categoria: "musica", etiqueta: "Música en vivo", sub: "Vídeo resumen de concierto" }, // <!-- TODO: confirmar título exacto de YouTube y añadir sala/fecha/evento desde la descripción del vídeo -->
+  { id: "-9ta4nxsNxk", titulo: "Caramelos de Cianuro en concierto", categoria: "musica", etiqueta: "Música en vivo", sub: "Vídeo resumen de concierto" }, // <!-- TODO: confirmar título exacto de YouTube -->
+  { id: "AGacB0lB9fk", titulo: "Anakena en concierto", categoria: "musica", etiqueta: "Música en vivo", sub: "Vídeo resumen de concierto" }, // <!-- TODO: confirmar título exacto de YouTube -->
+  { id: "zwEpptfxsuQ", titulo: "Sunset Roll — Aftermovie", categoria: "festival", etiqueta: "Festival", sub: "Aftermovie de festival completo" }  // <!-- TODO: confirmar título exacto de YouTube -->
+];
+
+/* ---------- Render del grid (facade: sin iframes al cargar) ---------- */
+const grid = document.getElementById('grid-obra');
+
+PORTFOLIO.forEach(item => {
+  const card = document.createElement('button');
+  card.type = 'button';
+  card.className = 'obra';
+  card.dataset.categoria = item.categoria;
+  card.dataset.id = item.id; // los IDs pueden empezar por "-": siempre vía dataset/atributo, nunca como selector #id
+  card.setAttribute('aria-label', 'Reproducir: ' + item.titulo);
+
+  const img = document.createElement('img');
+  img.loading = 'lazy';
+  img.alt = '';
+  img.width = 1280; img.height = 720; /* espacio reservado, CLS 0 */
+  img.src = 'https://i.ytimg.com/vi/' + item.id + '/maxresdefault.jpg';
+  let recurrioHq = false;
+  img.onerror = () => {
+    if (!recurrioHq) { recurrioHq = true; img.src = 'https://i.ytimg.com/vi/' + item.id + '/hqdefault.jpg'; }
+    else img.remove(); /* queda el fondo degradado de marca */
+  };
+
+  const encuadre = document.createElement('div');
+  encuadre.className = 'encuadre';
+  encuadre.appendChild(img);
+  const play = document.createElement('span');
+  play.className = 'obra-play';
+  play.setAttribute('aria-hidden', 'true');
+  encuadre.appendChild(play);
+
+  const ficha = document.createElement('div');
+  ficha.className = 'obra-ficha';
+  ficha.innerHTML =
+    '<span class="obra-cat"><span class="rombo" aria-hidden="true"></span>' + item.etiqueta + '</span>' +
+    '<span class="obra-titulo"></span><span class="obra-sub"></span>';
+  ficha.querySelector('.obra-titulo').textContent = item.titulo;
+  ficha.querySelector('.obra-sub').textContent = item.sub;
+
+  card.append(encuadre, ficha);
+  card.addEventListener('click', () => abrirLightbox(item, card));
+  grid.appendChild(card);
+});
+
+/* ---------- Lightbox (iframe creado al abrir, eliminado al cerrar) ---------- */
+const lightbox   = document.getElementById('lightbox');
+const lbEncuadre = document.getElementById('lb-encuadre');
+const lbTitulo   = document.getElementById('lb-titulo-texto');
+const lbCerrar   = document.getElementById('lb-cerrar');
+let origenLightbox = null;
+
+function abrirLightbox(item, origen){
+  origenLightbox = origen || null;
+  const iframe = document.createElement('iframe');
+  iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(item.id) + '?autoplay=1&rel=0';
+  iframe.title = item.titulo;
+  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+  iframe.setAttribute('allowfullscreen', '');
+  lbEncuadre.replaceChildren(iframe);
+  lbTitulo.textContent = item.titulo;
+  lightbox.classList.add('abierto');
+  document.body.style.overflow = 'hidden';
+  lbCerrar.focus();
+}
+
+function cerrarLightbox(){
+  lightbox.classList.remove('abierto');
+  lbEncuadre.replaceChildren();  /* elimina el iframe del DOM → corta el audio */
+  lbTitulo.textContent = '';
+  document.body.style.overflow = '';
+  if (origenLightbox) { origenLightbox.focus(); origenLightbox = null; }
+}
+
+lbCerrar.addEventListener('click', cerrarLightbox);
+lightbox.addEventListener('click', e => { if (e.target === lightbox) cerrarLightbox(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && lightbox.classList.contains('abierto')) cerrarLightbox();
+});
+
+/* ---------- Filtros por categoría (+ deep link por hash) ---------- */
+const filtros = Array.from(document.querySelectorAll('.filtro'));
+
+function aplicarFiltro(filtro, actualizarUrl = true){
+  filtros.forEach(f => f.setAttribute('aria-pressed', String(f.dataset.filtro === filtro)));
+  let primeraVisible = true;
+  document.querySelectorAll('#grid-obra .obra').forEach(card => {
+    const visible = filtro === 'todo' || card.dataset.categoria === filtro;
+    card.classList.toggle('oculta', !visible);
+    card.classList.remove('entra', 'destacada');
+    if (visible) {
+      if (primeraVisible) { card.classList.add('destacada'); primeraVisible = false; }
+      if (!reduceMotion) { void card.offsetWidth; card.classList.add('entra'); }
+    }
+  });
+  if (actualizarUrl) history.replaceState(null, '', filtro === 'todo' ? '#portfolio' : '#portfolio-' + filtro);
+}
+
+filtros.forEach(f => f.addEventListener('click', () => aplicarFiltro(f.dataset.filtro)));
+
+/* Servicios → portfolio con filtro activo */
+document.querySelectorAll('[data-goto-filtro]').forEach(enlace => {
+  enlace.addEventListener('click', () => aplicarFiltro(enlace.dataset.gotoFiltro));
+});
+
+/* Estado inicial: respeta #portfolio-<filtro> si viene en la URL */
+const matchHash = location.hash.match(/^#portfolio-(ficcion|documental|musica|festival)$/);
+aplicarFiltro(matchHash ? matchHash[1] : 'todo', false);
+if (matchHash) document.getElementById('portfolio').scrollIntoView();
+
+/* ---------- Reveal al hacer scroll (coreografía GSAP → IO + CSS) ---------- */
+const revelables = document.querySelectorAll('[data-reveal]');
+if (!reduceMotion && 'IntersectionObserver' in window) {
+  const io = new IntersectionObserver(entradas => {
+    let orden = 0;
+    entradas.forEach(entrada => {
+      if (!entrada.isIntersecting) return;
+      entrada.target.style.setProperty('--retardo', (Math.min(orden++, 4) * 0.06) + 's');
+      entrada.target.classList.add('in');
+      io.unobserve(entrada.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px' });
+  revelables.forEach(el => io.observe(el));
+} else {
+  revelables.forEach(el => el.classList.add('in'));
+}
+
+/* ---------- Scroll-spy: rombo en la sección activa ---------- */
+const enlacesNav = Array.from(document.querySelectorAll('nav [data-seccion]'));
+if ('IntersectionObserver' in window) {
+  const spy = new IntersectionObserver(entradas => {
+    entradas.forEach(entrada => {
+      if (!entrada.isIntersecting) return;
+      enlacesNav.forEach(a => a.setAttribute('aria-current', String(a.dataset.seccion === entrada.target.id)));
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  enlacesNav.forEach(a => { const s = document.getElementById(a.dataset.seccion); if (s) spy.observe(s); });
+}
+
+/* ---------- Formulario: validación on-blur + envío mailto ---------- */
+const form = document.getElementById('form-contacto');
+const estadoForm = document.getElementById('form-estado');
+
+function validarCampo(input){
+  const campo = input.closest('.campo');
+  const valido = input.checkValidity() && input.value.trim() !== '';
+  campo.classList.toggle('invalido', !valido);
+  return valido;
+}
+form.querySelectorAll('input, textarea').forEach(input => {
+  input.addEventListener('blur', () => { if (input.value !== '') validarCampo(input); });
+  input.addEventListener('input', () => { if (input.closest('.campo').classList.contains('invalido')) validarCampo(input); });
+});
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const campos = Array.from(form.querySelectorAll('input, textarea'));
+  const todoValido = campos.map(validarCampo).every(Boolean);
+  if (!todoValido) { form.querySelector('.campo.invalido input, .campo.invalido textarea')?.focus(); return; }
+  const nombre = form.nombre.value.trim(), email = form.email.value.trim(), msg = form.mensaje.value.trim();
+  /* TODO: confirmar email definitivo */
+  const mailto = 'mailto:infobarrancoamarillo@gmail.com'
+    + '?subject=' + encodeURIComponent('Proyecto — ' + nombre)
+    + '&body=' + encodeURIComponent(msg + '\n\n— ' + nombre + ' · ' + email);
+  estadoForm.textContent = 'Abriendo tu aplicación de correo…';
+  window.location.href = mailto;
+});
+
+/* ---------- Chat flotante → WhatsApp ---------- */
+const chatAbrir = document.getElementById('chat-abrir');
+const chatPanel = document.getElementById('chat-panel');
+chatAbrir.addEventListener('click', () => {
+  const abierto = chatPanel.classList.toggle('abierto');
+  chatAbrir.setAttribute('aria-expanded', String(abierto));
+});
+</script>
+</body>
+</html>
