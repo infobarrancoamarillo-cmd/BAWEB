@@ -442,18 +442,12 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
   text-transform:uppercase;
   color:var(--tinta-media);
 }
-.plan-precio{
+.plan-alcance{
   margin-top:18px;
   font-family:'Roboto Slab',serif;
   font-weight:800;
-  font-size:clamp(40px,5vw,56px);
+  font-size:clamp(30px,3.6vw,42px);
   line-height:1;
-}
-.plan-precio small{
-  font-family:'Roboto',sans-serif;
-  font-weight:300;
-  font-size:1rem;
-  color:var(--tinta-media);
 }
 .plan ul{
   margin-top:28px;
@@ -815,48 +809,22 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
 .contacto-col h3{ font-size:clamp(24px,3vw,32px); }
 .contacto-col > p{ margin-top:14px; color:var(--tinta-media); max-width:44ch; }
 
-/* Calendario placeholder */
-/* TODO: iframe Calendly */
-.calendario{
+/* Agenda — Cal.com inline, con alternativa si aún no hay enlace */
+.agenda{
   margin-top:32px;
   border:1px solid var(--linea-hairline);
   background:var(--superficie-elevada);
-  padding:36px 32px;
 }
-.calendario-cab{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  font-size:0.8125rem;
-  font-weight:500;
-  letter-spacing:0.14em;
-  text-transform:uppercase;
-  color:var(--tinta-media);
-  padding-bottom:20px;
-  border-bottom:1px solid var(--linea-hairline);
+#cal-inline{
+  width:100%;
+  height:640px;
+  overflow:auto;
 }
-.calendario-dias{
-  margin-top:20px;
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:6px;
-}
-.calendario-dias span{
-  aspect-ratio:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:0.8125rem;
-  color:var(--tinta-media);
-  border:1px solid transparent;
-}
-.calendario-dias span.libre{ border-color:var(--linea-hairline); color:var(--tinta-alta); }
-.calendario-dias span.hoy{
-  background:var(--acento-proyector);
-  color:var(--superficie-elevada);
-  font-weight:700;
-}
-.calendario .btn{ margin-top:28px; width:100%; }
+#cal-inline[hidden]{ display:none; }
+.agenda-alterna{ padding:36px 32px; }
+.agenda-alterna[hidden]{ display:none; }
+.agenda-alterna p{ color:var(--tinta-media); font-size:0.9375rem; }
+.agenda-alterna .btn{ margin-top:28px; width:100%; }
 
 /* Formulario */
 .formulario{ margin-top:32px; display:flex; flex-direction:column; gap:22px; }
@@ -899,24 +867,63 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
   color:var(--acento-calor);
 }
 .campo .error.visible{ display:block; }
-.form-confirmacion{
-  display:none;
-  border:1px solid var(--acento-proyector);
-  padding:20px 24px;
-  color:var(--tinta-alta);
-  font-size:0.9375rem;
+/* Trampa antibots — fuera de pantalla, no display:none (algunos bots lo detectan) */
+.botcheck{
+  position:absolute;
+  width:1px; height:1px;
+  overflow:hidden;
+  clip:rect(0 0 0 0);
+  clip-path:inset(50%);
+  white-space:nowrap;
 }
-.form-confirmacion.visible{ display:flex; align-items:baseline; gap:12px; }
-.form-confirmacion::before{
+.campo-consentimiento{ gap:6px; }
+.consentimiento{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  cursor:pointer;
+  font-size:0.875rem;
+  line-height:1.5;
+  letter-spacing:0;
+  text-transform:none;
+  color:var(--tinta-media);
+}
+.consentimiento input{
+  flex:none;
+  width:18px; height:18px;
+  margin-top:2px;
+  accent-color:var(--acento-proyector);
+  cursor:pointer;
+}
+.consentimiento a{ color:var(--tinta-alta); text-underline-offset:3px; }
+.consentimiento a:hover{ color:var(--acento-proyector); }
+
+/* Estados de envío */
+.form-aviso{
+  display:none;
+  padding:20px 24px;
+  font-size:0.9375rem;
+  border:1px solid var(--linea-hairline);
+  color:var(--tinta-media);
+}
+.form-aviso.visible{ display:flex; align-items:baseline; gap:12px; }
+.form-aviso::before{
   content:"";
   flex:none;
   width:8px; height:8px;
-  background:var(--acento-proyector);
+  margin-top:6px;
+  background:var(--tinta-media);
   transform:rotate(45deg);
 }
+.form-aviso.exito{ border-color:var(--acento-proyector); color:var(--tinta-alta); }
+.form-aviso.exito::before{ background:var(--acento-proyector); }
+.form-aviso.fallo{ border-color:var(--acento-calor); color:var(--tinta-alta); }
+.form-aviso.fallo::before{ background:var(--acento-calor); }
+.form-aviso a{ color:inherit; }
+#form-enviar[disabled]{ opacity:0.55; pointer-events:none; }
 
 /* ==========================================================================
-   FLOTANTES — WhatsApp + chat
+   FLOTANTE — WhatsApp
    ========================================================================== */
 .flotantes{
   position:fixed;
@@ -942,48 +949,7 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
   transition:transform 200ms var(--ease-cine);
 }
 .btn-whatsapp:hover{ transform:translateY(-3px); }
-.btn-chat{
-  width:48px; height:48px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:50%;
-  background:var(--superficie-elevada);
-  border:1px solid var(--linea-hairline);
-  color:var(--tinta-alta);
-  transition:border-color 200ms var(--ease-cine);
-}
-.btn-chat:hover{ border-color:var(--acento-proyector); }
-/* TODO v2: Crisp/Tawk.to */
-.chat-panel{
-  position:fixed;
-  right:20px;
-  bottom:150px;
-  z-index:150;
-  width:min(320px, calc(100vw - 40px));
-  background:var(--superficie-elevada);
-  border:1px solid var(--linea-hairline);
-  padding:20px;
-  display:none;
-  flex-direction:column;
-  gap:14px;
-}
-.chat-panel.abierto{ display:flex; }
-.chat-panel h3{ font-size:1.0625rem; }
-.chat-panel p{ font-size:0.8125rem; color:var(--tinta-media); }
-.chat-panel textarea{
-  font:inherit;
-  font-size:0.9375rem;
-  color:var(--tinta-alta);
-  background:var(--superficie-base);
-  border:1px solid var(--linea-hairline);
-  padding:12px;
-  min-height:80px;
-  resize:vertical;
-  border-radius:0;
-}
-.chat-panel textarea:focus{ border-color:var(--acento-proyector); outline:none; }
-.chat-panel .btn{ min-height:44px; }
+.btn-whatsapp[hidden]{ display:none; }
 
 /* ==========================================================================
    FOOTER
@@ -1177,7 +1143,7 @@ main, .footer{ position:relative; z-index:2; }
     <div class="planes">
       <article class="plan revelar">
         <p class="plan-nombre">Vídeo de Identidad</p>
-        <p class="plan-precio">350€</p>
+        <p class="plan-alcance">A medida</p>
         <ul>
           <li>Pieza de 60–90 segundos</li>
           <li>1 día de rodaje</li>
@@ -1186,7 +1152,7 @@ main, .footer{ position:relative; z-index:2; }
       </article>
       <article class="plan revelar">
         <p class="plan-nombre">Propiedad Recurrente</p>
-        <p class="plan-precio">180€<small>/mes</small></p>
+        <p class="plan-alcance">Por meses</p>
         <ul>
           <li>1 vídeo de 30 segundos al mes</li>
           <li>Compromiso mínimo de 3 meses</li>
@@ -1338,18 +1304,13 @@ main, .footer{ position:relative; z-index:2; }
       <div class="contacto-col revelar">
         <h3>Reserva una llamada</h3>
         <p>Veinte minutos, sin compromiso. Nos cuentas el proyecto y te decimos si somos el equipo adecuado.</p>
-        <div class="calendario">
-          <!-- TODO: iframe Calendly -->
-          <div class="calendario-cab">
-            <span>Julio 2026</span>
-            <span>20 min</span>
+        <div class="agenda">
+          <!-- Se rellena con Cal.com si CAL_LINK está definido (ver <script>) -->
+          <div id="cal-inline" hidden></div>
+          <div class="agenda-alterna" id="agenda-alterna">
+            <p>La agenda en línea se activa en cuanto cerremos el calendario público. Mientras tanto, escríbenos y te damos hueco esta misma semana.</p>
+            <a class="btn btn-primario" href="https://wa.me/qr/3BHCCMSKBRQZP1" target="_blank" rel="noopener">Pedir hueco por WhatsApp</a>
           </div>
-          <div class="calendario-dias" aria-hidden="true">
-            <span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span><span>D</span>
-            <span></span><span></span><span>15</span><span class="hoy">16</span><span class="libre">17</span><span></span><span></span>
-            <span class="libre">20</span><span class="libre">21</span><span>22</span><span class="libre">23</span><span class="libre">24</span><span></span><span></span>
-          </div>
-          <a class="btn btn-primario" href="mailto:infobarrancoamarillo@gmail.com?subject=Reservar%20llamada">Abrir agenda</a>
         </div>
       </div>
 
@@ -1357,7 +1318,11 @@ main, .footer{ position:relative; z-index:2; }
       <div class="contacto-col revelar">
         <h3>Escríbenos</h3>
         <p>Respondemos en menos de 24 horas laborables.</p>
-        <form class="formulario" id="form-contacto" novalidate>
+        <form class="formulario" id="form-contacto" action="https://api.web3forms.com/submit" method="POST" novalidate>
+          <input type="hidden" name="access_key" id="f-access-key" value="">
+          <input type="hidden" name="subject" value="Nuevo lead — barrancoamarillo.com">
+          <input type="hidden" name="from_name" value="Web Barranco Amarillo">
+          <input type="checkbox" name="botcheck" class="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
           <div class="campo">
             <label for="f-nombre">Nombre</label>
             <input type="text" id="f-nombre" name="nombre" autocomplete="name" required>
@@ -1385,8 +1350,15 @@ main, .footer{ position:relative; z-index:2; }
             <textarea id="f-mensaje" name="mensaje" required></textarea>
             <span class="error" id="err-mensaje">Cuéntanos algo del proyecto, aunque sean dos líneas.</span>
           </div>
-          <button type="submit" class="btn btn-primario">Enviar mensaje</button>
-          <p class="form-confirmacion" id="form-confirmacion" role="status">Se está abriendo tu aplicación de correo con el mensaje listo. Si no se abre, escríbenos a infobarrancoamarillo@gmail.com.</p>
+          <div class="campo campo-consentimiento">
+            <label class="consentimiento" for="f-consentimiento">
+              <input type="checkbox" id="f-consentimiento" name="consentimiento" value="Sí" required>
+              <span>He leído y acepto la <a href="privacidad.html">política de privacidad</a>.</span>
+            </label>
+            <span class="error" id="err-consentimiento">Necesitamos tu consentimiento para poder responderte.</span>
+          </div>
+          <button type="submit" class="btn btn-primario" id="form-enviar">Enviar mensaje</button>
+          <p class="form-aviso" id="form-aviso" role="status" aria-live="polite"></p>
         </form>
       </div>
     </div>
@@ -1416,38 +1388,26 @@ main, .footer{ position:relative; z-index:2; }
       <div>
         <h4>Legal</h4>
         <ul>
-          <li><a href="#" aria-disabled="true">Aviso legal</a></li>
-          <li><a href="#" aria-disabled="true">Privacidad</a></li>
+          <li><a href="aviso-legal.html">Aviso legal</a></li>
+          <li><a href="privacidad.html">Privacidad</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-legal">
       <span>© 2026 Barranco Amarillo</span>
       <nav aria-label="Legal">
-        <a href="#">Aviso legal</a>
-        <a href="#">Privacidad</a>
+        <a href="aviso-legal.html">Aviso legal</a>
+        <a href="privacidad.html">Privacidad</a>
       </nav>
     </div>
   </div>
 </footer>
 
-<!-- ======================= FLOTANTES ======================= -->
-<!-- TODO: número real de WhatsApp -->
+<!-- ======================= FLOTANTE ======================= -->
 <div class="flotantes">
-  <button class="btn-chat" id="btn-chat" aria-expanded="false" aria-controls="chat-panel" aria-label="Abrir chat">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 12a8 8 0 01-8 8H4l2.5-3A8 8 0 1121 12z"/></svg>
-  </button>
-  <a class="btn-whatsapp" href="https://wa.me/34XXXXXXXXX?text=Hola,%20quiero%20informaci%C3%B3n" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+  <a class="btn-whatsapp" href="https://wa.me/qr/3BHCCMSKBRQZP1" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
     <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a9.9 9.9 0 00-8.5 15.1L2 22l5.1-1.4A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1112 20.2zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.6.1a6.7 6.7 0 01-2-1.2 7.4 7.4 0 01-1.4-1.7c-.1-.3 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5a.5.5 0 000-.5c-.1-.1-.6-1.4-.8-1.9s-.4-.4-.6-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2 5.2 5.2 0 001.1 2.8 11.9 11.9 0 004.6 4 15.6 15.6 0 001.5.6 3.7 3.7 0 001.7.1 2.8 2.8 0 001.8-1.3 2.3 2.3 0 00.2-1.3c-.1-.1-.3-.2-.6-.3z"/></svg>
   </a>
-</div>
-
-<!-- TODO v2: Crisp/Tawk.to -->
-<div class="chat-panel" id="chat-panel" role="dialog" aria-label="Chat">
-  <h3>¿Hablamos?</h3>
-  <p>Escríbenos y seguimos por WhatsApp.</p>
-  <textarea id="chat-mensaje" aria-label="Tu mensaje" placeholder="Hola, quiero información sobre…"></textarea>
-  <button class="btn btn-primario" id="chat-enviar">Enviar por WhatsApp</button>
 </div>
 
 <!-- ======================= LIGHTBOX ======================= -->
@@ -1466,6 +1426,13 @@ main, .footer{ position:relative; z-index:2; }
    ========================================================================== */
 (function(){
 "use strict";
+
+/* ==========================================================================
+   CONFIGURACIÓN — los únicos valores que hay que tocar para activar
+   la agenda y el formulario. No hay más sitios donde cambiarlos.
+   ========================================================================== */
+var CAL_LINK      = "";   // p. ej. "barrancoamarillo/llamada-20min"  (cal.com)
+var WEB3FORMS_KEY = "";   // access key de web3forms.com
 
 var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -1933,10 +1900,60 @@ document.addEventListener("keydown", function(ev){
 });
 
 /* ==========================================================================
-   FORMULARIO — validación on-blur, errores bajo cada campo, mailto
+   AGENDA — Cal.com inline. Sin CAL_LINK no se carga nada y queda la
+   alternativa de WhatsApp: un embed roto convierte peor que ninguno.
+   ========================================================================== */
+(function(){
+  var contenedor = document.getElementById("cal-inline");
+  var alterna = document.getElementById("agenda-alterna");
+  if(!contenedor || !alterna) return;
+  if(!CAL_LINK) return;                 // sin enlace → se queda la alternativa
+
+  contenedor.hidden = false;
+  alterna.hidden = true;
+
+  /* Cargador oficial de Cal.com */
+  (function(C,A,L){
+    var p = function(a,ar){ a.q.push(ar); };
+    var d = C.document;
+    C.Cal = C.Cal || function(){
+      var cal = C.Cal, ar = arguments;
+      if(!cal.loaded){
+        cal.ns = {}; cal.q = cal.q || [];
+        d.head.appendChild(d.createElement("script")).src = A;
+        cal.loaded = true;
+      }
+      if(ar[0] === L){
+        var api = function(){ p(api, arguments); };
+        var namespace = ar[1];
+        api.q = api.q || [];
+        if(typeof namespace === "string"){ cal.ns[namespace] = api; p(cal.ns[namespace], ar); }
+        else{ p(cal, ar); }
+        return;
+      }
+      p(cal, ar);
+    };
+  })(window, "https://app.cal.com/embed/embed.js", "init");
+
+  Cal("init", { origin: "https://cal.com" });
+  Cal("inline", {
+    elementOrSelector: "#cal-inline",
+    calLink: CAL_LINK,
+    config: { layout: "month_view", theme: "dark" }
+  });
+  Cal("ui", {
+    cssVarsPerTheme: { dark: { "cal-brand": "#F1C741" } },
+    hideEventTypeDetails: false
+  });
+})();
+
+/* ==========================================================================
+   FORMULARIO — validación on-blur + envío real a Web3Forms.
+   Sin WEB3FORMS_KEY degrada a mailto, avisando de que puede no llegar.
    ========================================================================== */
 var form = document.getElementById("form-contacto");
-var confirmacion = document.getElementById("form-confirmacion");
+var aviso = document.getElementById("form-aviso");
+var botonEnviar = document.getElementById("form-enviar");
 
 function validarCampo(input, errorEl, prueba){
   var ok = prueba(input.value.trim());
@@ -1948,50 +1965,74 @@ var fNombre = document.getElementById("f-nombre");
 var fEmail = document.getElementById("f-email");
 var fTipo = document.getElementById("f-tipo");
 var fMensaje = document.getElementById("f-mensaje");
+var fConsent = document.getElementById("f-consentimiento");
+var errConsent = document.getElementById("err-consentimiento");
 var reEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+document.getElementById("f-access-key").value = WEB3FORMS_KEY;
 
 fNombre.addEventListener("blur", function(){ if(fNombre.value) validarCampo(fNombre, document.getElementById("err-nombre"), function(v){ return v.length > 1; }); });
 fEmail.addEventListener("blur", function(){ if(fEmail.value) validarCampo(fEmail, document.getElementById("err-email"), function(v){ return reEmail.test(v); }); });
 fMensaje.addEventListener("blur", function(){ if(fMensaje.value) validarCampo(fMensaje, document.getElementById("err-mensaje"), function(v){ return v.length > 5; }); });
+fConsent.addEventListener("change", function(){ errConsent.classList.toggle("visible", !fConsent.checked); });
+
+function mostrarAviso(estado, html){
+  aviso.className = "form-aviso visible " + estado;
+  aviso.innerHTML = html;
+}
 
 form.addEventListener("submit", function(ev){
   ev.preventDefault();
   var okNombre = validarCampo(fNombre, document.getElementById("err-nombre"), function(v){ return v.length > 1; });
   var okEmail = validarCampo(fEmail, document.getElementById("err-email"), function(v){ return reEmail.test(v); });
   var okMensaje = validarCampo(fMensaje, document.getElementById("err-mensaje"), function(v){ return v.length > 5; });
-  if(!okNombre || !okEmail || !okMensaje){
-    (okNombre ? (okEmail ? fMensaje : fEmail) : fNombre).focus();
+  var okConsent = fConsent.checked;
+  errConsent.classList.toggle("visible", !okConsent);
+  if(!okNombre || !okEmail || !okMensaje || !okConsent){
+    (okNombre ? (okEmail ? (okMensaje ? fConsent : fMensaje) : fEmail) : fNombre).focus();
     return;
   }
-  var asunto = "Proyecto: " + fTipo.value + " — " + fNombre.value.trim();
-  var cuerpo = "Nombre: " + fNombre.value.trim() +
-    "\nEmail: " + fEmail.value.trim() +
-    "\nTipo de proyecto: " + fTipo.value +
-    "\n\n" + fMensaje.value.trim();
-  window.location.href = "mailto:infobarrancoamarillo@gmail.com" +
-    "?subject=" + encodeURIComponent(asunto) +
-    "&body=" + encodeURIComponent(cuerpo);
-  confirmacion.classList.add("visible");
-});
 
-/* ==========================================================================
-   CHAT FLOTANTE — redirige a WhatsApp con texto precargado
-   ========================================================================== */
-var btnChat = document.getElementById("btn-chat");
-var chatPanel = document.getElementById("chat-panel");
-var chatEnviar = document.getElementById("chat-enviar");
-var chatMensaje = document.getElementById("chat-mensaje");
+  /* Sin access key todavía: no hay backend, se cae a mailto sin prometer nada */
+  if(!WEB3FORMS_KEY){
+    var asunto = "Proyecto: " + fTipo.value + " — " + fNombre.value.trim();
+    var cuerpo = "Nombre: " + fNombre.value.trim() +
+      "\nEmail: " + fEmail.value.trim() +
+      "\nTipo de proyecto: " + fTipo.value +
+      "\n\n" + fMensaje.value.trim();
+    window.location.href = "mailto:infobarrancoamarillo@gmail.com" +
+      "?subject=" + encodeURIComponent(asunto) +
+      "&body=" + encodeURIComponent(cuerpo);
+    mostrarAviso("", "Se está abriendo tu aplicación de correo con el mensaje listo. Si no se abre, escríbenos a <a href=\"mailto:infobarrancoamarillo@gmail.com\">infobarrancoamarillo@gmail.com</a>.");
+    return;
+  }
 
-btnChat.addEventListener("click", function(){
-  var abierto = chatPanel.classList.toggle("abierto");
-  btnChat.setAttribute("aria-expanded", String(abierto));
-  btnChat.setAttribute("aria-label", abierto ? "Cerrar chat" : "Abrir chat");
-  if(abierto) chatMensaje.focus();
-});
-chatEnviar.addEventListener("click", function(){
-  var texto = chatMensaje.value.trim() || "Hola, quiero información";
-  // TODO: número real de WhatsApp
-  window.open("https://wa.me/34XXXXXXXXX?text=" + encodeURIComponent(texto), "_blank", "noopener");
+  botonEnviar.disabled = true;
+  botonEnviar.textContent = "Enviando…";
+  mostrarAviso("", "Enviando tu mensaje…");
+
+  fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    headers: { "Accept": "application/json" },
+    body: new FormData(form)
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(datos){
+    if(datos && datos.success){
+      form.reset();
+      botonEnviar.textContent = "Enviar mensaje";
+      mostrarAviso("exito", "Mensaje recibido. Te respondemos en menos de 24 horas laborables.");
+    }else{
+      throw new Error(datos && datos.message ? datos.message : "envío rechazado");
+    }
+  })
+  .catch(function(){
+    mostrarAviso("fallo", "No se ha podido enviar. Escríbenos a <a href=\"mailto:infobarrancoamarillo@gmail.com\">infobarrancoamarillo@gmail.com</a> y lo vemos igual.");
+  })
+  .finally(function(){
+    botonEnviar.disabled = false;
+    botonEnviar.textContent = "Enviar mensaje";
+  });
 });
 
 })();

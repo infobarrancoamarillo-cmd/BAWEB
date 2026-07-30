@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de privacidad — Barranco Amarillo</title>
+<meta name="description" content="Política de privacidad y tratamiento de datos personales de Barranco Amarillo, productora audiovisual.">
+<meta name="robots" content="noindex, follow">
+<link rel="icon" type="image/png" href="assets/logo-simbolo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   BARRANCO AMARILLO — shell legal V5
+   Mismo sistema tipográfico y cromático que index.html, sin canvas.
+   ========================================================================== */
+:root{
+  --amarillo:       #F1C741;
+  --negro:          #1E1B1A;
+  --negro-profundo: #121010;
+  --naranja:        #E56425;
+
+  --superficie-base:    var(--negro-profundo);
+  --superficie-elevada: var(--negro);
+  --acento-proyector:   var(--amarillo);
+  --acento-calor:       var(--naranja);
+  --tinta-alta:         #F7F5F2;
+  --tinta-media:        rgba(247,245,242,0.6);
+  --linea-hairline:     rgba(247,245,242,0.08);
+
+  --tipo:      'Archivo', system-ui, -apple-system, sans-serif;
+  --tipo-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --nav-h: 76px;
+  --ease-cine: cubic-bezier(0.16,1,0.3,1);
+  --contenedor: 1200px;
+}
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+html{ -webkit-text-size-adjust:100%; }
+body{
+  font-family:var(--tipo);
+  font-size:17px;
+  font-weight:350;
+  line-height:1.65;
+  color:var(--tinta-alta);
+  background:var(--superficie-base);
+  overflow-x:hidden;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; }
+:focus-visible{ outline:2px solid var(--acento-proyector); outline-offset:3px; border-radius:2px; }
+::selection{ background:var(--acento-proyector); color:var(--superficie-elevada); }
+
+.contenedor{
+  width:100%;
+  max-width:var(--contenedor);
+  margin-inline:auto;
+  padding-inline:20px;
+}
+@media (min-width:768px){ .contenedor{ padding-inline:40px; } }
+
+/* ---- Nav ---- */
+.nav{
+  position:sticky;
+  top:0;
+  z-index:100;
+  height:var(--nav-h);
+  display:flex;
+  align-items:center;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  background:rgba(18,16,16,0.82);
+  border-bottom:1px solid var(--linea-hairline);
+}
+.nav-inner{
+  width:100%;
+  max-width:var(--contenedor);
+  margin-inline:auto;
+  padding-inline:20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+}
+@media (min-width:768px){ .nav-inner{ padding-inline:40px; } }
+.marca{ display:flex; align-items:center; text-decoration:none; min-height:44px; }
+.logo-nav{ height:36px; width:auto; }
+@media (max-width:767px){ .logo-nav{ height:28px; } }
+.volver{
+  font-family:var(--tipo-mono);
+  font-weight:400;
+  font-size:12px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  text-decoration:none;
+  color:var(--tinta-media);
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  min-height:44px;
+  transition:color 200ms var(--ease-cine);
+}
+.volver:hover{ color:var(--tinta-alta); }
+
+/* ---- Tipografía ---- */
+.eyebrow{
+  font-family:var(--tipo-mono);
+  font-weight:500;
+  font-size:11px;
+  letter-spacing:0.22em;
+  line-height:1;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.rombo{
+  width:10px; height:10px;
+  background:var(--acento-proyector);
+  transform:rotate(45deg);
+  display:inline-block;
+  flex:none;
+}
+h1{
+  margin-top:24px;
+  font-family:var(--tipo);
+  font-weight:800;
+  font-size:clamp(38px,7vw,80px);
+  line-height:0.92;
+  letter-spacing:-0.03em;
+  text-transform:uppercase;
+}
+h2{
+  margin-top:56px;
+  font-family:var(--tipo);
+  font-weight:750;
+  font-size:clamp(22px,3vw,30px);
+  line-height:1.1;
+  letter-spacing:-0.02em;
+  text-transform:uppercase;
+}
+@supports (font-stretch: 125%){
+  h1{ font-stretch:125%; }
+  h2{ font-stretch:118%; }
+}
+@supports not (font-stretch: 125%){
+  h1,h2{ font-weight:900; }
+}
+h3{
+  margin-top:32px;
+  font-weight:600;
+  font-size:clamp(18px,2vw,21px);
+  line-height:1.2;
+  letter-spacing:-0.01em;
+}
+.legal p{ margin-top:16px; color:var(--tinta-media); max-width:72ch; }
+.legal p strong{ color:var(--tinta-alta); font-weight:600; }
+.legal ul{ margin-top:16px; padding-left:0; list-style:none; max-width:72ch; }
+.legal li{
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+  margin-top:10px;
+  color:var(--tinta-media);
+}
+.legal li::before{
+  content:"";
+  flex:none;
+  width:6px; height:6px;
+  background:var(--acento-proyector);
+  transform:rotate(45deg) translateY(-1px);
+}
+.legal a{ color:var(--tinta-alta); text-underline-offset:3px; }
+.legal a:hover{ color:var(--acento-proyector); }
+
+.fecha{
+  margin-top:28px;
+  font-family:var(--tipo-mono);
+  font-weight:400;
+  font-size:11px;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+}
+
+/* Marcador de dato pendiente — visible a propósito, nunca inventado */
+.pendiente{
+  font-family:var(--tipo-mono);
+  font-size:0.85em;
+  letter-spacing:0.04em;
+  color:var(--acento-calor);
+  border:1px solid var(--acento-calor);
+  padding:1px 7px;
+  white-space:nowrap;
+}
+
+.cuerpo-legal{ padding-block:64px 120px; }
+@media (min-width:768px){ .cuerpo-legal{ padding-block:88px 160px; } }
+
+/* Ficha de datos */
+.ficha{
+  margin-top:28px;
+  border:1px solid var(--linea-hairline);
+  background:var(--superficie-elevada);
+}
+.ficha div{
+  display:grid;
+  gap:4px;
+  padding:18px 24px;
+  border-bottom:1px solid var(--linea-hairline);
+}
+@media (min-width:640px){ .ficha div{ grid-template-columns:220px 1fr; gap:24px; align-items:baseline; } }
+.ficha div:last-child{ border-bottom:0; }
+.ficha dt{
+  font-family:var(--tipo-mono);
+  font-weight:500;
+  font-size:11px;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+}
+.ficha dd{ color:var(--tinta-alta); }
+
+/* Tabla de tratamientos */
+.tabla-envoltorio{ margin-top:28px; overflow-x:auto; }
+.tabla{
+  width:100%;
+  min-width:640px;
+  border-collapse:collapse;
+  border:1px solid var(--linea-hairline);
+  background:var(--superficie-elevada);
+  font-size:0.9375rem;
+}
+.tabla th,
+.tabla td{
+  text-align:left;
+  vertical-align:top;
+  padding:16px 20px;
+  border-bottom:1px solid var(--linea-hairline);
+}
+.tabla tr:last-child td{ border-bottom:0; }
+.tabla th{
+  font-family:var(--tipo-mono);
+  font-weight:500;
+  font-size:11px;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+  border-bottom-color:var(--linea-hairline);
+}
+.tabla td{ color:var(--tinta-media); }
+.tabla td:first-child{ color:var(--tinta-alta); }
+
+/* ---- Footer ---- */
+.footer{
+  background:var(--superficie-elevada);
+  border-top:1px solid var(--linea-hairline);
+  padding-block:48px 40px;
+}
+.logo-footer{ height:26px; width:auto; }
+.footer-legal{
+  margin-top:32px;
+  padding-top:24px;
+  border-top:1px solid var(--linea-hairline);
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:16px;
+  font-family:var(--tipo-mono);
+  font-size:11px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+}
+.footer-legal nav{ display:flex; gap:24px; }
+.footer-legal a{ color:var(--tinta-media); text-decoration:none; }
+.footer-legal a:hover{ color:var(--acento-proyector); }
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{ transition-duration:0.01ms !important; animation-duration:0.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="marca" href="index.html" aria-label="Barranco Amarillo — inicio">
+      <img class="logo-nav" src="assets/logo-imagotipo.png" alt="Barranco Amarillo" height="36">
+    </a>
+    <a class="volver" href="index.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      Volver
+    </a>
+  </div>
+</header>
+
+<main class="contenedor cuerpo-legal legal">
+  <p class="eyebrow"><span class="rombo" aria-hidden="true"></span>Legal</p>
+  <h1>Política de privacidad</h1>
+  <p class="fecha">Última actualización · 30 de julio de 2026</p>
+
+  <p>Esta política explica cómo Barranco Amarillo trata los datos personales que nos facilitas a través de este sitio web, conforme al Reglamento (UE) 2016/679 (RGPD) y a la Ley Orgánica 3/2018, de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).</p>
+
+  <h2>1. Responsable del tratamiento</h2>
+  <dl class="ficha">
+    <div>
+      <dt>Responsable</dt>
+      <dd><span class="pendiente">[[PENDIENTE: denominación social]]</span></dd>
+    </div>
+    <div>
+      <dt>NIF / CIF</dt>
+      <dd><span class="pendiente">[[PENDIENTE: NIF]]</span></dd>
+    </div>
+    <div>
+      <dt>Domicilio</dt>
+      <dd><span class="pendiente">[[PENDIENTE: domicilio fiscal]]</span></dd>
+    </div>
+    <div>
+      <dt>Correo de contacto</dt>
+      <dd><a href="mailto:infobarrancoamarillo@gmail.com">infobarrancoamarillo@gmail.com</a></dd>
+    </div>
+  </dl>
+
+  <h2>2. Qué datos tratamos y para qué</h2>
+  <div class="tabla-envoltorio">
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th scope="col">Tratamiento</th>
+          <th scope="col">Datos</th>
+          <th scope="col">Finalidad</th>
+          <th scope="col">Legitimación</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Formulario de contacto</td>
+          <td>Nombre, correo electrónico, tipo de proyecto y el contenido del mensaje.</td>
+          <td>Atender y responder tu consulta comercial, y elaborar presupuesto si procede.</td>
+          <td>Consentimiento del interesado (art. 6.1.a RGPD), prestado al marcar la casilla del formulario.</td>
+        </tr>
+        <tr>
+          <td>Reserva de llamada</td>
+          <td>Nombre, correo electrónico, franja horaria elegida y notas que añadas.</td>
+          <td>Agendar y celebrar una llamada de valoración de proyecto de 20 minutos.</td>
+          <td>Consentimiento del interesado y medidas precontractuales a petición del interesado (arts. 6.1.a y 6.1.b RGPD).</td>
+        </tr>
+        <tr>
+          <td>Contacto por WhatsApp</td>
+          <td>Número de teléfono y contenido de la conversación.</td>
+          <td>Atender la consulta por el canal que tú eliges iniciar.</td>
+          <td>Consentimiento del interesado (art. 6.1.a RGPD), implícito al iniciar tú la conversación.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>No elaboramos perfiles ni tomamos decisiones automatizadas con efectos jurídicos. No utilizamos tus datos para enviarte comunicaciones comerciales que no hayas solicitado.</p>
+
+  <h2>3. Destinatarios y encargados del tratamiento</h2>
+  <p>Para poder prestar el servicio recurrimos a proveedores que actúan como <strong>encargados del tratamiento</strong>, con los que existe el contrato exigido por el artículo 28 del RGPD:</p>
+  <ul>
+    <li><strong>Web3Forms</strong> — procesamiento y reenvío de los mensajes del formulario de contacto.</li>
+    <li><strong>Cal.com, Inc.</strong> — gestión de la agenda y de las reservas de llamada.</li>
+    <li><strong>Google Ireland Limited</strong> — alojamiento de los vídeos del portfolio (YouTube) y servicio de fuentes tipográficas.</li>
+    <li><strong>GitHub, Inc.</strong> — alojamiento del sitio web (GitHub Pages).</li>
+    <li><strong>WhatsApp Ireland Limited</strong> — mensajería, si eliges ese canal.</li>
+  </ul>
+  <p>Algunos de estos proveedores pueden tratar datos fuera del Espacio Económico Europeo. En esos casos, las transferencias se amparan en el <strong>Marco de Privacidad de Datos UE-EE. UU.</strong> o en las <strong>Cláusulas Contractuales Tipo</strong> aprobadas por la Comisión Europea.</p>
+  <p>Fuera de estos supuestos, no cedemos tus datos a terceros salvo obligación legal.</p>
+
+  <h2>4. Plazo de conservación</h2>
+  <ul>
+    <li>Consultas que no derivan en contratación: <strong>hasta 12 meses</strong> desde el último contacto, y después se suprimen.</li>
+    <li>Consultas que derivan en contratación: durante la relación comercial y, después, durante los plazos de prescripción legal aplicables (hasta 6 años para la documentación mercantil y fiscal, conforme al Código de Comercio y a la Ley General Tributaria).</li>
+    <li>Datos tratados con base en tu consentimiento: hasta que lo retires.</li>
+  </ul>
+
+  <h2>5. Tus derechos</h2>
+  <p>Puedes ejercer en cualquier momento los siguientes derechos:</p>
+  <ul>
+    <li><strong>Acceso</strong> — saber qué datos tuyos tratamos.</li>
+    <li><strong>Rectificación</strong> — corregir datos inexactos o incompletos.</li>
+    <li><strong>Supresión</strong> — pedir que borremos tus datos cuando ya no sean necesarios.</li>
+    <li><strong>Oposición</strong> — oponerte a un tratamiento concreto.</li>
+    <li><strong>Limitación</strong> — pedir que conservemos los datos pero dejemos de tratarlos.</li>
+    <li><strong>Portabilidad</strong> — recibir tus datos en formato estructurado y de uso común.</li>
+    <li><strong>Retirar el consentimiento</strong> en cualquier momento, sin que ello afecte a la licitud del tratamiento anterior.</li>
+  </ul>
+  <p>Para ejercerlos, escribe a <a href="mailto:infobarrancoamarillo@gmail.com">infobarrancoamarillo@gmail.com</a> indicando el derecho que quieres ejercer y adjuntando copia de un documento que acredite tu identidad. Responderemos en el plazo máximo de un mes.</p>
+
+  <h2>6. Autoridad de control</h2>
+  <p>Si consideras que el tratamiento de tus datos no se ajusta a la normativa, puedes presentar una reclamación ante la <strong>Agencia Española de Protección de Datos</strong> (AEPD), C/ Jorge Juan 6, 28001 Madrid — <a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>.</p>
+
+  <h2>7. Cookies y tecnologías similares</h2>
+  <p>Este sitio <strong>no instala cookies propias de analítica, publicidad ni seguimiento</strong>.</p>
+  <p>Sí pueden instalarse cookies de terceros en los siguientes casos:</p>
+  <ul>
+    <li>Al reproducir un vídeo del portfolio. Usamos el dominio <em>youtube-nocookie.com</em>, que no instala cookies de seguimiento publicitario hasta que pulsas «reproducir».</li>
+    <li>Al cargar el calendario de reservas de Cal.com, que utiliza cookies técnicas necesarias para su funcionamiento.</li>
+  </ul>
+  <p>Puedes bloquear o eliminar estas cookies desde la configuración de tu navegador.</p>
+
+  <h2>8. Seguridad</h2>
+  <p>Aplicamos las medidas técnicas y organizativas razonables para proteger tus datos frente a pérdida, acceso no autorizado o divulgación. El sitio se sirve íntegramente sobre conexión cifrada HTTPS.</p>
+
+  <h2>9. Cambios en esta política</h2>
+  <p>Podemos actualizar esta política para adaptarla a cambios normativos o a nuevos servicios. La fecha de la última revisión figura al principio de esta página.</p>
+</main>
+
+<footer class="footer">
+  <div class="contenedor">
+    <a class="marca" href="index.html" aria-label="Barranco Amarillo — inicio">
+      <img class="logo-footer" src="assets/logo-logotipo.png" alt="Barranco Amarillo" height="26">
+    </a>
+    <div class="footer-legal">
+      <span>© 2026 Barranco Amarillo</span>
+      <nav aria-label="Legal">
+        <a href="aviso-legal.html">Aviso legal</a>
+        <a href="privacidad.html">Privacidad</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

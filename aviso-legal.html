@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aviso legal — Barranco Amarillo</title>
+<meta name="description" content="Aviso legal y condiciones de uso del sitio web de Barranco Amarillo, productora audiovisual.">
+<meta name="robots" content="noindex, follow">
+<link rel="icon" type="image/png" href="assets/logo-simbolo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   BARRANCO AMARILLO — shell legal V5
+   Mismo sistema tipográfico y cromático que index.html, sin canvas.
+   ========================================================================== */
+:root{
+  --amarillo:       #F1C741;
+  --negro:          #1E1B1A;
+  --negro-profundo: #121010;
+  --naranja:        #E56425;
+
+  --superficie-base:    var(--negro-profundo);
+  --superficie-elevada: var(--negro);
+  --acento-proyector:   var(--amarillo);
+  --acento-calor:       var(--naranja);
+  --tinta-alta:         #F7F5F2;
+  --tinta-media:        rgba(247,245,242,0.6);
+  --linea-hairline:     rgba(247,245,242,0.08);
+
+  --tipo:      'Archivo', system-ui, -apple-system, sans-serif;
+  --tipo-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --nav-h: 76px;
+  --ease-cine: cubic-bezier(0.16,1,0.3,1);
+  --contenedor: 1200px;
+}
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+html{ -webkit-text-size-adjust:100%; }
+body{
+  font-family:var(--tipo);
+  font-size:17px;
+  font-weight:350;
+  line-height:1.65;
+  color:var(--tinta-alta);
+  background:var(--superficie-base);
+  overflow-x:hidden;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; }
+:focus-visible{ outline:2px solid var(--acento-proyector); outline-offset:3px; border-radius:2px; }
+::selection{ background:var(--acento-proyector); color:var(--superficie-elevada); }
+
+.contenedor{
+  width:100%;
+  max-width:var(--contenedor);
+  margin-inline:auto;
+  padding-inline:20px;
+}
+@media (min-width:768px){ .contenedor{ padding-inline:40px; } }
+
+/* ---- Nav ---- */
+.nav{
+  position:sticky;
+  top:0;
+  z-index:100;
+  height:var(--nav-h);
+  display:flex;
+  align-items:center;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  background:rgba(18,16,16,0.82);
+  border-bottom:1px solid var(--linea-hairline);
+}
+.nav-inner{
+  width:100%;
+  max-width:var(--contenedor);
+  margin-inline:auto;
+  padding-inline:20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+}
+@media (min-width:768px){ .nav-inner{ padding-inline:40px; } }
+.marca{ display:flex; align-items:center; text-decoration:none; min-height:44px; }
+.logo-nav{ height:36px; width:auto; }
+@media (max-width:767px){ .logo-nav{ height:28px; } }
+.volver{
+  font-family:var(--tipo-mono);
+  font-weight:400;
+  font-size:12px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  text-decoration:none;
+  color:var(--tinta-media);
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  min-height:44px;
+  transition:color 200ms var(--ease-cine);
+}
+.volver:hover{ color:var(--tinta-alta); }
+
+/* ---- Tipografía ---- */
+.eyebrow{
+  font-family:var(--tipo-mono);
+  font-weight:500;
+  font-size:11px;
+  letter-spacing:0.22em;
+  line-height:1;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.rombo{
+  width:10px; height:10px;
+  background:var(--acento-proyector);
+  transform:rotate(45deg);
+  display:inline-block;
+  flex:none;
+}
+h1{
+  margin-top:24px;
+  font-family:var(--tipo);
+  font-weight:800;
+  font-size:clamp(38px,7vw,80px);
+  line-height:0.92;
+  letter-spacing:-0.03em;
+  text-transform:uppercase;
+}
+h2{
+  margin-top:56px;
+  font-family:var(--tipo);
+  font-weight:750;
+  font-size:clamp(22px,3vw,30px);
+  line-height:1.1;
+  letter-spacing:-0.02em;
+  text-transform:uppercase;
+}
+@supports (font-stretch: 125%){
+  h1{ font-stretch:125%; }
+  h2{ font-stretch:118%; }
+}
+@supports not (font-stretch: 125%){
+  h1,h2{ font-weight:900; }
+}
+h3{
+  margin-top:32px;
+  font-weight:600;
+  font-size:clamp(18px,2vw,21px);
+  line-height:1.2;
+  letter-spacing:-0.01em;
+}
+.legal p{ margin-top:16px; color:var(--tinta-media); max-width:72ch; }
+.legal p strong{ color:var(--tinta-alta); font-weight:600; }
+.legal ul{ margin-top:16px; padding-left:0; list-style:none; max-width:72ch; }
+.legal li{
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+  margin-top:10px;
+  color:var(--tinta-media);
+}
+.legal li::before{
+  content:"";
+  flex:none;
+  width:6px; height:6px;
+  background:var(--acento-proyector);
+  transform:rotate(45deg) translateY(-1px);
+}
+.legal a{ color:var(--tinta-alta); text-underline-offset:3px; }
+.legal a:hover{ color:var(--acento-proyector); }
+
+.fecha{
+  margin-top:28px;
+  font-family:var(--tipo-mono);
+  font-weight:400;
+  font-size:11px;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+}
+
+/* Marcador de dato pendiente — visible a propósito, nunca inventado */
+.pendiente{
+  font-family:var(--tipo-mono);
+  font-size:0.85em;
+  letter-spacing:0.04em;
+  color:var(--acento-calor);
+  border:1px solid var(--acento-calor);
+  padding:1px 7px;
+  white-space:nowrap;
+}
+
+.cuerpo-legal{ padding-block:64px 120px; }
+@media (min-width:768px){ .cuerpo-legal{ padding-block:88px 160px; } }
+
+/* Ficha de datos */
+.ficha{
+  margin-top:28px;
+  border:1px solid var(--linea-hairline);
+  background:var(--superficie-elevada);
+}
+.ficha div{
+  display:grid;
+  gap:4px;
+  padding:18px 24px;
+  border-bottom:1px solid var(--linea-hairline);
+}
+@media (min-width:640px){ .ficha div{ grid-template-columns:220px 1fr; gap:24px; align-items:baseline; } }
+.ficha div:last-child{ border-bottom:0; }
+.ficha dt{
+  font-family:var(--tipo-mono);
+  font-weight:500;
+  font-size:11px;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+}
+.ficha dd{ color:var(--tinta-alta); }
+
+/* ---- Footer ---- */
+.footer{
+  background:var(--superficie-elevada);
+  border-top:1px solid var(--linea-hairline);
+  padding-block:48px 40px;
+}
+.logo-footer{ height:26px; width:auto; }
+.footer-legal{
+  margin-top:32px;
+  padding-top:24px;
+  border-top:1px solid var(--linea-hairline);
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:16px;
+  font-family:var(--tipo-mono);
+  font-size:11px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+}
+.footer-legal nav{ display:flex; gap:24px; }
+.footer-legal a{ color:var(--tinta-media); text-decoration:none; }
+.footer-legal a:hover{ color:var(--acento-proyector); }
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{ transition-duration:0.01ms !important; animation-duration:0.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="marca" href="index.html" aria-label="Barranco Amarillo — inicio">
+      <img class="logo-nav" src="assets/logo-imagotipo.png" alt="Barranco Amarillo" height="36">
+    </a>
+    <a class="volver" href="index.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      Volver
+    </a>
+  </div>
+</header>
+
+<main class="contenedor cuerpo-legal legal">
+  <p class="eyebrow"><span class="rombo" aria-hidden="true"></span>Legal</p>
+  <h1>Aviso legal</h1>
+  <p class="fecha">Última actualización · 30 de julio de 2026</p>
+
+  <h2>1. Datos identificativos</h2>
+  <p>En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE), se hacen constar los siguientes datos:</p>
+  <dl class="ficha">
+    <div>
+      <dt>Denominación</dt>
+      <dd><span class="pendiente">[[PENDIENTE: denominación social]]</span></dd>
+    </div>
+    <div>
+      <dt>NIF / CIF</dt>
+      <dd><span class="pendiente">[[PENDIENTE: NIF]]</span></dd>
+    </div>
+    <div>
+      <dt>Domicilio</dt>
+      <dd><span class="pendiente">[[PENDIENTE: domicilio fiscal]]</span></dd>
+    </div>
+    <div>
+      <dt>Correo electrónico</dt>
+      <dd><a href="mailto:infobarrancoamarillo@gmail.com">infobarrancoamarillo@gmail.com</a></dd>
+    </div>
+    <div>
+      <dt>Nombre comercial</dt>
+      <dd>Barranco Amarillo</dd>
+    </div>
+    <div>
+      <dt>Actividad</dt>
+      <dd>Producción audiovisual: vídeo para real estate, tours virtuales 3D, videoclips musicales, publicidad, vídeo corporativo y ficción.</dd>
+    </div>
+  </dl>
+
+  <h2>2. Objeto</h2>
+  <p>Este aviso legal regula el acceso, la navegación y el uso del sitio web <strong>barrancoamarillo.com</strong> y de sus subdominios (en adelante, «el sitio web»). El acceso al sitio web atribuye la condición de usuario e implica la aceptación plena de todas las condiciones incluidas en este aviso legal.</p>
+  <p>Barranco Amarillo se reserva el derecho a modificar en cualquier momento la presentación, configuración y contenido del sitio web, así como las condiciones aquí recogidas.</p>
+
+  <h2>3. Condiciones de uso</h2>
+  <p>El usuario se compromete a hacer un uso adecuado y lícito del sitio web y de sus contenidos, y en particular a no emplearlos para:</p>
+  <ul>
+    <li>Difundir contenidos ilícitos, difamatorios, violentos o que vulneren derechos de terceros.</li>
+    <li>Introducir virus informáticos o cualquier código que pueda dañar los sistemas del titular o de terceros.</li>
+    <li>Intentar acceder de forma no autorizada a áreas restringidas, cuentas o sistemas asociados al sitio web.</li>
+    <li>Realizar extracciones sistemáticas de contenido con fines comerciales sin autorización expresa.</li>
+  </ul>
+
+  <h2>4. Propiedad intelectual e industrial</h2>
+  <p>Todo el material audiovisual alojado o enlazado en este sitio web —piezas de ficción, documentales, videoclips, resúmenes de concierto, aftermovies y vídeos de propiedad inmobiliaria— es <strong>propiedad de Barranco Amarillo o de sus respectivos titulares de derechos</strong>, que han autorizado su exhibición con fines de portfolio.</p>
+  <p>La marca, el logotipo, el imagotipo, los textos, el diseño, la estructura de navegación y el código fuente del sitio web están protegidos por la legislación española y europea sobre propiedad intelectual e industrial. Queda prohibida su reproducción, distribución, comunicación pública, transformación o cualquier otra forma de explotación sin autorización expresa y por escrito del titular.</p>
+  <p>Los vídeos se reproducen mediante el servicio de alojamiento de YouTube (Google Ireland Limited), sujetos a sus propias condiciones. Este sitio emplea el dominio <em>youtube-nocookie.com</em> en el reproductor para reducir el rastreo publicitario.</p>
+
+  <h2>5. Enlaces a terceros</h2>
+  <p>El sitio web puede contener enlaces a páginas de terceros (YouTube, Instagram, WhatsApp, Cal.com). Barranco Amarillo no controla dichos sitios ni se responsabiliza de sus contenidos, políticas de privacidad o prácticas.</p>
+
+  <h2>6. Exclusión de garantías y responsabilidad</h2>
+  <p>Barranco Amarillo no garantiza la disponibilidad y continuidad ininterrumpida del sitio web, ni la ausencia de errores en sus contenidos. En la medida permitida por la ley, queda excluida la responsabilidad por daños derivados de la falta de disponibilidad del sitio o de la presencia de virus o elementos lesivos introducidos por terceros.</p>
+  <p>La información sobre servicios publicada en este sitio tiene carácter informativo y no constituye oferta contractual vinculante. Las condiciones concretas de cada trabajo se acuerdan mediante presupuesto individual.</p>
+
+  <h2>7. Protección de datos</h2>
+  <p>El tratamiento de los datos personales facilitados a través del formulario de contacto y de la herramienta de reserva de llamadas se rige por lo dispuesto en la <a href="privacidad.html">política de privacidad</a>.</p>
+
+  <h2>8. Legislación aplicable y jurisdicción</h2>
+  <p>Este aviso legal se rige por la legislación española. Para la resolución de cualquier controversia derivada del acceso o uso del sitio web, las partes se someten a los juzgados y tribunales del domicilio del titular, salvo que la normativa de consumo aplicable disponga otro fuero.</p>
+</main>
+
+<footer class="footer">
+  <div class="contenedor">
+    <a class="marca" href="index.html" aria-label="Barranco Amarillo — inicio">
+      <img class="logo-footer" src="assets/logo-logotipo.png" alt="Barranco Amarillo" height="26">
+    </a>
+    <div class="footer-legal">
+      <span>© 2026 Barranco Amarillo</span>
+      <nav aria-label="Legal">
+        <a href="aviso-legal.html">Aviso legal</a>
+        <a href="privacidad.html">Privacidad</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
