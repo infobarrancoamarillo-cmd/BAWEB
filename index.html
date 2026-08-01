@@ -13,7 +13,7 @@
 <link rel="icon" type="image/png" href="assets/logo-simbolo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Roboto+Slab:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ==========================================================================
    BARRANCO AMARILLO — V3 "Sala de cine"
@@ -34,6 +34,12 @@
   --tinta-media:        rgba(247,245,242,0.6);
   --linea-hairline:     rgba(247,245,242,0.08);
 
+  /* Tipografía — una sola familia de texto. La jerarquía la construye la
+     ANCHURA (font-stretch), no el cambio de familia: los titulares se
+     ensanchan como un título de crédito y el cuerpo vuelve a anchura normal. */
+  --tipo:      'Archivo', system-ui, -apple-system, sans-serif;
+  --tipo-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
   --nav-h: 76px;
   --ease-cine: cubic-bezier(0.16,1,0.3,1);
   --contenedor: 1200px;
@@ -46,10 +52,10 @@ html{
   -webkit-text-size-adjust:100%;
 }
 body{
-  font-family:'Roboto',sans-serif;
-  font-size:16px;
-  line-height:1.5;
-  font-weight:400;
+  font-family:var(--tipo);
+  font-size:17px;
+  line-height:1.65;
+  font-weight:350;
   color:var(--tinta-alta);
   background:var(--superficie-base);
   overflow-x:hidden;
@@ -75,12 +81,14 @@ section{ scroll-margin-top:var(--nav-h); }
 }
 @media (min-width:768px){ .contenedor{ padding-inline:40px; } }
 
-/* ---- Tipografía editorial ---- */
+/* ---- Tipografía editorial ----
+   Epígrafes, etiquetas y cifras técnicas en mono; todo el discurso en Archivo. */
 .eyebrow{
-  font-family:'Roboto',sans-serif;
+  font-family:var(--tipo-mono);
   font-weight:500;
-  font-size:0.75rem;
-  letter-spacing:0.2em;
+  font-size:11px;
+  letter-spacing:0.22em;
+  line-height:1;
   text-transform:uppercase;
   color:var(--tinta-media);
   display:flex;
@@ -88,21 +96,46 @@ section{ scroll-margin-top:var(--nav-h); }
   gap:12px;
 }
 .eyebrow .rombo{ flex:none; }
-h1,h2,h3{ font-family:'Roboto Slab',serif; color:var(--tinta-alta); }
+
+h1,h2,h3{ font-family:var(--tipo); color:var(--tinta-alta); }
 h1{
   font-weight:800;
-  font-size:clamp(48px,8.5vw,96px);
-  line-height:1.02;
-  letter-spacing:-0.02em;
+  font-size:clamp(44px,8vw,104px);
+  line-height:0.88;
+  letter-spacing:-0.03em;
+  text-transform:uppercase;
 }
 h2{
-  font-weight:800;
-  font-size:clamp(34px,5.5vw,64px);
-  line-height:1.05;
-  letter-spacing:-0.015em;
+  font-weight:750;
+  font-size:clamp(30px,5vw,64px);
+  line-height:0.92;
+  letter-spacing:-0.025em;
+  text-transform:uppercase;
   max-width:16ch;
 }
-h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
+h3{
+  font-weight:600;
+  font-size:clamp(20px,2.4vw,26px);
+  line-height:1.2;
+  letter-spacing:-0.01em;
+}
+
+/* La anchura solo se aplica donde el eje wdth existe. Sin soporte, el peso
+   sostiene la jerarquía él solo. */
+@supports (font-stretch: 125%){
+  h1{ font-stretch:125%; }
+  h2{ font-stretch:118%; }
+  h3{ font-stretch:100%; }
+}
+@supports not (font-stretch: 125%){
+  h1,h2{ font-weight:900; }
+}
+
+/* Interlineado 0.92 deja 1–2px entre la tilde de una línea y el trazo de la
+   anterior: positivo, pero rozando. En los titulares que llevan mayúscula
+   acentuada (VÍDEOS, ESTÁS, CUÉNTANOS/QUÉ) se sube a 0.94. Solo en esos:
+   subirlo globalmente afloja el bloque en los que no lo necesitan. */
+h2.titular-acentuado{ line-height:0.94; }
 
 .rombo{
   width:10px; height:10px;
@@ -127,9 +160,11 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
   gap:10px;
   min-height:48px;
   padding:0 28px;
-  font-weight:700;
-  font-size:0.9375rem;
-  letter-spacing:0.04em;
+  font-family:var(--tipo);
+  font-weight:600;
+  font-size:15px;
+  line-height:1;
+  letter-spacing:0.02em;
   text-transform:uppercase;
   text-decoration:none;
   border:1px solid transparent;
@@ -209,9 +244,11 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
   gap:8px;
   min-height:44px;
   padding:0 14px;
-  font-size:0.8125rem;
-  font-weight:500;
-  letter-spacing:0.08em;
+  font-family:var(--tipo-mono);
+  font-size:12px;
+  font-weight:400;
+  line-height:1;
+  letter-spacing:0.14em;
   text-transform:uppercase;
   text-decoration:none;
   color:var(--tinta-media);
@@ -274,12 +311,15 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
   align-items:center;
   gap:16px;
   min-height:56px;
-  font-family:'Roboto Slab',serif;
-  font-weight:600;
+  font-family:var(--tipo);
+  font-weight:750;
   font-size:clamp(28px,7vw,40px);
+  letter-spacing:-0.02em;
+  text-transform:uppercase;
   text-decoration:none;
   color:var(--tinta-alta);
 }
+@supports (font-stretch: 118%){ .panel-movil nav a{ font-stretch:118%; } }
 .panel-movil nav a::before{
   content:"";
   width:8px; height:8px;
@@ -344,14 +384,40 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
   z-index:2;
   padding-block:140px 100px;
 }
-.hero h1{
+/* Titular en dos bloques: línea de entrada en anchura normal y peso ligero,
+   bloque grande ensanchado. Sin punto final — el punto pertenece a la frase
+   escrita, no al rótulo. */
+.titular{
   margin-top:28px;
-  max-width:12ch;
+  max-width:14ch;
+  display:flex;
+  flex-direction:column;
 }
+.titular-entrada{
+  font-weight:300;
+  font-size:0.42em;
+  line-height:1.1;
+  letter-spacing:-0.01em;
+  text-transform:none;
+  color:var(--tinta-media);
+}
+.titular-peso{
+  font-weight:800;
+  line-height:0.88;
+  letter-spacing:-0.03em;
+  text-transform:uppercase;
+}
+@supports (font-stretch: 125%){
+  .titular-entrada{ font-stretch:100%; }
+  .titular-peso{ font-stretch:125%; }
+}
+
 .hero-sub{
   margin-top:24px;
   font-weight:300;
-  font-size:clamp(17px,2vw,21px);
+  font-size:clamp(18px,2vw,22px);
+  line-height:1.5;
+  letter-spacing:-0.005em;
   color:var(--tinta-media);
   max-width:44ch;
 }
@@ -376,8 +442,11 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
   gap:8px;
   min-width:44px; min-height:44px;
   justify-content:center;
-  font-size:0.6875rem;
-  letter-spacing:0.2em;
+  font-family:var(--tipo-mono);
+  font-size:11px;
+  font-weight:400;
+  line-height:1;
+  letter-spacing:0.22em;
   text-transform:uppercase;
   text-decoration:none;
   color:var(--tinta-media);
@@ -395,7 +464,9 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
 .seccion-cabecera p.entradilla{
   margin-top:22px;
   font-weight:300;
-  font-size:clamp(16px,1.8vw,19px);
+  font-size:clamp(18px,2vw,22px);
+  line-height:1.5;
+  letter-spacing:-0.005em;
   color:var(--tinta-media);
   max-width:52ch;
 }
@@ -436,19 +507,25 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
   flex-direction:column;
 }
 .plan-nombre{
-  font-size:0.75rem;
+  font-family:var(--tipo-mono);
+  font-size:11px;
   font-weight:500;
-  letter-spacing:0.2em;
+  letter-spacing:0.22em;
+  line-height:1;
   text-transform:uppercase;
   color:var(--tinta-media);
 }
+/* Ocupa el hueco que antes tenía la cifra: mismo peso visual, sin número */
 .plan-alcance{
   margin-top:18px;
-  font-family:'Roboto Slab',serif;
-  font-weight:800;
+  font-family:var(--tipo);
+  font-weight:700;
   font-size:clamp(30px,3.6vw,42px);
   line-height:1;
+  letter-spacing:-0.02em;
+  text-transform:uppercase;
 }
+@supports (font-stretch: 125%){ .plan-alcance{ font-stretch:125%; } }
 .plan ul{
   margin-top:28px;
   list-style:none;
@@ -472,9 +549,11 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
 }
 .statement{
   margin-top:56px;
-  font-family:'Roboto Slab',serif;
+  font-family:var(--tipo);
   font-weight:600;
   font-size:clamp(22px,3.2vw,32px);
+  line-height:1.15;
+  letter-spacing:-0.02em;
   color:var(--acento-proyector);
   max-width:24ch;
 }
@@ -503,8 +582,11 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
 .visor-etiqueta{
   text-align:center;
   color:var(--tinta-media);
-  font-size:0.8125rem;
-  letter-spacing:0.15em;
+  font-family:var(--tipo-mono);
+  font-size:11px;
+  font-weight:400;
+  line-height:1;
+  letter-spacing:0.16em;
   text-transform:uppercase;
   display:flex;
   flex-direction:column;
@@ -542,11 +624,12 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
 @media (min-width:768px){ .pasos{ grid-template-columns:repeat(3,1fr); } }
 .paso{ position:relative; padding-top:24px; border-top:1px solid var(--linea-hairline); }
 .paso-num{
-  font-family:'Roboto Slab',serif;
-  font-weight:300;
-  font-size:0.875rem;
-  color:var(--acento-proyector);
+  font-family:var(--tipo-mono);
+  font-weight:500;
+  font-size:13px;
+  line-height:1;
   letter-spacing:0.1em;
+  color:var(--acento-proyector);
 }
 .paso h3{ margin-top:12px; }
 .paso p{ margin-top:10px; color:var(--tinta-media); font-size:0.9375rem; }
@@ -623,9 +706,11 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
   background:transparent;
   border:1px solid var(--linea-hairline);
   color:var(--tinta-media);
-  font-size:0.8125rem;
-  font-weight:500;
-  letter-spacing:0.08em;
+  font-family:var(--tipo-mono);
+  font-size:11px;
+  font-weight:400;
+  line-height:1;
+  letter-spacing:0.16em;
   text-transform:uppercase;
   transition:color 200ms var(--ease-cine), border-color 200ms var(--ease-cine), background-color 200ms var(--ease-cine);
 }
@@ -702,13 +787,15 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
 .pieza-info p{ margin-top:4px; color:var(--tinta-media); font-size:0.875rem; }
 .pieza-etiqueta{
   flex:none;
-  font-size:0.6875rem;
-  font-weight:500;
+  font-family:var(--tipo-mono);
+  font-size:11px;
+  font-weight:400;
+  line-height:1;
   letter-spacing:0.16em;
   text-transform:uppercase;
   color:var(--tinta-media);
   border:1px solid var(--linea-hairline);
-  padding:6px 12px;
+  padding:8px 12px;
 }
 
 /* Lightbox */
@@ -782,17 +869,22 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
 .dato{ border-top:1px solid rgba(30,27,26,0.25); padding-top:18px; }
 .dato strong{
   display:block;
-  font-family:'Roboto Slab',serif;
+  font-family:var(--tipo);
   font-weight:800;
   font-size:clamp(28px,3.4vw,40px);
   line-height:1;
+  letter-spacing:-0.02em;
+  text-transform:uppercase;
 }
+@supports (font-stretch: 125%){ .dato strong{ font-stretch:125%; } }
 .dato span{
   display:block;
-  margin-top:8px;
-  font-size:0.8125rem;
-  font-weight:500;
-  letter-spacing:0.14em;
+  margin-top:10px;
+  font-family:var(--tipo-mono);
+  font-size:11px;
+  font-weight:400;
+  line-height:1;
+  letter-spacing:0.16em;
   text-transform:uppercase;
   color:rgba(30,27,26,0.65);
 }
@@ -830,8 +922,10 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
 .formulario{ margin-top:32px; display:flex; flex-direction:column; gap:22px; }
 .campo{ display:flex; flex-direction:column; gap:8px; }
 .campo label{
-  font-size:0.75rem;
+  font-family:var(--tipo-mono);
+  font-size:11px;
   font-weight:500;
+  line-height:1;
   letter-spacing:0.16em;
   text-transform:uppercase;
   color:var(--tinta-media);
@@ -877,12 +971,15 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
   white-space:nowrap;
 }
 .campo-consentimiento{ gap:6px; }
-.consentimiento{
+/* Gana a `.campo label` por especificidad: aquí el texto es discurso, no rótulo */
+.campo .consentimiento{
   display:flex;
   align-items:flex-start;
   gap:12px;
   cursor:pointer;
-  font-size:0.875rem;
+  font-family:var(--tipo);
+  font-size:15px;
+  font-weight:350;
   line-height:1.5;
   letter-spacing:0;
   text-transform:none;
@@ -966,12 +1063,14 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
 @media (min-width:768px){ .footer-grid{ grid-template-columns:2fr 1fr 1fr; } }
 .footer-desc{ margin-top:12px; color:var(--tinta-media); font-size:0.875rem; }
 .footer h4{
-  font-size:0.75rem;
+  font-family:var(--tipo-mono);
+  font-size:11px;
   font-weight:500;
-  letter-spacing:0.16em;
+  line-height:1;
+  letter-spacing:0.22em;
   text-transform:uppercase;
   color:var(--tinta-media);
-  margin-bottom:16px;
+  margin-bottom:18px;
 }
 .footer ul{ list-style:none; display:flex; flex-direction:column; gap:10px; }
 .footer a{
@@ -992,11 +1091,20 @@ h3{ font-weight:600; font-size:clamp(20px,2.4vw,26px); line-height:1.2; }
   flex-wrap:wrap;
   justify-content:space-between;
   gap:16px;
-  font-size:0.8125rem;
+  font-family:var(--tipo-mono);
+  font-size:11px;
+  line-height:1;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
   color:var(--tinta-media);
 }
 .footer-legal nav{ display:flex; gap:24px; }
-.footer-legal a{ color:var(--tinta-media); font-size:0.8125rem; }
+.footer-legal a{
+  color:var(--tinta-media);
+  font-family:var(--tipo-mono);
+  font-size:11px;
+  letter-spacing:0.14em;
+}
 /* TODO: dirección, redes definitivas */
 
 /* ==========================================================================
@@ -1098,7 +1206,10 @@ main, .footer{ position:relative; z-index:2; }
   </div>
   <div class="contenedor hero-contenido">
     <p class="eyebrow revelar"><span class="rombo" aria-hidden="true"></span>Productora audiovisual · 7 años</p>
-    <h1 class="revelar">Hacemos que se vea como cine.</h1>
+    <h1 class="titular revelar">
+      <span class="titular-entrada">Hacemos que</span>
+      <span class="titular-peso">se vea como cine</span>
+    </h1>
     <p class="hero-sub revelar">Real estate, publicidad, videoclips y ficción.</p>
     <div class="hero-ctas revelar">
       <a class="btn btn-primario" href="#contacto">Reservar llamada</a>
@@ -1118,7 +1229,7 @@ main, .footer{ position:relative; z-index:2; }
   <div class="contenedor">
     <div class="seccion-cabecera">
       <p class="eyebrow revelar"><span class="rombo" aria-hidden="true"></span>Real Estate</p>
-      <h2 id="titulo-re" class="revelar">Las casas no se venden solas. Los vídeos, casi.</h2>
+      <h2 id="titulo-re" class="titular-acentuado revelar">Las casas no se venden solas. Los vídeos, casi.</h2>
       <p class="entradilla revelar">Vídeo pensado para mover propiedades: menos adornos, más visitas cualificadas.</p>
     </div>
 
@@ -1173,7 +1284,7 @@ main, .footer{ position:relative; z-index:2; }
   <div class="contenedor">
     <div class="seccion-cabecera">
       <p class="eyebrow revelar"><span class="rombo" aria-hidden="true"></span>Tours 3D · Escaneo</p>
-      <h2 id="titulo-tours" class="revelar">Entra en la casa sin salir de donde estás.</h2>
+      <h2 id="titulo-tours" class="titular-acentuado revelar">Entra en la casa sin salir de donde estás.</h2>
       <p class="entradilla revelar">Escaneamos la propiedad y la convertimos en un recorrido virtual que el comprador explora a su ritmo.</p>
     </div>
 
@@ -1296,7 +1407,7 @@ main, .footer{ position:relative; z-index:2; }
   <div class="contenedor">
     <div class="seccion-cabecera">
       <p class="eyebrow revelar"><span class="rombo" aria-hidden="true"></span>Contacto</p>
-      <h2 id="titulo-contacto" class="revelar">Cuéntanos qué quieres rodar.</h2>
+      <h2 id="titulo-contacto" class="titular-acentuado revelar">Cuéntanos qué quieres rodar.</h2>
     </div>
 
     <div class="contacto-grid">
