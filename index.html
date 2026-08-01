@@ -68,7 +68,7 @@ button{ font:inherit; cursor:pointer; }
   outline-offset:3px;
   border-radius:2px;
 }
-.seccion-clara :focus-visible{ outline-color:var(--superficie-elevada); }
+/* En tinta oscura el foco lo resuelve --acento-proyector redefinido */
 ::selection{ background:var(--acento-proyector); color:var(--superficie-elevada); }
 
 section{ scroll-margin-top:var(--nav-h); }
@@ -182,10 +182,7 @@ h2.titular-acentuado{ line-height:0.94; }
   border-color:var(--linea-hairline);
 }
 .btn-secundario:hover{ border-color:var(--tinta-alta); }
-.seccion-clara .btn-primario{
-  background:var(--superficie-elevada);
-  color:var(--tinta-alta);
-}
+
 
 /* ==========================================================================
    NAV
@@ -341,7 +338,6 @@ h2.titular-acentuado{ line-height:0.94; }
   display:flex;
   align-items:center;
   overflow:hidden;
-  background:transparent;
 }
 /* Canvas Simplex — ahora fallback del vídeo (se activa si el iframe falla) */
 #canvas-grano{
@@ -474,7 +470,8 @@ h2.titular-acentuado{ line-height:0.94; }
 /* ==========================================================================
    REAL ESTATE
    ========================================================================== */
-#real-estate{ background:var(--superficie-elevada); border-top:1px solid var(--linea-hairline); }
+/* Sin background: lo pinta #capa-fondo segun data-estela */
+#real-estate{ border-top:1px solid var(--linea-hairline); }
 .tarjetas-re{
   display:grid;
   gap:1px;
@@ -562,10 +559,7 @@ h2.titular-acentuado{ line-height:0.94; }
 /* ==========================================================================
    TOURS 3D
    ========================================================================== */
-#tours-3d{
-  background:transparent;
-  border-top:1px solid var(--linea-hairline);
-}
+#tours-3d{ border-top:1px solid var(--linea-hairline); }
 
 /* Visor 16:9 simulado */
 .visor{
@@ -638,7 +632,7 @@ h2.titular-acentuado{ line-height:0.94; }
 /* ==========================================================================
    SERVICIOS
    ========================================================================== */
-#servicios{ background:var(--superficie-elevada); border-top:1px solid var(--linea-hairline); }
+#servicios{ border-top:1px solid var(--linea-hairline); }
 .servicios-grid{
   display:grid;
   gap:1px;
@@ -693,7 +687,7 @@ h2.titular-acentuado{ line-height:0.94; }
 /* ==========================================================================
    PORTFOLIO
    ========================================================================== */
-#portfolio{ background:transparent; border-top:1px solid var(--linea-hairline); }
+#portfolio{ border-top:1px solid var(--linea-hairline); }
 .filtros{
   display:flex;
   flex-wrap:wrap;
@@ -842,13 +836,20 @@ h2.titular-acentuado{ line-height:0.94; }
 /* ==========================================================================
    ESTUDIO — única sección clara
    ========================================================================== */
+/* Única sección de tinta oscura. No pinta fondo — el amarillo lo lleva
+   #capa-fondo. Aquí se REDEFINEN los tokens en lugar de sobreescribir color
+   a color: así hereda cualquier componente que entre en la sección después.
+
+   El volteo va en la sección, no en <body>, a propósito: con el volteo en
+   body la nav (barra oscura translúcida, texto claro) se quedaría con texto
+   oscuro sobre fondo oscuro mientras #estudio está activa. */
 #estudio{
-  background:var(--acento-proyector);
-  color:var(--superficie-elevada);
+  --tinta-alta:     #1E1B1A;
+  --tinta-media:    rgba(30,27,26,0.68);
+  --linea-hairline: rgba(30,27,26,0.22);
+  --acento-proyector: #5B32B8;   /* el lila oscuro de su propia estela */
+  color:var(--tinta-alta);
 }
-#estudio .eyebrow{ color:rgba(30,27,26,0.65); }
-#estudio .eyebrow .rombo{ background:var(--superficie-elevada); }
-#estudio h2{ color:var(--superficie-elevada); }
 .estudio-cuerpo{
   margin-top:40px;
   display:grid;
@@ -856,9 +857,10 @@ h2.titular-acentuado{ line-height:0.94; }
 }
 @media (min-width:768px){ .estudio-cuerpo{ grid-template-columns:1fr 1fr; gap:80px; } }
 .estudio-cuerpo p{
-  font-size:clamp(16px,1.8vw,19px);
-  font-weight:400;
-  color:rgba(30,27,26,0.85);
+  font-size:clamp(18px,2vw,22px);
+  font-weight:350;
+  line-height:1.5;
+  color:var(--tinta-media);
   max-width:48ch;
 }
 .estudio-datos{
@@ -866,7 +868,7 @@ h2.titular-acentuado{ line-height:0.94; }
   flex-direction:column;
   gap:28px;
 }
-.dato{ border-top:1px solid rgba(30,27,26,0.25); padding-top:18px; }
+.dato{ border-top:1px solid var(--linea-hairline); padding-top:18px; }
 .dato strong{
   display:block;
   font-family:var(--tipo);
@@ -886,13 +888,13 @@ h2.titular-acentuado{ line-height:0.94; }
   line-height:1;
   letter-spacing:0.16em;
   text-transform:uppercase;
-  color:rgba(30,27,26,0.65);
+  color:var(--tinta-media);
 }
 
 /* ==========================================================================
    CONTACTO
    ========================================================================== */
-#contacto{ background:transparent; }
+/* #contacto no pinta fondo */
 .contacto-grid{
   display:grid;
   gap:56px;
@@ -1052,7 +1054,6 @@ h2.titular-acentuado{ line-height:0.94; }
    FOOTER
    ========================================================================== */
 .footer{
-  background:var(--superficie-elevada);
   border-top:1px solid var(--linea-hairline);
   padding-block:64px 40px;
 }
@@ -1110,6 +1111,17 @@ h2.titular-acentuado{ line-height:0.94; }
 /* ==========================================================================
    REJILLA TÉRMICA GLOBAL + CURSOR — solo desktop (ver JS)
    ========================================================================== */
+/* Tres capas. En V4 el canvas ERA el fondo (opaco, z-index 1, secciones
+   encima con su propio background), por eso la estela desaparecía en cuanto
+   una sección pintaba. Ahora el fondo es una capa aparte y el canvas queda
+   entre el fondo y el contenido: se ve en todas las secciones. */
+#capa-fondo{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  background:var(--negro-profundo);
+  transition:background-color 600ms var(--ease-cine);
+}
 #thermal-canvas{
   position:fixed;
   inset:0;
@@ -1119,6 +1131,13 @@ h2.titular-acentuado{ line-height:0.94; }
   z-index:1;
 }
 main, .footer{ position:relative; z-index:2; }
+/* Sobre el amarillo de #estudio la barra oscura translúcida se queda flotando
+   sin apoyo: se cierra el borde para que tenga filo contra el fondo claro. */
+body.tinta-oscura .nav{
+  background:rgba(18,16,16,0.9);
+  border-bottom-color:rgba(30,27,26,0.35);
+}
+
 /* Cursor nativo oculto solo cuando el cursor personalizado está activo */
 @media (hover: hover){
   body.cursor-activo,
@@ -1144,6 +1163,7 @@ main, .footer{ position:relative; z-index:2; }
 <body>
 
 <!-- Rejilla térmica global — solo desktop, ver JS -->
+<div id="capa-fondo" aria-hidden="true"></div>
 <canvas id="thermal-canvas" aria-hidden="true"></canvas>
 
 <!-- ======================= NAV ======================= -->
@@ -1189,7 +1209,7 @@ main, .footer{ position:relative; z-index:2; }
 <main>
 
 <!-- ======================= HERO ======================= -->
-<section class="hero" aria-label="Presentación">
+<section class="hero" data-estela="amarilla" aria-label="Presentación">
   <!-- TODO: restaurar Simplex si se prefiere textura sobre vídeo (fallback automático si el iframe falla) -->
   <canvas id="canvas-grano" aria-hidden="true" hidden></canvas>
   <div class="hero-video-wrapper" id="hero-video-wrapper">
@@ -1225,7 +1245,7 @@ main, .footer{ position:relative; z-index:2; }
 </section>
 
 <!-- ======================= REAL ESTATE ======================= -->
-<section class="seccion" id="real-estate" aria-labelledby="titulo-re">
+<section class="seccion" id="real-estate" data-estela="amarilla-elevada" aria-labelledby="titulo-re">
   <div class="contenedor">
     <div class="seccion-cabecera">
       <p class="eyebrow revelar"><span class="rombo" aria-hidden="true"></span>Real Estate</p>
@@ -1280,7 +1300,7 @@ main, .footer{ position:relative; z-index:2; }
 </section>
 
 <!-- ======================= TOURS 3D ======================= -->
-<section class="seccion" id="tours-3d" aria-labelledby="titulo-tours">
+<section class="seccion" id="tours-3d" data-estela="lila" aria-labelledby="titulo-tours">
   <div class="contenedor">
     <div class="seccion-cabecera">
       <p class="eyebrow revelar"><span class="rombo" aria-hidden="true"></span>Tours 3D · Escaneo</p>
@@ -1331,7 +1351,7 @@ main, .footer{ position:relative; z-index:2; }
 </section>
 
 <!-- ======================= SERVICIOS ======================= -->
-<section class="seccion" id="servicios" aria-labelledby="titulo-servicios">
+<section class="seccion" id="servicios" data-estela="amarilla-elevada" aria-labelledby="titulo-servicios">
   <div class="contenedor">
     <div class="seccion-cabecera">
       <p class="eyebrow revelar"><span class="rombo" aria-hidden="true"></span>Servicios</p>
@@ -1364,7 +1384,7 @@ main, .footer{ position:relative; z-index:2; }
 </section>
 
 <!-- ======================= PORTFOLIO ======================= -->
-<section class="seccion" id="portfolio" aria-labelledby="titulo-portfolio">
+<section class="seccion" id="portfolio" data-estela="amarilla" aria-labelledby="titulo-portfolio">
   <div class="contenedor">
     <div class="seccion-cabecera">
       <p class="eyebrow revelar"><span class="rombo" aria-hidden="true"></span>Portfolio</p>
@@ -1384,7 +1404,7 @@ main, .footer{ position:relative; z-index:2; }
 </section>
 
 <!-- ======================= ESTUDIO ======================= -->
-<section class="seccion seccion-clara" id="estudio" aria-labelledby="titulo-estudio">
+<section class="seccion" id="estudio" data-estela="lila-sobre-claro" aria-labelledby="titulo-estudio">
   <div class="contenedor">
     <p class="eyebrow revelar"><span class="rombo" aria-hidden="true"></span>El estudio</p>
     <h2 id="titulo-estudio" class="revelar">Cada plano, justificado.</h2>
@@ -1403,7 +1423,7 @@ main, .footer{ position:relative; z-index:2; }
 </section>
 
 <!-- ======================= CONTACTO ======================= -->
-<section class="seccion" id="contacto" aria-labelledby="titulo-contacto">
+<section class="seccion" id="contacto" data-estela="naranja" aria-labelledby="titulo-contacto">
   <div class="contenedor">
     <div class="seccion-cabecera">
       <p class="eyebrow revelar"><span class="rombo" aria-hidden="true"></span>Contacto</p>
@@ -1479,7 +1499,7 @@ main, .footer{ position:relative; z-index:2; }
 </main>
 
 <!-- ======================= FOOTER ======================= -->
-<footer class="footer">
+<footer class="footer" data-estela="amarilla">
   <div class="contenedor">
     <div class="footer-grid">
       <div>
@@ -1750,32 +1770,66 @@ function iniciarSimplex(){
    REJILLA TÉRMICA GLOBAL + CURSOR — un canvas fixed para toda la web
    amarillo por defecto · lila en Tours 3D · solo desktop con cursor
    ========================================================================== */
+/* El mapa vive aquí, en un solo objeto, y no repartido por el CSS. */
+var PALETAS = {
+  "amarilla":         { fondo:"#121010", estela:[241,199,65],  tinta:"clara"  },
+  "amarilla-elevada": { fondo:"#1E1B1A", estela:[241,199,65],  tinta:"clara"  },
+  "lila":             { fondo:"#14131A", estela:[155,109,255], tinta:"clara"  },
+  "lila-sobre-claro": { fondo:"#F1C741", estela:[91,50,184],   tinta:"oscura" },
+  "naranja":          { fondo:"#121010", estela:[229,100,37],  tinta:"clara"  }
+};
+
+/* Color de fondo por sección. Va FUERA del bloque del canvas a propósito:
+   en táctil no hay estela, pero el fondo sí tiene que seguir cambiando. */
+var estelaObjetivo = PALETAS["amarilla"].estela.slice();
+var estelaActual   = PALETAS["amarilla"].estela.slice();
+
 (function(){
-  if(reduceMotion) return;                                    // sin animación
-  if(window.matchMedia("(hover: none)").matches) return;      // sin canvas en touch
+  var capaFondo = document.getElementById("capa-fondo");
+  var zonas = document.querySelectorAll("[data-estela]");
+  if(!capaFondo || !zonas.length) return;
+  var activa = null;
+  var obs = new IntersectionObserver(function(entradas){
+    entradas.forEach(function(e){
+      if(!e.isIntersecting) return;
+      var nombre = e.target.getAttribute("data-estela");
+      var p = PALETAS[nombre];
+      if(!p || nombre === activa) return;
+      activa = nombre;
+      capaFondo.style.backgroundColor = p.fondo;
+      estelaObjetivo = p.estela.slice();
+      document.body.classList.toggle("tinta-oscura", p.tinta === "oscura");
+    });
+  }, { rootMargin: "-45% 0px -45% 0px" });
+  zonas.forEach(function(z){ obs.observe(z); });
+})();
+
+/* ---- Canvas + cursor: solo escritorio con puntero fino y sin reduced-motion ---- */
+(function(){
+  if(reduceMotion) return;
+  if(window.matchMedia("(hover: none)").matches) return;
 
   var canvas = document.getElementById("thermal-canvas");
   if(!canvas) return;
-  var ctx = canvas.getContext("2d", { alpha:false });
-  var RESOLUCION = 28, ENFRIAMIENTO = 0.97;
-  var cols, filas, grid;
-  var raton = { x:-1000, y:-1000, px:-1000, py:-1000, activo:false };
-  var paleta = "amarillo";
+  var ctx = canvas.getContext("2d", { alpha:true });
 
-  // Amarillo: frío #1E1B1A → caliente #F1C741 · Lila: frío #1A1B1E → #9B6DFF
-  function color(t, p){
-    if(p === "amarillo"){
-      return "rgb(" + Math.round(18 + t*223) + "," + Math.round(27 + t*172) + "," + Math.round(26 + t*39) + ")";
-    }
-    return "rgb(" + Math.round(26 + t*129) + "," + Math.round(27 + t*82) + "," + Math.round(30 + t*225) + ")";
-  }
+  var RESOLUCION   = 16;      // celda más pequeña → trazo más fino
+  var ENFRIAMIENTO = 0.93;    // se apaga rápido → rastro nítido
+  var INYECCION    = 0.28;
+  var UMBRAL       = 0.04;
+  var RADIO        = 1;       // de mancha ancha a línea
+
+  var cols, filas, grid;
+  var calientes = new Set();  // solo se recorren estos índices en el render
+  var raton = { x:-1000, y:-1000, px:-1000, py:-1000, activo:false };
 
   function medir(){
-    canvas.width = window.innerWidth;
+    canvas.width  = window.innerWidth;
     canvas.height = window.innerHeight;
-    cols = Math.ceil(canvas.width / RESOLUCION);
+    cols  = Math.ceil(canvas.width  / RESOLUCION);
     filas = Math.ceil(canvas.height / RESOLUCION);
-    grid = new Float32Array(cols * filas);
+    grid  = new Float32Array(cols * filas);
+    calientes.clear();
   }
   window.addEventListener("resize", medir);
   medir();
@@ -1785,86 +1839,76 @@ function iniciarSimplex(){
   });
   document.addEventListener("mouseleave", function(){ raton.activo = false; });
 
-  /* Cursor circular por encima de la rejilla */
+  /* Cursor por encima de la rejilla */
   document.body.classList.add("cursor-activo");
   var cursor = document.createElement("div");
   cursor.id = "cursor-dot";
   cursor.setAttribute("aria-hidden", "true");
-  cursor.style.cssText = "position:fixed;top:0;left:0;width:12px;height:12px;border-radius:50%;border:2px solid #F1C741;pointer-events:none;z-index:9999;transition:border-color 400ms ease, width 150ms ease, height 150ms ease, opacity 200ms ease;will-change:transform;opacity:0;";
+  cursor.style.cssText = "position:fixed;top:0;left:0;width:10px;height:10px;border-radius:50%;border:2px solid #F1C741;pointer-events:none;z-index:9999;transition:border-color 400ms ease,width 150ms ease,height 150ms ease,opacity 200ms ease;will-change:transform;opacity:0;";
   document.body.appendChild(cursor);
 
-  var cx = 0, cy = 0;
-  (function moverCursor(){
-    cx += (raton.x - cx) * 0.14;
-    cy += (raton.y - cy) * 0.14;
-    cursor.style.transform = "translate(" + cx + "px," + cy + "px) translate(-50%,-50%)";
-    cursor.style.opacity = raton.activo ? "1" : "0";
-    requestAnimationFrame(moverCursor);
-  })();
-
-  /* Crece sobre clicables — delegado, cubre también las piezas dinámicas */
   document.addEventListener("mouseover", function(e){
-    var clicable = e.target.closest('a, button, [role="button"]');
-    cursor.style.width = clicable ? "22px" : "12px";
-    cursor.style.height = clicable ? "22px" : "12px";
+    var clicable = e.target.closest('a, button, [role="button"], input, select, textarea');
+    cursor.style.width  = clicable ? "20px" : "10px";
+    cursor.style.height = clicable ? "20px" : "10px";
   });
 
-  /* Cambio de paleta al entrar en Tours 3D */
-  var tours = document.getElementById("tours-3d");
-  if(tours){
-    new IntersectionObserver(function(entradas){
-      entradas.forEach(function(e){
-        paleta = e.isIntersecting ? "lila" : "amarillo";
-        cursor.style.borderColor = paleta === "lila" ? "#9B6DFF" : "#F1C741";
-      });
-    }, { threshold: 0.2 }).observe(tours);
-  }
+  var cx = 0, cy = 0;
 
+  /* Un solo requestAnimationFrame para canvas y cursor. */
   (function bucle(){
-    // Inyección de calor a lo largo del trayecto del cursor
+    requestAnimationFrame(bucle);
+    if(document.hidden) return;              // pestaña oculta: no se pinta
+
+    /* Color de estela: 6% por frame hacia el objetivo. Que el amarillo se
+       vuelva lila en medio segundo, no de un salto. */
+    for(var k = 0; k < 3; k++){
+      estelaActual[k] += (estelaObjetivo[k] - estelaActual[k]) * 0.06;
+    }
+    var R = estelaActual[0]|0, G = estelaActual[1]|0, B = estelaActual[2]|0;
+    cursor.style.borderColor = "rgb(" + R + "," + G + "," + B + ")";
+
+    cx += (raton.x - cx) * 0.18;
+    cy += (raton.y - cy) * 0.18;
+    cursor.style.transform = "translate(" + cx + "px," + cy + "px) translate(-50%,-50%)";
+    cursor.style.opacity = raton.activo ? "1" : "0";
+
+    /* Inyección de calor a lo largo del trayecto del cursor */
     if(raton.activo){
       var dx = raton.x - raton.px, dy = raton.y - raton.py;
-      var dist = Math.sqrt(dx*dx + dy*dy);
-      var pasos = Math.ceil(dist / (RESOLUCION / 2));
+      var pasos = Math.ceil(Math.sqrt(dx*dx + dy*dy) / (RESOLUCION / 2));
       for(var s = 0; s <= pasos; s++){
         var t = pasos > 0 ? s / pasos : 0;
-        var col = Math.floor((raton.px + dx*t) / RESOLUCION);
+        var col  = Math.floor((raton.px + dx*t) / RESOLUCION);
         var fila = Math.floor((raton.py + dy*t) / RESOLUCION);
-        for(var i = -2; i <= 2; i++){
-          for(var j = -2; j <= 2; j++){
+        for(var i = -RADIO; i <= RADIO; i++){
+          for(var j = -RADIO; j <= RADIO; j++){
             var c = col + i, f = fila + j;
             if(c < 0 || c >= cols || f < 0 || f >= filas) continue;
             var d = Math.sqrt(i*i + j*j);
-            if(d > 2) continue;
+            if(d > RADIO) continue;
             var idx = c + f * cols;
-            grid[idx] = Math.min(1, grid[idx] + 0.35 * (1 - d/2));
+            grid[idx] = Math.min(1, grid[idx] + INYECCION * (1 - d/(RADIO+1)));
+            calientes.add(idx);
           }
         }
       }
     }
     raton.px = raton.x; raton.py = raton.y;
 
-    // Render
-    ctx.fillStyle = "#121010";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    for(var f2 = 0; f2 < filas; f2++){
-      for(var c2 = 0; c2 < cols; c2++){
-        var k = c2 + f2 * cols;
-        var temp = grid[k];
-        grid[k] *= ENFRIAMIENTO;
-        if(temp > 0.05){
-          var lado = RESOLUCION * (0.75 + temp * 0.5);
-          var off = (RESOLUCION - lado) / 2;
-          ctx.fillStyle = color(temp, paleta);
-          ctx.fillRect(c2*RESOLUCION + off, f2*RESOLUCION + off, lado, lado);
-        }else if(c2 % 2 === 0 && f2 % 2 === 0){
-          // Estructura fría: gris oscuro en amarillo, azul noche en lila
-          ctx.fillStyle = paleta === "lila" ? "#1a1b2a" : "#1a1a1a";
-          ctx.fillRect(c2*RESOLUCION + RESOLUCION/2 - 1, f2*RESOLUCION + RESOLUCION/2 - 1, 2, 2);
-        }
-      }
-    }
-    requestAnimationFrame(bucle);
+    /* Render: transparente, solo celdas calientes. Nada de estructura fría —
+       sobre el fondo era textura, sobre el contenido sería suciedad. */
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    calientes.forEach(function(idx){
+      var temp = grid[idx];
+      grid[idx] = temp * ENFRIAMIENTO;
+      if(temp <= UMBRAL){ calientes.delete(idx); return; }
+      var c2 = idx % cols, f2 = (idx / cols)|0;
+      var lado = RESOLUCION * (0.55 + temp * 0.45);
+      var off  = (RESOLUCION - lado) / 2;
+      ctx.fillStyle = "rgba(" + R + "," + G + "," + B + "," + temp.toFixed(3) + ")";
+      ctx.fillRect(c2*RESOLUCION + off, f2*RESOLUCION + off, lado, lado);
+    });
   })();
 })();
 
