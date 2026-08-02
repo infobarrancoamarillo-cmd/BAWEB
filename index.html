@@ -704,9 +704,14 @@ h2.titular-acentuado{ line-height:0.94; }
   overflow:hidden;
   display:flex;
   flex-direction:column;
-  justify-content:center;
-  gap:36px;
-  padding-block:calc(var(--nav-h) + 24px) 32px;
+  /* flex-start, no center: con center, si el contenido no cabe se desborda
+     por ARRIBA y la cabecera se mete debajo de la nav. Con flex-start la
+     cabecera queda anclada y es la pista la que se centra en el hueco que
+     sobra, gracias a su margin-block:auto. */
+  justify-content:flex-start;
+  gap:32px;
+  padding-block:calc(var(--nav-h) + 24px) 28px;
+  --alto-marco:clamp(190px, calc(100vh - 500px), 620px);
 }
 .portfolio-cabecera{ flex:none; }
 .portfolio-cabecera h2{ margin-top:20px; }
@@ -743,25 +748,36 @@ h2.titular-acentuado{ line-height:0.94; }
   align-items:flex-start;
   gap:32px;
   padding-inline:9vw;
+  /* Ocupa el hueco que deja la cabecera y le pasa esa altura a las piezas:
+     así el marco se dimensiona desde el espacio REAL disponible, en vez de
+     desde un vh adivinado que se pasa en pantallas bajas. */
   flex:none;
+  margin-block:auto;     /* se centra en el hueco que deja la cabecera */
   will-change:transform;
 }
 /* El ancho se acota también por altura: con 62vw a secas, en pantallas
    apaisadas y bajas el marco 16:9 no cabe en la pantalla sticky. */
 .pieza{
+  /* La anchura se deriva de la altura disponible, no al revés: dimensionar
+     el marco desde el flex crea una circularidad (la pista mide según su
+     contenido y el contenido según la pista) que se resuelve en dos pasadas
+     y da un salto al cargar. --alto-marco es el hueco que queda tras la
+     cabecera, la ficha y el contador. */
   flex:0 0 auto;
-  width:min(62vw, calc(52vh * 16 / 9));
+  width:min(62vw, calc(var(--alto-marco) * 16 / 9));
+  display:flex;
+  flex-direction:column;
   background:transparent;
   border:none;
   padding:0;
   text-align:left;
   color:inherit;
-  display:block;
 }
 .pieza[hidden]{ display:none; }
 .pieza-marco{
   position:relative;
   aspect-ratio:16/9;
+  flex:none;
   overflow:hidden;
   border:1px solid var(--linea-hairline);
   background:var(--superficie-elevada);
@@ -827,7 +843,7 @@ h2.titular-acentuado{ line-height:0.94; }
 }
 
 /* Ficha: dos líneas y nada más. El resto vive en el lightbox. */
-.pieza-info{ margin-top:18px; }
+.pieza-info{ flex:none; margin-top:18px; }
 .pieza-info h3{
   font-family:var(--tipo);
   font-weight:700;
