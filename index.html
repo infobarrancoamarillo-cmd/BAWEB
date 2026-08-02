@@ -687,12 +687,35 @@ h2.titular-acentuado{ line-height:0.94; }
 /* ==========================================================================
    PORTFOLIO
    ========================================================================== */
-#portfolio{ border-top:1px solid var(--linea-hairline); }
+/* --------------------------------------------------------------------------
+   PORTFOLIO — raíl horizontal cinemático.
+   La sección es la pista de scroll; dentro, un bloque sticky de una pantalla
+   por el que el raíl se desplaza en horizontal. Ver el JS para la matemática.
+   -------------------------------------------------------------------------- */
+#portfolio{
+  border-top:1px solid var(--linea-hairline);
+  padding-block:0;
+}
+.portfolio-sticky{
+  position:sticky;
+  top:0;
+  height:100vh;
+  height:100svh;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:36px;
+  padding-block:calc(var(--nav-h) + 24px) 32px;
+}
+.portfolio-cabecera{ flex:none; }
+.portfolio-cabecera h2{ margin-top:20px; }
+
 .filtros{
   display:flex;
   flex-wrap:wrap;
   gap:10px;
-  margin-bottom:48px;
+  margin-top:28px;
 }
 .chip{
   min-height:44px;
@@ -714,19 +737,26 @@ h2.titular-acentuado{ line-height:0.94; }
   border-color:var(--acento-proyector);
   color:var(--superficie-elevada);
 }
-.grid-portfolio{
-  display:grid;
-  gap:28px;
+
+.pista{
+  display:flex;
+  align-items:flex-start;
+  gap:32px;
+  padding-inline:9vw;
+  flex:none;
+  will-change:transform;
 }
-@media (min-width:768px){ .grid-portfolio{ grid-template-columns:1fr 1fr; gap:32px; } }
+/* El ancho se acota también por altura: con 62vw a secas, en pantallas
+   apaisadas y bajas el marco 16:9 no cabe en la pantalla sticky. */
 .pieza{
+  flex:0 0 auto;
+  width:min(62vw, calc(52vh * 16 / 9));
   background:transparent;
   border:none;
   padding:0;
   text-align:left;
   color:inherit;
   display:block;
-  width:100%;
 }
 .pieza[hidden]{ display:none; }
 .pieza-marco{
@@ -736,6 +766,11 @@ h2.titular-acentuado{ line-height:0.94; }
   border:1px solid var(--linea-hairline);
   background:var(--superficie-elevada);
 }
+.pieza:focus-visible{ outline:none; }
+.pieza:focus-visible .pieza-marco{
+  outline:2px solid var(--acento-proyector);
+  outline-offset:3px;
+}
 .pieza-marco img{
   width:100%;
   height:100%;
@@ -744,6 +779,16 @@ h2.titular-acentuado{ line-height:0.94; }
 }
 .pieza:hover .pieza-marco img,
 .pieza:focus-visible .pieza-marco img{ transform:scale(1.03); }
+/* Preview en hover: el iframe ocupa el marco por encima del póster */
+.pieza-marco iframe{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:0;
+  z-index:2;
+  pointer-events:none;
+}
 .pieza-velo{
   position:absolute;
   inset:0;
@@ -758,7 +803,11 @@ h2.titular-acentuado{ line-height:0.94; }
   display:flex;
   align-items:center;
   justify-content:center;
+  z-index:3;
+  transition:opacity 250ms var(--ease-cine);
 }
+.pieza.con-preview .pieza-play,
+.pieza.con-preview .pieza-velo{ opacity:0; }
 .pieza-play span{
   width:64px; height:64px;
   display:inline-flex;
@@ -776,11 +825,20 @@ h2.titular-acentuado{ line-height:0.94; }
   border-color:var(--acento-proyector);
   color:var(--superficie-elevada);
 }
-.pieza-info{ margin-top:16px; display:flex; align-items:baseline; justify-content:space-between; gap:16px; }
-.pieza-info h3{ font-size:clamp(19px,2.2vw,24px); }
-.pieza-info p{ margin-top:4px; color:var(--tinta-media); font-size:0.875rem; }
-.pieza-etiqueta{
-  flex:none;
+
+/* Ficha: dos líneas y nada más. El resto vive en el lightbox. */
+.pieza-info{ margin-top:18px; }
+.pieza-info h3{
+  font-family:var(--tipo);
+  font-weight:700;
+  font-size:clamp(19px,2.2vw,26px);
+  line-height:1.05;
+  letter-spacing:-0.02em;
+  text-transform:uppercase;
+}
+@supports (font-stretch: 118%){ .pieza-info h3{ font-stretch:118%; } }
+.pieza-info p{
+  margin-top:8px;
   font-family:var(--tipo-mono);
   font-size:11px;
   font-weight:400;
@@ -788,8 +846,44 @@ h2.titular-acentuado{ line-height:0.94; }
   letter-spacing:0.16em;
   text-transform:uppercase;
   color:var(--tinta-media);
-  border:1px solid var(--linea-hairline);
-  padding:8px 12px;
+}
+
+.portfolio-progreso{
+  flex:none;
+  font-family:var(--tipo-mono);
+  font-size:11px;
+  font-weight:500;
+  line-height:1;
+  letter-spacing:0.22em;
+  color:var(--tinta-media);
+}
+.portfolio-progreso span:first-child{ color:var(--acento-proyector); }
+
+/* Móvil: se abandona el sticky. Carrusel nativo con snap — más fiable y
+   más rápido que emular el raíl con JS en táctil. */
+@media (max-width:900px){
+  #portfolio{ height:auto !important; padding-block:110px; }
+  .portfolio-sticky{
+    position:static;
+    height:auto;
+    overflow:visible;
+    padding-block:0;
+    gap:28px;
+  }
+  .pista{
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    padding-inline:6vw;
+    padding-bottom:8px;
+    transform:none !important;
+  }
+  .pieza{
+    flex:0 0 86vw;
+    width:86vw;
+    scroll-snap-align:center;
+  }
+  .portfolio-progreso{ display:none; }
 }
 
 /* Lightbox */
@@ -1385,21 +1479,24 @@ body.tinta-oscura .nav{
 
 <!-- ======================= PORTFOLIO ======================= -->
 <section class="seccion" id="portfolio" data-estela="amarilla" aria-labelledby="titulo-portfolio">
-  <div class="contenedor">
-    <div class="seccion-cabecera">
+  <div class="portfolio-sticky">
+    <div class="contenedor portfolio-cabecera">
       <p class="eyebrow revelar"><span class="rombo" aria-hidden="true"></span>Portfolio</p>
       <h2 id="titulo-portfolio" class="revelar">El trabajo habla.</h2>
+      <div class="filtros revelar" role="group" aria-label="Filtrar portfolio por categoría">
+        <button class="chip activo" data-filtro="todo">Todo</button>
+        <button class="chip" data-filtro="ficcion">Ficción</button>
+        <button class="chip" data-filtro="documental">Documental</button>
+        <button class="chip" data-filtro="musica">Música en vivo</button>
+        <button class="chip" data-filtro="festival">Festival</button>
+      </div>
     </div>
 
-    <div class="filtros revelar" role="group" aria-label="Filtrar portfolio por categoría">
-      <button class="chip activo" data-filtro="todo">Todo</button>
-      <button class="chip" data-filtro="ficcion">Ficción</button>
-      <button class="chip" data-filtro="documental">Documental</button>
-      <button class="chip" data-filtro="musica">Música en vivo</button>
-      <button class="chip" data-filtro="festival">Festival</button>
-    </div>
+    <div class="pista" id="pista"></div>
 
-    <div class="grid-portfolio" id="grid-portfolio"></div>
+    <p class="contenedor portfolio-progreso" aria-hidden="true">
+      <span id="pieza-actual">01</span> / <span id="pieza-total">08</span>
+    </p>
   </div>
 </section>
 
@@ -1566,6 +1663,19 @@ var CAL_LINK      = "";   // p. ej. "barrancoamarillo/llamada-20min"  (cal.com)
 var WEB3FORMS_KEY = "";   // access key de web3forms.com
 
 var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ==========================================================================
+   BUCLE ÚNICO — canvas, cursor y raíl del portfolio comparten frame.
+   Nada de rAF sueltos por el archivo, y nada de pintar en un listener de
+   scroll. Se detiene solo cuando la pestaña no está visible.
+   ========================================================================== */
+var tareasFrame = [];
+function alFrame(fn){ tareasFrame.push(fn); }
+(function bucleGlobal(){
+  requestAnimationFrame(bucleGlobal);
+  if(document.hidden) return;
+  for(var i = 0; i < tareasFrame.length; i++) tareasFrame[i]();
+})();
 
 /* ---------- NAV: scroll, hamburguesa, sección activa ---------- */
 var nav = document.getElementById("nav");
@@ -1855,11 +1965,7 @@ var estelaActual   = PALETAS["amarilla"].estela.slice();
 
   var cx = 0, cy = 0;
 
-  /* Un solo requestAnimationFrame para canvas y cursor. */
-  (function bucle(){
-    requestAnimationFrame(bucle);
-    if(document.hidden) return;              // pestaña oculta: no se pinta
-
+  alFrame(function(){
     /* Color de estela: 6% por frame hacia el objetivo. Que el amarillo se
        vuelva lila en medio segundo, no de un salto. */
     for(var k = 0; k < 3; k++){
@@ -1909,7 +2015,7 @@ var estelaActual   = PALETAS["amarilla"].estela.slice();
       ctx.fillStyle = "rgba(" + R + "," + G + "," + B + "," + temp.toFixed(3) + ")";
       ctx.fillRect(c2*RESOLUCION + off, f2*RESOLUCION + off, lado, lado);
     });
-  })();
+  });
 })();
 
 /* ==========================================================================
@@ -1926,27 +2032,39 @@ var PORTFOLIO = [
   { id: "zwEpptfxsuQ",  titulo: "Sunset Roll",          categoria: "festival",   etiqueta: "Festival",       sub: "Aftermovie · Festival completo" }
 ];
 
-var gridEl = document.getElementById("grid-portfolio");
-PORTFOLIO.forEach(function(pieza){
+var pista        = document.getElementById("pista");
+var seccionPort  = document.getElementById("portfolio");
+var contador     = document.getElementById("pieza-actual");
+var totalEl      = document.getElementById("pieza-total");
+var esMovil      = window.matchMedia("(max-width:900px)");
+var sinHover     = window.matchMedia("(hover: none)");
+
+totalEl.textContent = String(PORTFOLIO.length).padStart(2, "0");
+
+/* --- Construcción de las piezas ---
+   OJO: uno de los IDs empieza por guion (-9ta4nxsNxk). Nunca puede usarse
+   como id de elemento ni como clase: rompe cualquier selector CSS. Va
+   siempre en un atributo de datos y se lee con getAttribute. */
+PORTFOLIO.forEach(function(pieza, indice){
   var btn = document.createElement("button");
   btn.type = "button";
   btn.className = "pieza revelar";
   btn.setAttribute("data-categoria", pieza.categoria);
-  // Ojo: hay un ID que empieza por guion (-9ta4nxsNxk) — siempre via dataset/setAttribute
-  btn.setAttribute("data-video", pieza.id);
+  btn.setAttribute("data-yt", pieza.id);
+  btn.setAttribute("data-indice", String(indice));
   btn.setAttribute("aria-label", "Reproducir: " + pieza.titulo);
 
   var img = document.createElement("img");
   img.src = "https://i.ytimg.com/vi/" + pieza.id + "/maxresdefault.jpg";
   img.alt = "Fotograma de " + pieza.titulo;
-  img.loading = "lazy";
+  if(indice > 0) img.loading = "lazy";
   function usarFallback(){
     img.removeEventListener("error", usarFallback);
     img.removeEventListener("load", comprobarPlaceholder);
     img.src = "https://i.ytimg.com/vi/" + pieza.id + "/hqdefault.jpg";
   }
   function comprobarPlaceholder(){
-    // maxresdefault inexistente puede responder 200 con un placeholder de 120x90
+    // maxresdefault inexistente puede responder 200 con un placeholder 120x90
     if(img.naturalWidth < 320) usarFallback();
   }
   img.addEventListener("error", usarFallback);
@@ -1967,41 +2085,162 @@ PORTFOLIO.forEach(function(pieza){
 
   var info = document.createElement("div");
   info.className = "pieza-info";
-  var textos = document.createElement("div");
   var h3 = document.createElement("h3"); h3.textContent = pieza.titulo;
-  var p = document.createElement("p"); p.textContent = pieza.sub;
-  textos.appendChild(h3); textos.appendChild(p);
-  var tag = document.createElement("span");
-  tag.className = "pieza-etiqueta"; tag.textContent = pieza.etiqueta;
-  info.appendChild(textos); info.appendChild(tag);
+  var p  = document.createElement("p");  p.textContent  = pieza.etiqueta + " · " + pieza.sub;
+  info.appendChild(h3); info.appendChild(p);
 
   btn.appendChild(marco);
   btn.appendChild(info);
-  gridEl.appendChild(btn);
+  pista.appendChild(btn);
 
-  if(reduceMotion){ btn.classList.add("visible"); }
+  if(reduceMotion) btn.classList.add("visible");
 });
 
-// Observa las piezas recién creadas para el reveal
+var piezas = [].slice.call(pista.querySelectorAll(".pieza"));
+
 if(!reduceMotion){
   var obsPiezas = new IntersectionObserver(function(entradas){
     entradas.forEach(function(e){
       if(e.isIntersecting){ e.target.classList.add("visible"); obsPiezas.unobserve(e.target); }
     });
   }, { threshold: 0.1 });
-  gridEl.querySelectorAll(".pieza").forEach(function(el){ obsPiezas.observe(el); });
+  piezas.forEach(function(el){ obsPiezas.observe(el); });
 }
 
-/* Filtros */
+/* ==========================================================================
+   RAÍL — la sección es la pista de scroll vertical; el bloque sticky de una
+   pantalla traduce ese scroll en desplazamiento horizontal.
+
+   FACTOR 0.6: el raíl avanza ~1,7x más rápido que el scroll. A 1:1 estas
+   ocho piezas exigirían unos 6.000px de scroll, demasiado.
+   ========================================================================== */
+var FACTOR = 0.6;
+
+function recorridoRail(){
+  return Math.max(0, pista.scrollWidth - window.innerWidth);
+}
+function recalcular(){
+  if(esMovil.matches){
+    seccionPort.style.height = "";
+    pista.style.transform = "";
+    return;
+  }
+  seccionPort.style.height = (window.innerHeight + recorridoRail() * FACTOR) + "px";
+}
+
+function progreso(){
+  var recorribleY = seccionPort.offsetHeight - window.innerHeight;
+  if(recorribleY <= 0) return 0;
+  var r = seccionPort.getBoundingClientRect();
+  return Math.min(1, Math.max(0, -r.top / recorribleY));
+}
+
+var ultimoP = -1;
+function pintarRail(){
+  if(esMovil.matches) return;
+  var r = seccionPort.getBoundingClientRect();
+  // Fuera de pantalla no se toca nada
+  if(r.bottom < 0 || r.top > window.innerHeight) return;
+  var p = progreso();
+  if(p === ultimoP) return;
+  ultimoP = p;
+  pista.style.transform = "translate3d(" + (-p * recorridoRail()) + "px,0,0)";
+  var n = Math.min(piezas.length, Math.floor(p * piezas.length) + 1);
+  contador.textContent = String(n).padStart(2, "0");
+}
+alFrame(pintarRail);
+
+window.addEventListener("resize", function(){ recalcular(); ultimoP = -1; });
+esMovil.addEventListener("change", function(){ recalcular(); ultimoP = -1; });
+window.addEventListener("load", recalcular);
+recalcular();
+
+/* La posición del raíl se deriva de dónde empieza la sección. Si algo por
+   encima cambia de alto después (una fuente que carga, una imagen sin
+   dimensiones, el iframe del hero), la sección se desplaza y el raíl se va
+   con ella. Se vigila el layout y, si hay una pieza enfocada, se recentra. */
+if(window.ResizeObserver){
+  var reajustando = false;
+  var ro = new ResizeObserver(function(){
+    if(reajustando) return;
+    reajustando = true;
+    requestAnimationFrame(function(){
+      reajustando = false;
+      recalcular();
+      ultimoP = -1;
+      var enfocada = document.activeElement && document.activeElement.closest
+        ? document.activeElement.closest(".pieza") : null;
+      if(enfocada && pista.contains(enfocada) && !esMovil.matches) centrarPieza(enfocada);
+    });
+  });
+  ro.observe(document.body);
+  ro.observe(pista);
+}
+
+/* ==========================================================================
+   PREVIEW EN HOVER — un único iframe vivo en toda la página.
+   400ms de retardo para no instanciar nada al pasar el ratón de largo.
+   ========================================================================== */
+var previewActiva = null, temporizador = null;
+
+function quitarPreview(){
+  if(temporizador){ clearTimeout(temporizador); temporizador = null; }
+  if(!previewActiva) return;
+  var marco = previewActiva.querySelector(".pieza-marco");
+  var ifr = marco && marco.querySelector("iframe");
+  if(ifr) marco.removeChild(ifr);
+  previewActiva.classList.remove("con-preview");
+  previewActiva = null;
+}
+
+function ponerPreview(pieza){
+  quitarPreview();                       // nunca más de un iframe vivo
+  var id = pieza.getAttribute("data-yt");
+  var marco = pieza.querySelector(".pieza-marco");
+  if(!marco) return;
+  var ifr = document.createElement("iframe");
+  ifr.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(id) +
+    "?autoplay=1&mute=1&controls=0&loop=1&playlist=" + encodeURIComponent(id) +
+    "&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&playsinline=1";
+  ifr.setAttribute("tabindex", "-1");
+  ifr.setAttribute("aria-hidden", "true");
+  ifr.title = "Vista previa";
+  ifr.allow = "autoplay; encrypted-media";
+  marco.appendChild(ifr);
+  pieza.classList.add("con-preview");
+  previewActiva = pieza;
+}
+
+if(!reduceMotion && !sinHover.matches){
+  piezas.forEach(function(pieza){
+    pieza.addEventListener("mouseenter", function(){
+      if(temporizador) clearTimeout(temporizador);
+      temporizador = setTimeout(function(){ ponerPreview(pieza); }, 400);
+    });
+    pieza.addEventListener("mouseleave", quitarPreview);
+  });
+}
+
+/* ==========================================================================
+   FILTROS — al cambiar, el ancho de pista cambia y la altura de sección
+   tiene que seguirlo, o el scroll se descuadra.
+   ========================================================================== */
 var chips = document.querySelectorAll(".chip");
 function aplicarFiltro(filtro){
+  quitarPreview();
   chips.forEach(function(ch){
     ch.classList.toggle("activo", ch.getAttribute("data-filtro") === filtro);
   });
-  gridEl.querySelectorAll(".pieza").forEach(function(pz){
+  var visibles = 0;
+  piezas.forEach(function(pz){
     var coincide = (filtro === "todo") || (pz.getAttribute("data-categoria") === filtro);
     pz.hidden = !coincide;
+    if(coincide) visibles++;
   });
+  totalEl.textContent = String(visibles).padStart(2, "0");
+  pista.scrollLeft = 0;
+  recalcular();
+  ultimoP = -1;
 }
 chips.forEach(function(ch){
   ch.addEventListener("click", function(){ aplicarFiltro(ch.getAttribute("data-filtro")); });
@@ -2012,6 +2251,74 @@ document.querySelectorAll(".servicio").forEach(function(sv){
   sv.addEventListener("click", function(){
     aplicarFiltro(sv.getAttribute("data-filtro") || "todo");
   });
+});
+
+/* ==========================================================================
+   TECLADO — un raíl gobernado por scroll deja fuera al tabulador si no se
+   le lleva. Al enfocar una pieza, se desplaza la página hasta centrarla.
+   ========================================================================== */
+function centrarPieza(pieza){
+  var recorrido = recorridoRail();
+  if(recorrido <= 0) return;
+  // Centro de la pieza dentro de la pista, en coordenadas sin desplazar:
+  // offsetLeft no se ve afectado por el transform, que es justo lo que hace falta.
+  var centro = pieza.offsetLeft + pieza.offsetWidth / 2;
+  var pObjetivo = Math.min(1, Math.max(0, (centro - window.innerWidth / 2) / recorrido));
+  var destino = seccionPort.offsetTop + pObjetivo * (seccionPort.offsetHeight - window.innerHeight);
+  // Corta cualquier desplazamiento suave todavía en vuelo (un enlace del menú
+  // pulsado hace un instante): si no, esa animación sigue su curso y pisa a
+  // esta posición.
+  window.scrollTo({ top: window.scrollY, behavior: "instant" });
+  // "instant", no "auto": en scrollTo, behavior:"auto" significa "usa el
+  // scroll-behavior del CSS" — que aquí es smooth — y un desplazamiento
+  // suave compite con el scroll que el navegador dispara al enfocar, y pierde.
+  window.scrollTo({ top: destino, behavior: "instant" });
+}
+
+/* Al enfocar, el navegador intenta traer el elemento a la vista por su
+   cuenta. Como el raíl está desplazado con transform, la pieza enfocada
+   queda geométricamente fuera del viewport y ese scroll automático manda la
+   página al final del documento. Y ocurre DESPUÉS de nuestros manejadores,
+   así que no basta con corregir a posteriori: hay que evitarlo.
+
+   Se intercepta el tabulador siempre que el destino sea una pieza —entrada
+   al raíl, recorrido y salida— y se enfoca con preventScroll. */
+var SELECTOR_FOCO = 'a[href], button:not([disabled]), input:not([disabled]),' +
+  ' select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+function focusablesVisibles(){
+  return [].slice.call(document.querySelectorAll(SELECTOR_FOCO)).filter(function(el){
+    return el.offsetParent !== null || el === document.activeElement;
+  });
+}
+
+document.addEventListener("keydown", function(ev){
+  if(ev.key !== "Tab" || ev.altKey || ev.ctrlKey || ev.metaKey) return;
+  if(esMovil.matches) return;
+  if(!lightbox.hidden) return;                  // el lightbox atrapa su propio foco
+
+  var lista = focusablesVisibles();
+  var i = lista.indexOf(document.activeElement);
+  if(i === -1) return;
+  var destino = lista[i + (ev.shiftKey ? -1 : 1)];
+  if(!destino || !pista.contains(destino)) return;   // solo si vamos a caer en el raíl
+
+  ev.preventDefault();
+  destino.focus({ preventScroll: true });
+  centrarPieza(destino.closest(".pieza") || destino);
+});
+
+/* Red de seguridad para el foco por programa (donde no hay tecla que
+   interceptar): se reafirma la posición durante unos frames, porque el
+   scroll automático del navegador puede llegar después. */
+pista.addEventListener("focusin", function(ev){
+  var pieza = ev.target.closest(".pieza");
+  if(!pieza || esMovil.matches) return;
+  var frames = 0;
+  (function reafirmar(){
+    centrarPieza(pieza);
+    if(++frames < 12) requestAnimationFrame(reafirmar);
+  })();
 });
 
 /* Lightbox — iframe creado al clic, destruido al cerrar */
@@ -2036,12 +2343,20 @@ function cerrarLightbox(){
   lbVideo.innerHTML = ""; // destruye el iframe → corta el audio
   lightbox.hidden = true;
   document.body.style.overflow = "";
-  if(origenFoco){ origenFoco.focus(); origenFoco = null; }
+  if(origenFoco){
+    // preventScroll: devolver el foco a una pieza del raíl dispararía el
+    // scroll automático del navegador y la página daría un salto.
+    origenFoco.focus({ preventScroll: true });
+    var pieza = origenFoco.closest ? origenFoco.closest(".pieza") : null;
+    if(pieza && pista.contains(pieza) && !esMovil.matches) centrarPieza(pieza);
+    origenFoco = null;
+  }
 }
-gridEl.addEventListener("click", function(ev){
+pista.addEventListener("click", function(ev){
   var pieza = ev.target.closest(".pieza");
   if(!pieza) return;
-  abrirLightbox(pieza.getAttribute("data-video"), pieza);
+  quitarPreview();                    // el preview y el lightbox no conviven
+  abrirLightbox(pieza.getAttribute("data-yt"), pieza);
 });
 lbCerrar.addEventListener("click", cerrarLightbox);
 lightbox.addEventListener("click", function(ev){
