@@ -1562,11 +1562,8 @@ body.tinta-oscura .nav{
       <div class="contacto-col revelar">
         <h3>Escríbenos</h3>
         <p>Respondemos en menos de 24 horas laborables.</p>
-        <form class="formulario" id="form-contacto" action="https://api.web3forms.com/submit" method="POST" novalidate>
-          <input type="hidden" name="access_key" id="f-access-key" value="">
-          <input type="hidden" name="subject" value="Nuevo lead — barrancoamarillo.com">
-          <input type="hidden" name="from_name" value="Web Barranco Amarillo">
-          <input type="checkbox" name="botcheck" class="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <form class="formulario" id="form-contacto" novalidate>
+          <input type="checkbox" name="botcheck" id="f-botcheck" class="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
           <div class="campo">
             <label for="f-nombre">Nombre</label>
             <input type="text" id="f-nombre" name="nombre" autocomplete="name" required>
@@ -1676,9 +1673,78 @@ body.tinta-oscura .nav{
    la agenda y el formulario. No hay más sitios donde cambiarlos.
    ========================================================================== */
 var CAL_LINK      = "";   // p. ej. "barrancoamarillo/llamada-20min"  (cal.com)
-var WEB3FORMS_KEY = "";   // access key de web3forms.com
+
+/* Supabase (BAOPS). La anon key es pública por diseño: viaja en el navegador.
+   Lo que protege la base de datos es la RLS, que a anon solo le deja insertar
+   en `leads` y leer la vista `v_portfolio_publico`. La service_role key no
+   aparece aquí jamás. */
+var SUPABASE_URL  = "";   // https://xxxxxxxx.supabase.co
+var SUPABASE_ANON = "";   // anon key
 
 var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ==========================================================================
+   LEADS — todo lo que entra por la web acaba en la tabla `leads` de Supabase,
+   que es lo que lee el panel. Una sola función para el formulario, la agenda
+   y WhatsApp: si mañana cambia el backend, se cambia aquí y en ningún sitio más.
+   ========================================================================== */
+function hayBackend(){ return !!(SUPABASE_URL && SUPABASE_ANON); }
+
+function enviarLead(datos){
+  // Honeypot: el campo trampa relleno es un bot. Se le contesta que sí y no
+  // se envía nada.
+  if(datos._hp) return Promise.resolve({ ok: true, bot: true });
+  if(!hayBackend()) return Promise.resolve({ ok: false, sinBackend: true });
+
+  var params = new URLSearchParams(location.search);
+
+  return fetch(SUPABASE_URL + "/rest/v1/leads", {
+    method: "POST",
+    headers: {
+      "apikey": SUPABASE_ANON,
+      "Authorization": "Bearer " + SUPABASE_ANON,
+      "Content-Type": "application/json",
+      "Prefer": "return=minimal"
+    },
+    body: JSON.stringify({
+      nombre: datos.nombre,
+      email: datos.email || null,
+      telefono: datos.telefono || null,
+      tipo_proyecto: datos.tipoProyecto || null,
+      mensaje: datos.mensaje || null,
+      franja_preferida: datos.franja || null,
+      origen: datos.origen || "formulario_contacto",
+      pagina_origen: datos.seccion || null,
+      referrer: document.referrer || null,
+      utm_source: params.get("utm_source")
+    })
+  }).then(function(res){
+    return { ok: res.ok, status: res.status };
+  }).catch(function(){
+    return { ok: false, red: true };
+  });
+}
+
+/* Un clic en WhatsApp no trae nombre ni email, pero sí dice que alguien salió
+   de la web a escribir. Se registra una vez por sesión —no en cada clic— para
+   que la bandeja del panel no se llene de ruido, y Carlos pueda cruzar el
+   mensaje que le entra con la sección desde la que salió. */
+function registrarSalidaWhatsapp(origen, seccion){
+  if(!hayBackend()) return;
+  var marca = "ba-wa-" + origen;
+  try{
+    if(sessionStorage.getItem(marca)) return;
+    sessionStorage.setItem(marca, "1");
+  }catch(e){ /* modo privado sin storage: se registra igual */ }
+
+  enviarLead({
+    nombre: "Contacto por WhatsApp",
+    mensaje: "Salió de la web hacia WhatsApp. Sin datos de contacto: el " +
+             "mensaje entra por WhatsApp, esta ficha solo dice de dónde viene.",
+    origen: origen,
+    seccion: seccion
+  });
+}
 
 /* ==========================================================================
    BUCLE ÚNICO — canvas, cursor y raíl del portfolio comparten frame.
@@ -2037,7 +2103,11 @@ var estelaActual   = PALETAS["amarilla"].estela.slice();
 /* ==========================================================================
    PORTFOLIO — grid, filtros, lightbox
    ========================================================================== */
-var PORTFOLIO = [
+/* El portfolio lo manda la base de datos (vista v_portfolio_publico, que solo
+   expone columnas inocuas: nunca la tabla `producciones`, que lleva precios).
+   Este array es la red: si Supabase no contesta —o todavía no está
+   configurado— la web enseña exactamente lo mismo que enseñaba antes. */
+var PORTFOLIO_FALLBACK = [
   { id: "snjU4GVItZ4",  titulo: "Por la Victoria",      categoria: "ficcion",    etiqueta: "Ficción",        sub: "Cortometraje · Barranco Amarillo" },
   { id: "Aw8yax0awz8",  titulo: "Aprendiendo a ver",    categoria: "documental", etiqueta: "Documental",     sub: "Documental · Barranco Amarillo" },
   { id: "3Z0uXsxeu4M",  titulo: "Eso que no decimos",   categoria: "ficcion",    etiqueta: "Ficción",        sub: "Cortometraje · Barranco Amarillo" },
@@ -2047,6 +2117,61 @@ var PORTFOLIO = [
   { id: "AGacB0lB9fk",  titulo: "Anakena",              categoria: "musica",     etiqueta: "Música en vivo", sub: "Resumen de concierto" },
   { id: "zwEpptfxsuQ",  titulo: "Sunset Roll",          categoria: "festival",   etiqueta: "Festival",       sub: "Aftermovie · Festival completo" }
 ];
+
+/* La etiqueta visible se deduce de la categoría: en la base de datos solo se
+   guarda `categoria_web`, que es lo que Carlos elige en el panel. */
+var ETIQUETAS = {
+  ficcion:    "Ficción",
+  documental: "Documental",
+  musica:     "Música en vivo",
+  festival:   "Festival"
+};
+
+function normalizarPiezas(filas){
+  return filas
+    .filter(function(f){ return f.youtube_id && f.titulo; })
+    .map(function(f){
+      var cat = f.categoria_web || "otro";
+      return {
+        id: f.youtube_id,
+        titulo: f.titulo,
+        categoria: cat,
+        etiqueta: ETIQUETAS[cat] || "Producción",
+        sub: f.descripcion_servicio || ""
+      };
+    });
+}
+
+/* Se le da a la base de datos un margen corto y se sigue adelante: más vale
+   el portfolio de siempre al instante que una sección en blanco esperando. */
+function cargarPortfolio(){
+  if(!hayBackend()) return Promise.resolve(PORTFOLIO_FALLBACK);
+
+  var aborto = new AbortController();
+  var reloj = setTimeout(function(){ aborto.abort(); }, 2500);
+
+  return fetch(SUPABASE_URL + "/rest/v1/v_portfolio_publico?select=*", {
+    headers: { "apikey": SUPABASE_ANON, "Authorization": "Bearer " + SUPABASE_ANON },
+    signal: aborto.signal
+  })
+  .then(function(res){
+    if(!res.ok) throw new Error("respuesta " + res.status);
+    return res.json();
+  })
+  .then(function(filas){
+    var piezas = normalizarPiezas(filas || []);
+    return piezas.length ? piezas : PORTFOLIO_FALLBACK;
+  })
+  .catch(function(){ return PORTFOLIO_FALLBACK; })
+  .then(function(piezas){ clearTimeout(reloj); return piezas; });
+}
+
+cargarPortfolio().then(montarPortfolio);
+
+/* Todo el portfolio —raíl, filtros, preview, lightbox— se monta de una vez
+   cuando se sabe qué piezas hay. Antes esto corría suelto en el módulo; ahora
+   vive dentro de esta función y no cambia ni una línea de su comportamiento. */
+function montarPortfolio(PORTFOLIO){
 
 var pista        = document.getElementById("pista");
 var seccionPort  = document.getElementById("portfolio");
@@ -2385,6 +2510,8 @@ document.addEventListener("keydown", function(ev){
   }
 });
 
+} /* ← fin de montarPortfolio */
+
 /* ==========================================================================
    AGENDA — Cal.com inline. Sin CAL_LINK no se carga nada y queda la
    alternativa de WhatsApp: un embed roto convierte peor que ninguno.
@@ -2434,8 +2561,9 @@ document.addEventListener("keydown", function(ev){
 })();
 
 /* ==========================================================================
-   FORMULARIO — validación on-blur + envío real a Web3Forms.
-   Sin WEB3FORMS_KEY degrada a mailto, avisando de que puede no llegar.
+   FORMULARIO — validación on-blur + alta real de lead en Supabase.
+   Si no hay backend configurado, o si la red falla, degrada a mailto: el
+   contacto no se pierde aunque la base de datos no conteste.
    ========================================================================== */
 var form = document.getElementById("form-contacto");
 var aviso = document.getElementById("form-aviso");
@@ -2454,8 +2582,6 @@ var fMensaje = document.getElementById("f-mensaje");
 var fConsent = document.getElementById("f-consentimiento");
 var errConsent = document.getElementById("err-consentimiento");
 var reEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-document.getElementById("f-access-key").value = WEB3FORMS_KEY;
 
 fNombre.addEventListener("blur", function(){ if(fNombre.value) validarCampo(fNombre, document.getElementById("err-nombre"), function(v){ return v.length > 1; }); });
 fEmail.addEventListener("blur", function(){ if(fEmail.value) validarCampo(fEmail, document.getElementById("err-email"), function(v){ return reEmail.test(v); }); });
@@ -2479,8 +2605,9 @@ form.addEventListener("submit", function(ev){
     return;
   }
 
-  /* Sin access key todavía: no hay backend, se cae a mailto sin prometer nada */
-  if(!WEB3FORMS_KEY){
+  /* Último recurso: se abre el correo del visitante con el mensaje escrito.
+     No promete nada que no podamos cumplir. */
+  function caerAMailto(motivo){
     var asunto = "Proyecto: " + fTipo.value + " — " + fNombre.value.trim();
     var cuerpo = "Nombre: " + fNombre.value.trim() +
       "\nEmail: " + fEmail.value.trim() +
@@ -2489,37 +2616,65 @@ form.addEventListener("submit", function(ev){
     window.location.href = "mailto:infobarrancoamarillo@gmail.com" +
       "?subject=" + encodeURIComponent(asunto) +
       "&body=" + encodeURIComponent(cuerpo);
-    mostrarAviso("", "Se está abriendo tu aplicación de correo con el mensaje listo. Si no se abre, escríbenos a <a href=\"mailto:infobarrancoamarillo@gmail.com\">infobarrancoamarillo@gmail.com</a>.");
+    mostrarAviso(motivo === "fallo" ? "fallo" : "",
+      (motivo === "fallo" ? "No hemos podido registrar el mensaje. " : "") +
+      "Se está abriendo tu aplicación de correo con todo escrito. Si no se abre, " +
+      "escríbenos a <a href=\"mailto:infobarrancoamarillo@gmail.com\">infobarrancoamarillo@gmail.com</a>.");
+  }
+
+  var botcheck = document.getElementById("f-botcheck");
+  if(botcheck && botcheck.checked){
+    // Bot. Se le enseña la misma confirmación y no se envía nada.
+    form.reset();
+    mostrarAviso("exito", "Mensaje recibido. Te respondemos en menos de 24 horas laborables.");
     return;
   }
+
+  if(!hayBackend()){ caerAMailto(); return; }
 
   botonEnviar.disabled = true;
   botonEnviar.textContent = "Enviando…";
   mostrarAviso("", "Enviando tu mensaje…");
 
-  fetch("https://api.web3forms.com/submit", {
-    method: "POST",
-    headers: { "Accept": "application/json" },
-    body: new FormData(form)
+  enviarLead({
+    nombre: fNombre.value.trim(),
+    email: fEmail.value.trim(),
+    tipoProyecto: fTipo.value,
+    mensaje: fMensaje.value.trim(),
+    origen: "formulario_contacto",
+    seccion: "contacto"
   })
-  .then(function(r){ return r.json(); })
-  .then(function(datos){
-    if(datos && datos.success){
+  .then(function(res){
+    if(res.ok){
       form.reset();
-      botonEnviar.textContent = "Enviar mensaje";
       mostrarAviso("exito", "Mensaje recibido. Te respondemos en menos de 24 horas laborables.");
     }else{
-      throw new Error(datos && datos.message ? datos.message : "envío rechazado");
+      caerAMailto("fallo");
     }
-  })
-  .catch(function(){
-    mostrarAviso("fallo", "No se ha podido enviar. Escríbenos a <a href=\"mailto:infobarrancoamarillo@gmail.com\">infobarrancoamarillo@gmail.com</a> y lo vemos igual.");
   })
   .finally(function(){
     botonEnviar.disabled = false;
     botonEnviar.textContent = "Enviar mensaje";
   });
 });
+
+/* ==========================================================================
+   WHATSAPP — antes de salir de la web, queda constancia de la salida.
+   Los enlaces siguen siendo enlaces: si el registro falla, la persona llega
+   a WhatsApp igual. Nada bloquea la navegación.
+   ========================================================================== */
+(function(){
+  var agenda = document.querySelector("#agenda-alterna a[href*='wa.me']");
+  if(agenda) agenda.addEventListener("click", function(){
+    registrarSalidaWhatsapp("reservar_llamada", "contacto · agenda");
+  });
+
+  var flotante = document.querySelector(".btn-whatsapp");
+  if(flotante) flotante.addEventListener("click", function(){
+    var seccion = document.querySelector(".nav-links a.activo");
+    registrarSalidaWhatsapp("whatsapp", seccion ? seccion.textContent.trim() : null);
+  });
+})();
 
 })();
 </script>
