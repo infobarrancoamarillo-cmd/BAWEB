@@ -6,6 +6,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "4173"],
       "port": 4173
+    },
+    {
+      "name": "baops",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "/Users/carlossoto/baops", "run", "dev"],
+      "port": 3000
     }
   ]
 }
