@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Barranco Amarillo — Entertainment company</title>
-<meta name="description" content="Barranco Amarillo is an entertainment company that has worked around the world for almost a decade. Films, music and ads.">
-<meta property="og:title" content="Barranco Amarillo — Entertainment company">
-<meta property="og:description" content="Barranco Amarillo is an entertainment company that has worked around the world for almost a decade. Films, music and ads.">
+<title>Film — Barranco Amarillo Films</title>
+<meta name="description" content="Barranco Amarillo Films. Fiction and long-form work.">
+<meta property="og:title" content="Film — Barranco Amarillo Films">
+<meta property="og:description" content="Barranco Amarillo Films. Fiction and long-form work.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_GB">
-<meta property="og:url" content="https://baweb-v5.vercel.app/">
+<meta property="og:url" content="https://baweb-v5.vercel.app/films/">
 <meta property="og:image" content="https://baweb-v5.vercel.app/assets/logo-imagotipo.png">
-<link rel="canonical" href="https://baweb-v5.vercel.app/">
+<link rel="canonical" href="https://baweb-v5.vercel.app/films/">
 <link rel="icon" type="image/png" href="/assets/logo-simbolo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,13 +22,13 @@
 <div class="loader" id="loader" hidden>
   <p class="loader-texto">Barranco Amarillo</p>
 </div>
-<header class="nav nav--sobre-video">
-  <a class="lockup" href="/" aria-label="Barranco Amarillo — Home">
-    <span class="lockup-base">Barranco Amarillo</span>
+<header class="nav">
+  <a class="lockup" href="/" aria-label="Barranco Amarillo Films — Home">
+    <span class="lockup-base">Barranco Amarillo</span><span class="lockup-sufijo"> Films</span>
   </a>
 
   <nav class="nav-centro" aria-label="Work">
-    <a href="/films/">Films</a>
+    <a href="/films/" aria-current="page">Films</a>
     <a href="/music/">Music</a>
     <a href="/ads/">Ads</a>
     <a href="/work/">Work</a>
@@ -67,33 +67,21 @@
   </div>
 </div>
 
-<main class="pagina pagina--sangre">
+<main class="pagina">
+  <header class="contenedor cabecera-seccion">
+    <p class="etiqueta">Films</p>
+    <p class="declaracion revelar-frase"><span class="pendiente">Copy pendiente</span> &mdash; declaración de Films, en inglés, en el rango de 28 a 48 px. La escribe Carlos.</p>
+  </header>
 
-  <!-- ZONA 1 — el reproductor, a sangre. Un solo vídeo a la vez.
-       El scroll vertical no lo controla: solo desplaza la página. -->
-  <section class="reproductor" id="reproductor" aria-label="Featured work">
-    <noscript>
-      <div class="placeholder-video">
-        <span class="pendiente pendiente-bloque">Featured reel<br>See the full archive at <a href="/work/">/work/</a></span>
-      </div>
-    </noscript>
-  </section>
-
-  <!-- ZONA 2 — la declaración -->
-  <section class="bloque">
-    <div class="contenedor">
-      <p class="declaracion declaracion--ancha revelar-frase">Barranco Amarillo is an entertainment company that has worked around the world for almost a decade. We exist for one wonderful reason: the creator&rsquo;s vision, and what an image can do to people.</p>
-
-      <nav class="submarcas" aria-label="Sub-brands">
-        <a class="enlace-mono" href="/films/">Films</a>
-        <a class="enlace-mono" href="/music/">Music</a>
-        <a class="enlace-mono" href="/ads/">Ads</a>
-      </nav>
-
-      <p class="todo-work"><a class="enlace-mono" href="/work/">All work &rarr;</a></p>
+  <div class="contenedor">
+    <div class="parrilla" id="parrilla">
+      <noscript>
+        <p class="parrilla-vacia"><span class="pendiente pendiente-bloque">
+          The archive is served from data/work.json and needs JavaScript to render.
+        </span></p>
+      </noscript>
     </div>
-  </section>
-
+  </div>
 </main>
 <footer class="footer">
   <div class="contenedor">
@@ -132,7 +120,7 @@
 <script src="/assets/js/base.js"></script>
 <script src="/assets/js/piezas.js"></script>
 <script>
-  BA.montarReproductor(document.getElementById("reproductor"));
+  BA.montarParrilla({ submarca: "films" });
 </script>
 </body>
 </html>

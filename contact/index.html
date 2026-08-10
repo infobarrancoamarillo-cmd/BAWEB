@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Barranco Amarillo</title>
+<meta name="description" content="Talk to Barranco Amarillo. WhatsApp, email or the form.">
+<meta property="og:title" content="Contact — Barranco Amarillo">
+<meta property="og:description" content="Talk to Barranco Amarillo. WhatsApp, email or the form.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://baweb-v5.vercel.app/contact/">
+<meta property="og:image" content="https://baweb-v5.vercel.app/assets/logo-imagotipo.png">
+<link rel="canonical" href="https://baweb-v5.vercel.app/contact/">
+<link rel="icon" type="image/png" href="/assets/logo-simbolo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/base.css">
+</head>
+<body class="clareo">
+<div class="loader" id="loader" hidden>
+  <p class="loader-texto">Barranco Amarillo</p>
+</div>
+<header class="nav">
+  <a class="lockup" href="/" aria-label="Barranco Amarillo — Home">
+    <span class="lockup-base">Barranco Amarillo</span>
+  </a>
+
+  <nav class="nav-centro" aria-label="Work">
+    <a href="/films/">Films</a>
+    <a href="/music/">Music</a>
+    <a href="/ads/">Ads</a>
+    <a href="/work/">Work</a>
+  </nav>
+
+  <div class="nav-derecha">
+    <div class="nav-region">
+      <button class="nav-region-btn" type="button" aria-expanded="false" aria-controls="nav-region-panel">España</button>
+      <div class="nav-region-panel" id="nav-region-panel" hidden>
+        <p class="etiqueta">Our network</p>
+        <a href="/">España</a>
+        <a href="/">Venezuela</a>
+      </div>
+    </div>
+    <a href="/contact/" aria-current="page">Contact</a>
+    <a href="/aviso-legal.html">Legal</a>
+  </div>
+
+  <button class="nav-menu-btn" type="button" aria-expanded="false" aria-controls="nav-overlay">Menu</button>
+</header>
+
+<div class="nav-overlay" id="nav-overlay">
+  <button class="nav-cerrar" type="button">Cerrar</button>
+  <a href="/films/">Films</a>
+  <a href="/music/">Music</a>
+  <a href="/ads/">Ads</a>
+  <a href="/work/">Work</a>
+  <a href="/directors/">Directors</a>
+  <a href="/studio/">Studio</a>
+  <a href="/contact/">Contact</a>
+  <div class="nav-overlay-pie">
+    <span class="etiqueta">Our network</span>
+    <a href="/">España</a>
+    <a href="/">Venezuela</a>
+    <a href="/aviso-legal.html">Legal</a>
+  </div>
+</div>
+
+<main class="pagina">
+  <header class="contenedor cabecera-seccion">
+    <p class="etiqueta">Contact</p>
+  </header>
+
+  <section class="contenedor contacto-frase">
+    <p class="declaracion revelar-frase"><span class="pendiente">Copy pendiente</span> &mdash; primera frase de contacto, una por pantalla.</p>
+  </section>
+
+  <section class="contenedor contacto-frase">
+    <p class="declaracion revelar-frase"><span class="pendiente">Copy pendiente</span> &mdash; segunda frase de contacto.</p>
+  </section>
+
+  <!-- Los tres accesos, con el mismo peso visual. -->
+  <section class="contenedor bloque">
+    <a class="enlace-grande" href="https://wa.me/34692722358" target="_blank" rel="noopener">
+      <span>WhatsApp</span><span class="destino">https://wa.me/34692722358</span>
+    </a>
+    <a class="enlace-grande" href="mailto:infobarrancoamarillo@gmail.com">
+      <span>Email</span><span class="destino">infobarrancoamarillo@gmail.com</span>
+    </a>
+    <a class="enlace-grande" href="#formulario">
+      <span>Form</span><span class="destino">Below on this page</span>
+    </a>
+  </section>
+
+  <section class="contenedor bloque" id="formulario">
+    <p class="etiqueta" style="margin-bottom:28px">Form &mdash; optional</p>
+
+    <form class="formulario" data-lead data-origen="formulario_contacto_v6"
+          data-enviando="Sending…"
+          data-ok="Thanks. We will come back to you."
+          data-error="It did not go through. Write to infobarrancoamarillo@gmail.com instead."
+          novalidate>
+      <input type="checkbox" name="botcheck" class="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <div class="campo">
+        <label for="c-nombre">Name</label>
+        <input type="text" id="c-nombre" name="nombre" autocomplete="name" required>
+        <span class="error">Tell us your name.</span>
+      </div>
+
+      <div class="campo">
+        <label for="c-email">Email</label>
+        <input type="email" id="c-email" name="email" autocomplete="email" required>
+        <span class="error">We need a valid email to answer you.</span>
+      </div>
+
+      <div class="campo">
+        <label for="c-tipo">Project</label>
+        <select id="c-tipo" name="tipo">
+          <option value="Film">Film</option>
+          <option value="Music">Music</option>
+          <option value="Ads">Ads</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label for="c-mensaje">Message</label>
+        <textarea id="c-mensaje" name="mensaje" required></textarea>
+        <span class="error">A couple of lines about the project is enough.</span>
+      </div>
+
+      <div class="campo">
+        <label class="consentimiento" for="c-consent">
+          <input type="checkbox" id="c-consent" name="consentimiento" value="yes" required>
+          I have read and accept the <a href="/privacidad.html">privacy policy</a>.
+        </label>
+        <span class="error">We need your consent to be able to answer.</span>
+      </div>
+
+      <button type="submit" class="btn">Send</button>
+      <p class="form-aviso" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+</main>
+<footer class="footer">
+  <div class="contenedor">
+    <p class="footer-marca">Barranco Amarillo</p>
+
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h2>Network</h2>
+        <span>España</span>
+        <span>Venezuela</span>
+      </div>
+      <div class="footer-col">
+        <h2>Contact</h2>
+        <a href="mailto:infobarrancoamarillo@gmail.com">infobarrancoamarillo@gmail.com</a>
+      </div>
+      <div class="footer-col">
+        <h2>Social</h2>
+        <a href="https://www.instagram.com/barrancoamarillo" target="_blank" rel="noopener">Instagram</a>
+        <!-- LinkedIn y Vimeo: faltan las URLs reales. No se inventan. -->
+        <span class="pendiente">LinkedIn pending</span>
+        <span class="pendiente">Vimeo pending</span>
+      </div>
+      <div class="footer-col">
+        <h2>Services</h2>
+        <a class="footer-real-estate" href="/real-estate/">Servicios inmobiliarios &rarr;</a>
+      </div>
+    </div>
+
+    <div class="footer-legal">
+      <span>&copy; 2026 Barranco Amarillo</span>
+      <a href="/aviso-legal.html">Legal notice</a>
+      <a href="/privacidad.html">Privacy</a>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/base.js"></script>
+<script src="/assets/js/piezas.js"></script>
+<script src="/assets/js/form.js"></script>
+<script>
+/* El fondo se aclara CON el scroll. Se lee el progreso y se escribe una
+   variable CSS: el scroll no se bloquea, no se desvía y no se suaviza. */
+(function(){
+  var cuerpo = document.body;
+  if(!cuerpo.classList.contains("clareo") || (window.BA && BA.reduceMotion)) return;
+  var pedido = false;
+  function pintar(){
+    pedido = false;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    cuerpo.style.setProperty("--p", p.toFixed(3));
+    // El texto conmuta de golpe en la mitad. Ver el comentario de base.css:
+    // si cruzara a la vez que el fondo, en ese punto serían el mismo gris.
+    cuerpo.classList.toggle("texto-oscuro", p > 0.5);
+  }
+  window.addEventListener("scroll", function(){
+    if(pedido) return;
+    pedido = true;
+    requestAnimationFrame(pintar);
+  }, { passive:true });
+  window.addEventListener("resize", pintar);
+  pintar();
+})();
+</script>
+</body>
+</html>

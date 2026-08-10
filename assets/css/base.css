@@ -1,0 +1,1051 @@
+/* ==========================================================================
+   BARRANCO AMARILLO — V6
+   Hoja común a todas las páginas. Los tokens son los mismos de la v5:
+   aquí solo dejan de estar embebidos en un HTML de 2.682 líneas.
+   ========================================================================== */
+
+:root{
+  --amarillo:       #F1C741;  /* Pantone 123C — único acento */
+  --negro:          #1E1B1A;  /* Pantone Neutral Black C */
+  --negro-profundo: #121010;
+  --naranja:        #E56425;  /* Pantone 165C — micro-acento, uso mínimo */
+
+  --superficie-base:    var(--negro-profundo);
+  --superficie-elevada: var(--negro);
+  --acento-proyector:   var(--amarillo);
+  --tinta-alta:         #F7F5F2;
+  --tinta-media:        rgba(247,245,242,0.6);
+  --linea-hairline:     rgba(247,245,242,0.08);
+
+  /* Una sola familia de texto. La jerarquía la construye el eje de anchura
+     variable de Archivo (font-stretch), no el cambio de familia: los
+     titulares se ensanchan como un rótulo de crédito. */
+  --tipo:      'Archivo', system-ui, -apple-system, sans-serif;
+  --tipo-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --nav-h: 56px;
+  --ease-cine: cubic-bezier(0.16,1,0.3,1);
+  --contenedor: 1440px;
+}
+
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+
+html{ -webkit-text-size-adjust:100%; }
+
+/* Scroll nativo en toda la web. Sin lerp, sin suavizado por JS, sin
+   secuestro: el scroll vertical siempre desplaza la página y nada más. */
+body{
+  font-family:var(--tipo);
+  font-size:17px;
+  line-height:1.6;
+  font-weight:350;
+  color:var(--tinta-alta);
+  background:var(--superficie-base);
+  overflow-x:hidden;
+}
+
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
+
+:focus-visible{
+  outline:2px solid var(--acento-proyector);
+  outline-offset:3px;
+  border-radius:2px;
+}
+::selection{ background:var(--acento-proyector); color:var(--negro); }
+
+.contenedor{
+  width:100%;
+  max-width:var(--contenedor);
+  margin-inline:auto;
+  padding-inline:20px;
+}
+@media (min-width:768px){ .contenedor{ padding-inline:40px; } }
+
+.oculto-visual{
+  position:absolute; width:1px; height:1px;
+  padding:0; margin:-1px; overflow:hidden;
+  clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+
+/* --------------------------------------------------------------------------
+   Marcadores de contenido pendiente. Deliberadamente visibles: en fase 1
+   falta copy y datos, y es mejor que se note a que parezca contenido real.
+   -------------------------------------------------------------------------- */
+.pendiente{
+  font-family:var(--tipo-mono);
+  font-size:0.78em;
+  letter-spacing:0.08em;
+  color:var(--tinta-media);
+  border:1px dashed var(--linea-hairline);
+  padding:2px 8px;
+  display:inline-block;
+  text-transform:uppercase;
+}
+.pendiente-bloque{
+  display:block;
+  padding:28px 20px;
+  text-align:center;
+  line-height:1.8;
+}
+
+/* ==========================================================================
+   TIPOGRAFÍA
+   ========================================================================== */
+.etiqueta{
+  font-family:var(--tipo-mono);
+  font-weight:400;
+  font-size:12px;
+  letter-spacing:0.12em;
+  line-height:1;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+}
+
+/* La frase de posicionamiento: el bloque que carga el peso de cada página. */
+.declaracion{
+  font-family:var(--tipo);
+  font-weight:400;
+  font-size:clamp(28px,4vw,48px);
+  line-height:1.18;
+  letter-spacing:-0.015em;
+  max-width:22ch;
+}
+.declaracion--ancha{ max-width:32ch; }
+
+.titular-hero{
+  font-weight:600;
+  font-size:clamp(32px,5vw,64px);
+  line-height:1.08;
+  letter-spacing:-0.02em;
+  max-width:16ch;
+}
+@supports (font-stretch: 110%){
+  .titular-hero{ font-stretch:110%; }
+}
+
+/* ==========================================================================
+   REVELADOS
+   -------------------------------------------------------------------------- */
+
+/* Máscara por palabras. No es un fundido: las palabras suben desde detrás
+   del borde invisible de su línea, como un rótulo que entra por debajo del
+   cuadro. El troceado lo hace el JS; sin JS la frase se ve entera y quieta. */
+.js .revelar-frase .pal{
+  display:inline-block;
+  overflow:hidden;
+  vertical-align:bottom;
+  /* El descendente de g/j/p se recortaría contra el borde de la máscara. */
+  padding-bottom:0.14em;
+  margin-bottom:-0.14em;
+}
+.js .revelar-frase .pal > i{
+  display:inline-block;
+  font-style:inherit;
+  transform:translateY(110%);
+  transition:transform 600ms var(--ease-cine);
+  transition-delay:var(--d,0ms);
+}
+.js .revelar-frase.visible .pal > i{ transform:translateY(0); }
+
+/* Entrada genérica al scroll: fundido + 12px. Sutil. */
+.js .revelar{
+  opacity:0;
+  transform:translateY(12px);
+  transition:opacity 400ms var(--ease-cine), transform 400ms var(--ease-cine);
+  transition-delay:var(--d,0ms);
+}
+.js .revelar.visible{ opacity:1; transform:none; }
+
+/* ==========================================================================
+   LOADER — texto que se descifra
+   ========================================================================== */
+.loader{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--negro-profundo);
+  transition:opacity 500ms var(--ease-cine);
+}
+.loader[hidden]{ display:none; }
+.loader.saliendo{ opacity:0; pointer-events:none; }
+.loader-texto{
+  font-family:var(--tipo);
+  font-weight:600;
+  font-size:clamp(28px,5vw,64px);
+  letter-spacing:0.02em;
+  text-transform:uppercase;
+  white-space:nowrap;
+  color:var(--tinta-alta);
+}
+@supports (font-stretch: 110%){ .loader-texto{ font-stretch:110%; } }
+
+/* ==========================================================================
+   NAV — tres zonas, 56px, una sola línea de 12px
+   ========================================================================== */
+.nav{
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:100;
+  height:var(--nav-h);
+  display:flex;
+  align-items:center;
+  gap:24px;
+  padding-inline:20px;
+  background:var(--negro-profundo);
+  border-bottom:1px solid var(--linea-hairline);
+}
+@media (min-width:768px){ .nav{ padding-inline:40px; } }
+
+/* Sobre el reproductor de portada el nav no tiene fondo: el vídeo va a
+   sangre y una barra sólida encima lo cortaría. */
+.nav--sobre-video{
+  background:linear-gradient(to bottom, rgba(18,16,16,0.55), rgba(18,16,16,0));
+  border-bottom-color:transparent;
+}
+
+.lockup{
+  font-family:var(--tipo);
+  font-size:12px;
+  letter-spacing:0.12em;
+  line-height:1;
+  text-transform:uppercase;
+  white-space:nowrap;
+  color:var(--tinta-alta);
+  flex:none;
+}
+.lockup-base{ font-weight:700; }
+/* El sufijo de submarca: mismo tamaño, peso más ligero. No es otro logo. */
+.lockup-sufijo{ font-weight:300; }
+
+.nav-centro,
+.nav-derecha{
+  display:flex;
+  align-items:center;
+  gap:22px;
+  font-family:var(--tipo-mono);
+  font-size:12px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+}
+.nav-centro{ margin-inline:auto; }
+.nav-derecha{ flex:none; }
+.nav a{ transition:color 200ms var(--ease-cine); }
+.nav-centro a:hover,
+.nav-derecha a:hover,
+.nav-region-btn:hover{ color:var(--tinta-alta); }
+.nav a[aria-current="page"]{ color:var(--tinta-alta); font-weight:500; }
+
+/* Región — mecanismo OUR NETWORK */
+.nav-region{ position:relative; }
+.nav-region-btn{
+  font:inherit;
+  letter-spacing:inherit;
+  text-transform:inherit;
+  color:inherit;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  transition:color 200ms var(--ease-cine);
+}
+.nav-region-btn::after{
+  content:"";
+  width:5px; height:5px;
+  border-right:1px solid currentColor;
+  border-bottom:1px solid currentColor;
+  transform:translateY(-2px) rotate(45deg);
+}
+.nav-region-panel{
+  position:absolute;
+  top:calc(100% + 14px);
+  right:0;
+  min-width:190px;
+  padding:16px 18px 14px;
+  background:var(--superficie-elevada);
+  border:1px solid var(--linea-hairline);
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.nav-region-panel[hidden]{ display:none; }
+.nav-region-panel .etiqueta{ font-size:10px; letter-spacing:0.2em; }
+.nav-region-panel a{ color:var(--tinta-alta); font-size:12px; letter-spacing:0.12em; }
+
+/* Menú móvil */
+.nav-menu-btn{
+  display:none;
+  margin-left:auto;
+  font-family:var(--tipo-mono);
+  font-size:12px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--tinta-alta);
+}
+.nav-overlay{
+  position:fixed;
+  inset:0;
+  z-index:110;
+  background:var(--negro-profundo);
+  padding:var(--nav-h) 20px 40px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:6px;
+  transform:translateY(-100%);
+  transition:transform 400ms var(--ease-cine);
+}
+.nav-overlay.abierto{ transform:translateY(0); }
+.nav-overlay a{
+  font-size:clamp(32px,9vw,48px);
+  font-weight:600;
+  line-height:1.15;
+  text-transform:uppercase;
+  letter-spacing:-0.01em;
+  color:var(--tinta-alta);
+}
+.nav-overlay .nav-overlay-pie{
+  margin-top:32px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:18px;
+  font-family:var(--tipo-mono);
+  font-size:12px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+}
+.nav-overlay .nav-overlay-pie a{
+  font-size:12px;
+  font-weight:400;
+  color:var(--tinta-media);
+}
+.nav-cerrar{
+  position:absolute;
+  top:0; right:20px;
+  height:var(--nav-h);
+  font-family:var(--tipo-mono);
+  font-size:12px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+}
+
+@media (max-width:900px){
+  .nav-centro,
+  .nav-derecha{ display:none; }
+  .nav-menu-btn{ display:block; }
+}
+@media (min-width:901px){
+  .nav-overlay{ display:none; }
+}
+
+/* Sin JS el botón de menú no abre nada, así que en móvil la barra se
+   despliega en dos líneas y los enlaces vuelven a estar a la vista. Es la
+   única forma de que la web se pueda navegar con el JS caído. */
+@media (max-width:900px){
+  html:not(.js) .nav{
+    position:static;
+    height:auto;
+    flex-wrap:wrap;
+    row-gap:12px;
+    padding-block:12px;
+  }
+  html:not(.js) .nav-centro,
+  html:not(.js) .nav-derecha{
+    display:flex;
+    flex-wrap:wrap;
+    gap:18px;
+    width:100%;
+    margin-inline:0;
+  }
+  html:not(.js) .nav-menu-btn{ display:none; }
+  html:not(.js) .nav-region-panel{ display:none; }
+  html:not(.js) .pagina{ padding-top:0; }
+}
+
+/* ==========================================================================
+   ESTRUCTURA DE PÁGINA
+   ========================================================================== */
+.pagina{ padding-top:var(--nav-h); }
+.pagina--sangre{ padding-top:0; }
+
+.cabecera-seccion{
+  padding-block:clamp(56px,10vw,120px) clamp(32px,5vw,64px);
+}
+.cabecera-seccion .etiqueta{ margin-bottom:24px; }
+
+.bloque{ padding-block:clamp(56px,9vw,120px); }
+.hairline{ border-top:1px solid var(--linea-hairline); }
+
+/* ==========================================================================
+   ENLACES DE TEXTO
+   ========================================================================== */
+.enlace-mono{
+  font-family:var(--tipo-mono);
+  font-size:12px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+  transition:color 200ms var(--ease-cine);
+}
+.enlace-mono:hover{ color:var(--tinta-alta); }
+
+.enlace-grande{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:24px;
+  padding-block:22px;
+  border-top:1px solid var(--linea-hairline);
+  font-size:clamp(20px,3vw,32px);
+  font-weight:500;
+  transition:color 200ms var(--ease-cine);
+}
+.enlace-grande:last-of-type{ border-bottom:1px solid var(--linea-hairline); }
+.enlace-grande .destino{
+  font-family:var(--tipo-mono);
+  font-size:12px;
+  letter-spacing:0.08em;
+  color:var(--tinta-media);
+  text-align:right;
+  overflow-wrap:anywhere;
+}
+.enlace-grande:hover{ color:var(--acento-proyector); }
+
+/* ==========================================================================
+   REPRODUCTOR DE PORTADA — a sangre, sin márgenes
+   ========================================================================== */
+.reproductor{
+  position:relative;
+  height:100svh;
+  min-height:520px;
+  width:100%;
+  overflow:hidden;
+  background:var(--negro);
+  touch-action:pan-y; /* el arrastre horizontal no bloquea el scroll vertical */
+}
+.reproductor-pista{ position:absolute; inset:0; }
+.reproductor-pieza{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  transition:opacity 500ms var(--ease-cine);
+  pointer-events:none;
+}
+.reproductor-pieza.activa{ opacity:1; }
+.reproductor-pieza video,
+.reproductor-pieza .placeholder-video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+/* Mientras no existan los MP4 ni los posters, el hueco no puede ser un
+   rectángulo negro: se lee como error de carga. */
+.placeholder-video{
+  background:
+    repeating-linear-gradient(135deg,
+      rgba(247,245,242,0.02) 0 2px,
+      transparent 2px 9px),
+    radial-gradient(120% 90% at 50% 30%, #2a2523 0%, var(--negro-profundo) 70%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.reproductor::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(to bottom, rgba(18,16,16,0.35) 0%, transparent 30%, transparent 55%, rgba(18,16,16,0.75) 100%);
+}
+
+.reproductor-pie{
+  position:absolute;
+  left:0; right:0; bottom:0;
+  z-index:2;
+  padding:0 20px 26px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:24px;
+}
+@media (min-width:768px){ .reproductor-pie{ padding:0 40px 34px; } }
+
+.paginador{
+  display:flex;
+  gap:14px;
+  font-family:var(--tipo-mono);
+  font-size:14px;
+  line-height:1;
+  flex:none;
+}
+.paginador button{
+  color:var(--tinta-media);
+  font-weight:400;
+  padding:6px 2px;
+  transition:color 200ms var(--ease-cine);
+}
+.paginador button:hover{ color:var(--tinta-alta); }
+.paginador button[aria-current="true"]{ color:var(--tinta-alta); font-weight:700; }
+
+/* Caption Somesuch: una sola frase, alineada a la derecha. */
+.reproductor-caption{
+  text-align:right;
+  font-size:clamp(18px,2vw,28px);
+  font-weight:500;
+  line-height:1.25;
+  max-width:22ch;
+}
+.reproductor-caption em{ font-style:italic; }
+@media (max-width:600px){
+  .reproductor-pie{ flex-direction:column; align-items:flex-start; gap:14px; }
+  .reproductor-caption{ text-align:left; }
+}
+
+/* ==========================================================================
+   PARRILLA DE TRABAJO — tamaños desiguales
+   ========================================================================== */
+.filtros{
+  display:flex;
+  flex-wrap:wrap;
+  gap:22px;
+  padding-bottom:28px;
+}
+.filtros button{
+  font-family:var(--tipo-mono);
+  font-size:12px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+  transition:color 200ms var(--ease-cine);
+}
+.filtros button:hover{ color:var(--tinta-alta); }
+.filtros button[aria-pressed="true"]{ color:var(--acento-proyector); }
+
+.parrilla{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:clamp(20px,3vw,48px);
+  padding-bottom:clamp(56px,9vw,120px);
+}
+.pieza{ grid-column:span 12; }
+@media (min-width:768px){
+  /* Cinco medidas que se alternan: con pocas piezas, una retícula regular
+     delata que son pocas; una parrilla desigual las lee como selección. */
+  .pieza{ grid-column:span 6; }
+  .pieza--ancha  { grid-column:span 8; }
+  .pieza--media  { grid-column:span 4; }
+  .pieza--total  { grid-column:span 12; }
+  .pieza--estrecha{ grid-column:span 5; }
+  .pieza--desplazada{ grid-column:span 6; margin-top:clamp(32px,6vw,96px); }
+}
+
+.pieza-marco{
+  position:relative;
+  display:block;
+  width:100%;
+  aspect-ratio:16/9;
+  overflow:hidden;
+  background:var(--negro);
+  cursor:pointer;
+}
+.pieza--total .pieza-marco{ aspect-ratio:21/9; }
+.pieza--media .pieza-marco{ aspect-ratio:4/5; }
+.pieza-marco video,
+.pieza-marco .placeholder-video{
+  width:100%; height:100%;
+  object-fit:cover;
+  display:block;
+}
+/* El brillo solo se baja en el vídeo. El placeholder ya es oscuro de por sí
+   y bajárselo más deja su marcador de pendiente ilegible. */
+.pieza-marco video{
+  filter:brightness(0.82);
+  transition:filter 400ms var(--ease-cine);
+}
+.pieza-marco:hover video,
+.pieza-marco:focus-visible video{ filter:brightness(1); }
+
+.pieza-caption{
+  margin-top:14px;
+  font-family:var(--tipo-mono);
+  font-size:12px;
+  line-height:1.7;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+  transition:color 300ms var(--ease-cine);
+}
+.pieza-caption .cliente{ color:var(--tinta-alta); display:block; }
+.pieza-caption .titulo{ display:block; }
+.pieza-caption .credito{ display:block; }
+.pieza:hover .pieza-caption{ color:var(--tinta-alta); }
+
+.parrilla-vacia{
+  grid-column:span 12;
+  padding-block:80px;
+  text-align:center;
+}
+
+/* ==========================================================================
+   LIGHTBOX
+   ========================================================================== */
+.lightbox{
+  position:fixed;
+  inset:0;
+  z-index:150;
+  background:rgba(18,16,16,0.97);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:64px 20px;
+}
+.lightbox[hidden]{ display:none; }
+.lb-marco{
+  width:100%;
+  max-width:1400px;
+  aspect-ratio:16/9;
+  background:#000;
+  position:relative;
+}
+.lb-marco iframe{ width:100%; height:100%; border:0; display:block; }
+.lb-vacio{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:24px;
+}
+.lb-btn{
+  position:absolute;
+  z-index:2;
+  font-family:var(--tipo-mono);
+  font-size:12px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--tinta-alta);
+  padding:12px;
+}
+.lb-cerrar{ top:-48px; right:0; }
+.lb-prev{ top:50%; left:-52px; transform:translateY(-50%); font-size:22px; }
+.lb-next{ top:50%; right:-52px; transform:translateY(-50%); font-size:22px; }
+@media (max-width:1100px){
+  .lb-prev{ left:0; bottom:-48px; top:auto; transform:none; }
+  .lb-next{ right:0; bottom:-48px; top:auto; transform:none; }
+}
+.lb-caption{
+  position:absolute;
+  left:0;
+  bottom:-44px;
+  font-family:var(--tipo-mono);
+  font-size:12px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+}
+
+/* ==========================================================================
+   FORMULARIO
+   ========================================================================== */
+.formulario{ max-width:560px; display:grid; gap:22px; }
+.campo{ display:grid; gap:8px; }
+.campo label{
+  font-family:var(--tipo-mono);
+  font-size:11px;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+}
+.campo input,
+.campo select,
+.campo textarea{
+  font-family:var(--tipo);
+  font-size:16px;
+  color:var(--tinta-alta);
+  background:transparent;
+  border:0;
+  border-bottom:1px solid var(--linea-hairline);
+  padding:10px 0;
+  width:100%;
+  border-radius:0;
+}
+.campo select{ color:var(--tinta-alta); }
+.campo select option{ background:var(--negro); color:var(--tinta-alta); }
+.campo textarea{ min-height:120px; resize:vertical; }
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus{ outline:none; border-bottom-color:var(--acento-proyector); }
+.campo .error{
+  font-family:var(--tipo-mono);
+  font-size:11px;
+  letter-spacing:0.08em;
+  color:var(--naranja);
+  display:none;
+}
+.campo.invalido .error{ display:block; }
+.botcheck{ position:absolute; left:-9999px; opacity:0; }
+
+.form-aviso{
+  font-family:var(--tipo-mono);
+  font-size:12px;
+  letter-spacing:0.06em;
+  color:var(--tinta-media);
+  min-height:1.4em;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  min-height:48px;
+  padding:0 28px;
+  font-family:var(--tipo-mono);
+  font-size:12px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  border:1px solid var(--linea-hairline);
+  transition:background-color 200ms var(--ease-cine), color 200ms var(--ease-cine), border-color 200ms var(--ease-cine);
+  align-self:start;
+}
+.btn:hover{ border-color:var(--tinta-alta); }
+.btn-amarillo{
+  background:var(--acento-proyector);
+  color:var(--negro);
+  border-color:var(--acento-proyector);
+}
+.btn-amarillo:hover{ background:var(--tinta-alta); border-color:var(--tinta-alta); }
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.footer{
+  border-top:1px solid var(--linea-hairline);
+  padding-block:clamp(48px,7vw,88px) 32px;
+}
+.footer-marca{
+  font-size:clamp(28px,6vw,64px);
+  font-weight:700;
+  letter-spacing:-0.01em;
+  text-transform:uppercase;
+  line-height:1;
+  margin-bottom:clamp(36px,6vw,72px);
+}
+@supports (font-stretch: 115%){ .footer-marca{ font-stretch:115%; } }
+.footer-grid{
+  display:grid;
+  gap:32px;
+  grid-template-columns:1fr;
+  padding-bottom:44px;
+}
+@media (min-width:768px){
+  .footer-grid{ grid-template-columns:repeat(4,1fr); }
+}
+.footer-col{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  align-items:flex-start;
+}
+.footer-col h2{
+  font-family:var(--tipo-mono);
+  font-weight:400;
+  font-size:12px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+}
+.footer-col a,
+.footer-col span{
+  font-family:var(--tipo-mono);
+  font-size:12px;
+  letter-spacing:0.06em;
+  color:var(--tinta-alta);
+  overflow-wrap:anywhere;
+}
+.footer-col a{ transition:color 200ms var(--ease-cine); }
+.footer-col a:hover{ color:var(--acento-proyector); }
+.footer-legal{
+  border-top:1px solid var(--linea-hairline);
+  padding-top:22px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:18px;
+  align-items:center;
+  font-family:var(--tipo-mono);
+  font-size:11px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--tinta-media);
+}
+.footer-legal a:hover{ color:var(--tinta-alta); }
+/* El enlace a real estate vive aquí y solo aquí. Discreto, a propósito. */
+.footer-real-estate{ color:var(--tinta-media) !important; }
+.footer-real-estate:hover{ color:var(--tinta-alta) !important; }
+
+/* ==========================================================================
+   MOVIMIENTO REDUCIDO — desactiva loader, revelados y entradas.
+   No es opcional.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:0.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:0.01ms !important;
+    scroll-behavior:auto !important;
+  }
+  .js .revelar{ opacity:1; transform:none; }
+  .js .revelar-frase .pal > i{ transform:none; }
+  .loader{ display:none !important; }
+}
+
+/* ==========================================================================
+   /studio/ — el bloque de cifras es la ÚNICA inversión a amarillo sólido de
+   toda la web. Si se usa en más sitios pierde el significado.
+   ========================================================================== */
+.inversion-amarilla{
+  background:var(--acento-proyector);
+  color:var(--negro);
+}
+.inversion-amarilla .cifras{
+  display:grid;
+  gap:40px;
+  grid-template-columns:1fr;
+  padding-block:clamp(56px,9vw,110px);
+}
+@media (min-width:768px){
+  .inversion-amarilla .cifras{ grid-template-columns:repeat(3,1fr); }
+}
+.cifra .valor{
+  font-size:clamp(48px,7vw,96px);
+  font-weight:700;
+  line-height:0.95;
+  letter-spacing:-0.02em;
+  display:block;
+}
+@supports (font-stretch: 115%){ .cifra .valor{ font-stretch:115%; } }
+.cifra .rotulo{
+  font-family:var(--tipo-mono);
+  font-size:12px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  margin-top:14px;
+  display:block;
+}
+.inversion-amarilla .pendiente{
+  color:rgba(30,27,26,0.75);
+  border-color:rgba(30,27,26,0.35);
+}
+
+/* ==========================================================================
+   /directors/
+   ========================================================================== */
+.roster{
+  display:grid;
+  gap:clamp(32px,5vw,56px);
+  grid-template-columns:1fr;
+  padding-bottom:clamp(56px,9vw,120px);
+}
+@media (min-width:768px){ .roster{ grid-template-columns:repeat(3,1fr); } }
+.roster a{
+  border-top:1px solid var(--linea-hairline);
+  padding-top:22px;
+  display:block;
+  transition:color 200ms var(--ease-cine);
+}
+.roster a:hover{ color:var(--acento-proyector); }
+.roster .nombre{
+  font-family:var(--tipo-mono);
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  display:block;
+}
+.roster .cuenta{
+  font-family:var(--tipo-mono);
+  font-size:12px;
+  letter-spacing:0.08em;
+  color:var(--tinta-media);
+  margin-top:10px;
+  display:block;
+}
+
+/* ==========================================================================
+   /contact/ — el fondo se aclara CON el scroll. El scroll no se bloquea ni
+   se desvía en ningún momento: solo se lee su progreso.
+
+   El fondo interpola de forma continua, pero el texto NO: conmuta de golpe
+   al pasar la mitad. Si ambos cruzaran a la vez, en el punto medio texto y
+   fondo serían el mismo gris y la página se quedaría ilegible. Con el
+   conmutador, el peor contraste es blanco (o negro) sobre gris medio, que
+   sigue siendo legible.
+   ========================================================================== */
+body.clareo{
+  --p:0;
+  --clareo-linea:color-mix(in srgb, currentColor 14%, transparent);
+  background:color-mix(in srgb, var(--tinta-alta) calc(var(--p) * 100%), var(--negro-profundo));
+  color:var(--tinta-alta);
+  transition:color 200ms var(--ease-cine);
+}
+body.clareo.texto-oscuro{ color:var(--negro-profundo); }
+
+body.clareo .nav{
+  background:transparent;
+  border-bottom-color:transparent;
+  color:inherit;
+}
+body.clareo .lockup,
+body.clareo .nav-centro,
+body.clareo .nav-derecha,
+body.clareo .nav-menu-btn{ color:inherit; }
+body.clareo .nav-centro a,
+body.clareo .nav-derecha a,
+body.clareo .nav-region-btn{ color:inherit; opacity:0.62; }
+body.clareo .nav-centro a:hover,
+body.clareo .nav-derecha a:hover,
+body.clareo .nav a[aria-current="page"]{ opacity:1; }
+/* El desplegable y el menú móvil conservan su superficie oscura: son
+   paneles opacos, no parte del fondo que se aclara. */
+body.clareo .nav-region-panel,
+body.clareo .nav-overlay{ color:var(--tinta-alta); }
+
+body.clareo .etiqueta,
+body.clareo .footer-col h2,
+body.clareo .footer-legal,
+body.clareo .enlace-grande .destino,
+body.clareo .campo label,
+body.clareo .form-aviso,
+body.clareo .re-precio-nota{ color:inherit; opacity:0.62; }
+
+body.clareo .footer-col a,
+body.clareo .footer-col span,
+body.clareo .footer-real-estate{ color:inherit !important; }
+
+body.clareo .enlace-grande,
+body.clareo .footer,
+body.clareo .footer-legal,
+body.clareo .hairline{ border-color:var(--clareo-linea); }
+body.clareo .pendiente{ color:inherit; border-color:var(--clareo-linea); opacity:0.7; }
+
+body.clareo .campo input,
+body.clareo .campo select,
+body.clareo .campo textarea{ color:inherit; border-bottom-color:var(--clareo-linea); }
+body.clareo .campo select option{ color:var(--tinta-alta); }
+body.clareo .campo .consentimiento{ color:inherit; opacity:0.75; }
+body.clareo .btn{ border-color:var(--clareo-linea); }
+body.clareo .btn:hover{ border-color:currentColor; }
+
+.contacto-frase{
+  min-height:70svh;
+  display:flex;
+  align-items:center;
+}
+
+/* ==========================================================================
+   /real-estate/ — misma identidad que el resto de la web. Es la única
+   página en castellano y la única con CTA amarillo y WhatsApp flotante.
+   ========================================================================== */
+.re-hero{
+  position:relative;
+  height:100svh;
+  min-height:560px;
+  overflow:hidden;
+  display:flex;
+  align-items:flex-end;
+}
+.re-hero .placeholder-video,
+.re-hero video{
+  position:absolute;
+  inset:0;
+  width:100%; height:100%;
+  object-fit:cover;
+}
+.re-hero::after{
+  content:"";
+  position:absolute; inset:0;
+  background:linear-gradient(to bottom, rgba(18,16,16,0.4) 0%, transparent 40%, rgba(18,16,16,0.85) 100%);
+}
+.re-hero .contenedor{
+  position:relative;
+  z-index:1;
+  padding-bottom:clamp(48px,8vw,96px);
+}
+.re-hero .titular-hero{ max-width:14ch; }
+
+.re-caso{
+  display:grid;
+  gap:clamp(28px,4vw,56px);
+  grid-template-columns:1fr;
+  align-items:start;
+}
+@media (min-width:900px){ .re-caso{ grid-template-columns:1fr 1fr; } }
+.re-marco{
+  aspect-ratio:16/9;
+  overflow:hidden;
+  background:var(--negro);
+}
+.re-marco .placeholder-video{ width:100%; height:100%; }
+
+.re-precio{
+  font-size:clamp(28px,4vw,48px);
+  font-weight:500;
+  line-height:1.2;
+  max-width:20ch;
+}
+.re-precio strong{ font-weight:700; }
+.re-precio-nota{
+  color:var(--tinta-media);
+  margin-top:18px;
+  font-size:17px;
+}
+
+.wa-flotante{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:90;
+  width:52px; height:52px;
+  border-radius:50%;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:var(--acento-proyector);
+  color:var(--negro);
+}
+@media (max-width:900px){ .wa-flotante{ display:flex; } }
+
+/* ==========================================================================
+   HOME — etiquetas de submarca bajo la declaración
+   ========================================================================== */
+.submarcas{
+  display:flex;
+  flex-wrap:wrap;
+  gap:clamp(28px,6vw,72px);
+  margin-top:clamp(36px,6vw,72px);
+}
+.submarcas .enlace-mono{ font-size:14px; letter-spacing:0.2em; }
+.todo-work{ margin-top:30px; }
+
+/* Consentimiento — el formulario manda datos personales a la base de datos,
+   así que se pide explícitamente antes de enviar nada. */
+.campo .consentimiento{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  font-family:var(--tipo);
+  font-size:14px;
+  letter-spacing:0;
+  text-transform:none;
+  line-height:1.5;
+  color:var(--tinta-media);
+  cursor:pointer;
+}
+.campo .consentimiento input{ width:auto; flex:none; margin-top:4px; }
+.campo .consentimiento a{ text-decoration:underline; }

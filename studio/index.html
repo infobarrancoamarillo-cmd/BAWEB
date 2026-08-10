@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Barranco Amarillo — Entertainment company</title>
-<meta name="description" content="Barranco Amarillo is an entertainment company that has worked around the world for almost a decade. Films, music and ads.">
-<meta property="og:title" content="Barranco Amarillo — Entertainment company">
-<meta property="og:description" content="Barranco Amarillo is an entertainment company that has worked around the world for almost a decade. Films, music and ads.">
+<title>Studio — Barranco Amarillo</title>
+<meta name="description" content="Barranco Amarillo: who we are and how we work.">
+<meta property="og:title" content="Studio — Barranco Amarillo">
+<meta property="og:description" content="Barranco Amarillo: who we are and how we work.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_GB">
-<meta property="og:url" content="https://baweb-v5.vercel.app/">
+<meta property="og:url" content="https://baweb-v5.vercel.app/studio/">
 <meta property="og:image" content="https://baweb-v5.vercel.app/assets/logo-imagotipo.png">
-<link rel="canonical" href="https://baweb-v5.vercel.app/">
+<link rel="canonical" href="https://baweb-v5.vercel.app/studio/">
 <link rel="icon" type="image/png" href="/assets/logo-simbolo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +22,7 @@
 <div class="loader" id="loader" hidden>
   <p class="loader-texto">Barranco Amarillo</p>
 </div>
-<header class="nav nav--sobre-video">
+<header class="nav">
   <a class="lockup" href="/" aria-label="Barranco Amarillo — Home">
     <span class="lockup-base">Barranco Amarillo</span>
   </a>
@@ -67,33 +67,39 @@
   </div>
 </div>
 
-<main class="pagina pagina--sangre">
+<main class="pagina">
+  <header class="contenedor cabecera-seccion">
+    <p class="etiqueta">Studio</p>
+    <p class="declaracion declaracion--ancha revelar-frase"><span class="pendiente">Copy pendiente &mdash; reescribir en inglés</span>. El texto de la v5 estaba en castellano y esta web va en inglés.</p>
+  </header>
 
-  <!-- ZONA 1 — el reproductor, a sangre. Un solo vídeo a la vez.
-       El scroll vertical no lo controla: solo desplaza la página. -->
-  <section class="reproductor" id="reproductor" aria-label="Featured work">
-    <noscript>
-      <div class="placeholder-video">
-        <span class="pendiente pendiente-bloque">Featured reel<br>See the full archive at <a href="/work/">/work/</a></span>
-      </div>
-    </noscript>
-  </section>
-
-  <!-- ZONA 2 — la declaración -->
-  <section class="bloque">
+  <!-- La única inversión a amarillo sólido de toda la web. Si se repite,
+       deja de significar nada. -->
+  <section class="inversion-amarilla">
     <div class="contenedor">
-      <p class="declaracion declaracion--ancha revelar-frase">Barranco Amarillo is an entertainment company that has worked around the world for almost a decade. We exist for one wonderful reason: the creator&rsquo;s vision, and what an image can do to people.</p>
-
-      <nav class="submarcas" aria-label="Sub-brands">
-        <a class="enlace-mono" href="/films/">Films</a>
-        <a class="enlace-mono" href="/music/">Music</a>
-        <a class="enlace-mono" href="/ads/">Ads</a>
-      </nav>
-
-      <p class="todo-work"><a class="enlace-mono" href="/work/">All work &rarr;</a></p>
+      <div class="cifras">
+        <p class="cifra revelar">
+          <span class="valor"><span class="pendiente">00</span></span>
+          <span class="rotulo"><span class="pendiente">Cifra pendiente</span></span>
+        </p>
+        <p class="cifra revelar" style="--d:80ms">
+          <span class="valor"><span class="pendiente">00</span></span>
+          <span class="rotulo"><span class="pendiente">Cifra pendiente</span></span>
+        </p>
+        <p class="cifra revelar" style="--d:160ms">
+          <span class="valor"><span class="pendiente">00</span></span>
+          <span class="rotulo"><span class="pendiente">Cifra pendiente</span></span>
+        </p>
+      </div>
     </div>
   </section>
 
+  <section class="bloque">
+    <div class="contenedor">
+      <p class="etiqueta" style="margin-bottom:22px">Roster</p>
+      <a class="enlace-mono" href="/directors/">Directors &rarr;</a>
+    </div>
+  </section>
 </main>
 <footer class="footer">
   <div class="contenedor">
@@ -131,8 +137,5 @@
 </footer>
 <script src="/assets/js/base.js"></script>
 <script src="/assets/js/piezas.js"></script>
-<script>
-  BA.montarReproductor(document.getElementById("reproductor"));
-</script>
 </body>
 </html>
