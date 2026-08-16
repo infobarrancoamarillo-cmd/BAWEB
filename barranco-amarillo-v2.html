@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barranco Amarillo — Productora Audiovisual</title>
+<meta name="description" content="Barranco Amarillo. Productora audiovisual: ficción, documental, música en vivo, festivales, real estate y tours 3D.">
+
+<!-- ============================================================
+     BARRANCO AMARILLO — V2
+     Un único archivo HTML autocontenido.
+     V2 = V1 + portfolio real (8 piezas de YouTube, patrón facade)
+     NOTA DE BUILD: barranco-amarillo-v1.html no estaba disponible
+     en el repositorio; la estructura V1 se reconstruyó a partir de
+     la especificación de marca del brief. Mismo sistema visual:
+     #F1C741 / #1E1B1A / #E56425 · Roboto + Roboto Slab.
+     ============================================================ -->
+
+<!-- Tipografías (la página renderiza igualmente sin conexión: hay fallbacks de sistema) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+<style>
+  /* ==================== SISTEMA ==================== */
+  :root{
+    --amarillo:#F1C741;
+    --carbon:#1E1B1A;
+    --naranja:#E56425;
+    --carbon-90:rgba(30,27,26,.9);
+    --hueso:#F5EFE3;
+    --gris:#8B8580;
+    --borde:rgba(245,239,227,.14);
+    --radius:14px;
+    --sans:'Roboto',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+    --slab:'Roboto Slab','Roboto',Georgia,serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:84px}
+  body{
+    font-family:var(--sans);
+    background:var(--carbon);
+    color:var(--hueso);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block}
+  a{color:inherit}
+  h1,h2,h3{font-family:var(--slab);line-height:1.15}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+  section{padding:88px 0}
+  .eyebrow{
+    display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--amarillo);margin-bottom:14px;
+  }
+  .section-title{font-size:clamp(1.7rem,3.6vw,2.6rem);font-weight:900;margin-bottom:16px}
+  .section-intro{max-width:640px;color:var(--gris);font-size:1.05rem;margin-bottom:44px}
+  .btn{
+    display:inline-block;font-weight:700;font-size:.95rem;letter-spacing:.04em;
+    padding:14px 28px;border-radius:999px;text-decoration:none;cursor:pointer;
+    border:2px solid var(--amarillo);transition:transform .18s ease,background .18s ease,color .18s ease;
+  }
+  .btn-solid{background:var(--amarillo);color:var(--carbon)}
+  .btn-solid:hover{transform:translateY(-2px);background:#f8d564}
+  .btn-ghost{background:transparent;color:var(--amarillo)}
+  .btn-ghost:hover{background:rgba(241,199,65,.12)}
+  :focus-visible{outline:3px solid var(--amarillo);outline-offset:2px}
+
+  /* ==================== HEADER ==================== */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:60;
+    background:var(--carbon-90);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--borde);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+  .logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+  /* TODO: sustituir por el SVG definitivo del logo */
+  .logo-mark{
+    width:38px;height:38px;border-radius:9px;flex:0 0 auto;
+    background:linear-gradient(135deg,var(--amarillo) 62%,var(--naranja) 62%);
+    display:grid;place-items:center;
+    font-family:var(--slab);font-weight:900;font-size:1.15rem;color:var(--carbon);
+  }
+  .logo-text{font-family:var(--slab);font-weight:700;font-size:1.05rem;letter-spacing:.02em}
+  .logo-text span{color:var(--amarillo)}
+  nav ul{display:flex;gap:26px;list-style:none}
+  nav ul a{font-size:.9rem;font-weight:500;text-decoration:none;color:var(--hueso);opacity:.85;transition:opacity .15s,color .15s}
+  nav ul a:hover{opacity:1;color:var(--amarillo)}
+  .nav-cta{border-width:2px;padding:9px 20px;font-size:.85rem}
+  @media(max-width:860px){nav ul{display:none}}
+
+  /* ==================== HERO ==================== */
+  .hero{
+    min-height:92vh;display:flex;align-items:center;padding:140px 0 80px;
+    background:
+      radial-gradient(1100px 520px at 82% -10%,rgba(241,199,65,.13),transparent 60%),
+      radial-gradient(700px 420px at 8% 110%,rgba(229,100,37,.12),transparent 60%),
+      var(--carbon);
+  }
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+  .hero h1{font-size:clamp(2.3rem,5.2vw,4rem);font-weight:900;margin-bottom:22px}
+  .hero h1 em{font-style:normal;color:var(--amarillo)}
+  .hero p{color:var(--gris);font-size:1.12rem;max-width:480px;margin-bottom:34px}
+  .hero-actions{display:flex;gap:16px;flex-wrap:wrap}
+  /* Placeholder del showreel — se mantiene de V1. No incrustar YouTube aquí. */
+  /* TODO: showreel propio (vídeo autoalojado o Vimeo) pendiente */
+  .showreel-ph{
+    aspect-ratio:16/9;border-radius:var(--radius);position:relative;overflow:hidden;
+    background:
+      repeating-linear-gradient(-45deg,rgba(241,199,65,.05) 0 14px,transparent 14px 28px),
+      linear-gradient(160deg,#2a2624,#1E1B1A 70%);
+    border:1px dashed rgba(241,199,65,.4);
+    display:grid;place-items:center;text-align:center;padding:24px;
+  }
+  .showreel-ph .play-badge{
+    width:76px;height:76px;border-radius:50%;background:var(--amarillo);
+    display:grid;place-items:center;margin:0 auto 18px;
+    box-shadow:0 8px 40px rgba(241,199,65,.35);
+  }
+  .showreel-ph .play-badge svg{margin-left:5px}
+  .showreel-ph strong{font-family:var(--slab);font-size:1.05rem;display:block;margin-bottom:6px}
+  .showreel-ph small{color:var(--gris)}
+  @media(max-width:860px){
+    .hero-grid{grid-template-columns:1fr}
+    .hero{min-height:auto;padding-top:120px}
+  }
+
+  /* ==================== PORTFOLIO ==================== */
+  #portfolio{background:linear-gradient(180deg,#242020 0,var(--carbon) 220px)}
+  .chips{
+    display:flex;gap:10px;margin-bottom:36px;
+    overflow-x:auto;padding-bottom:8px;scrollbar-width:thin;
+    -webkit-overflow-scrolling:touch;
+  }
+  .chip{
+    flex:0 0 auto;font-family:var(--sans);font-size:.88rem;font-weight:700;letter-spacing:.03em;
+    padding:9px 20px;border-radius:999px;cursor:pointer;white-space:nowrap;
+    background:transparent;color:var(--hueso);border:2px solid var(--borde);
+    transition:background .18s,color .18s,border-color .18s;
+  }
+  .chip:hover{border-color:var(--amarillo);color:var(--amarillo)}
+  .chip[aria-pressed="true"]{background:var(--amarillo);border-color:var(--amarillo);color:var(--carbon)}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  @media(max-width:960px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}}
+
+  .card{
+    text-align:left;border:1px solid var(--borde);border-radius:var(--radius);overflow:hidden;
+    background:#262221;cursor:pointer;padding:0;color:var(--hueso);font-family:var(--sans);
+    transition:transform .2s ease,border-color .2s ease,opacity .25s ease;
+    display:block;width:100%;
+  }
+  .card:hover{transform:translateY(-4px);border-color:rgba(241,199,65,.55)}
+  .card.is-hidden{display:none}
+  .card.anim-in{animation:cardIn .28s ease both}
+  @keyframes cardIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+
+  .thumb{
+    aspect-ratio:16/9;position:relative;overflow:hidden;
+    /* fondo de marca visible si la miniatura no carga (sin conexión a YouTube) */
+    background:linear-gradient(150deg,#3a332f,var(--carbon) 75%);
+  }
+  .thumb img{width:100%;height:100%;object-fit:cover}
+  /* velado duotono de marca sobre las miniaturas */
+  .thumb::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(15deg,rgba(30,27,26,.82) 0%,rgba(30,27,26,.28) 45%,rgba(241,199,65,.14) 100%);
+    mix-blend-mode:normal;transition:opacity .25s ease;
+  }
+  .card:hover .thumb::after{opacity:.45}
+  .thumb .play{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
+    width:58px;height:58px;border-radius:50%;background:var(--amarillo);
+    display:grid;place-items:center;box-shadow:0 6px 26px rgba(0,0,0,.45);
+    transition:transform .2s ease;
+  }
+  .thumb .play svg{margin-left:4px}
+  .card:hover .play{transform:translate(-50%,-50%) scale(1.1)}
+  .card-body{padding:18px 20px 22px}
+  .card-eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--naranja);margin-bottom:8px}
+  .card-title{font-family:var(--slab);font-weight:700;font-size:1.08rem;margin-bottom:6px}
+  .card-sub{font-size:.88rem;color:var(--gris)}
+
+  /* ==================== LIGHTBOX ==================== */
+  .lightbox{
+    position:fixed;inset:0;z-index:100;display:none;
+    background:rgba(30,27,26,.95);
+    align-items:center;justify-content:center;padding:4vmin;
+  }
+  .lightbox.open{display:flex}
+  .lb-inner{position:relative;width:min(1100px,100%);}
+  .lb-frame{aspect-ratio:16/9;width:100%;background:#000;border-radius:10px;overflow:hidden;box-shadow:0 20px 80px rgba(0,0,0,.6)}
+  .lb-frame iframe{width:100%;height:100%;border:0;display:block}
+  .lb-close{
+    position:absolute;top:-52px;right:0;
+    width:42px;height:42px;border-radius:50%;cursor:pointer;
+    background:transparent;border:2px solid var(--amarillo);color:var(--amarillo);
+    font-size:1.25rem;line-height:1;display:grid;place-items:center;
+    transition:background .15s,color .15s;
+  }
+  .lb-close:hover{background:var(--amarillo);color:var(--carbon)}
+  .lb-title{margin-top:14px;font-family:var(--slab);font-size:1rem;color:var(--hueso);opacity:.85}
+  @media(max-width:640px){.lb-close{top:-50px;right:2px}}
+
+  /* ==================== SERVICIOS ==================== */
+  .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  @media(max-width:960px){.svc-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:640px){.svc-grid{grid-template-columns:1fr}}
+  .svc{
+    border:1px solid var(--borde);border-radius:var(--radius);padding:30px 26px;
+    background:#262221;text-decoration:none;display:block;
+    transition:transform .2s ease,border-color .2s ease;
+  }
+  .svc:hover{transform:translateY(-4px);border-color:rgba(241,199,65,.55)}
+  .svc-ico{
+    width:48px;height:48px;border-radius:11px;margin-bottom:18px;
+    background:rgba(241,199,65,.14);display:grid;place-items:center;color:var(--amarillo);
+  }
+  .svc h3{font-size:1.15rem;margin-bottom:10px}
+  .svc p{font-size:.92rem;color:var(--gris)}
+  .svc .svc-link{display:inline-block;margin-top:14px;font-size:.85rem;font-weight:700;color:var(--amarillo)}
+
+  /* ==================== REAL ESTATE / TOURS ==================== */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  @media(max-width:860px){.split{grid-template-columns:1fr}}
+  .media-ph{
+    aspect-ratio:4/3;border-radius:var(--radius);
+    border:1px dashed rgba(241,199,65,.4);
+    background:
+      repeating-linear-gradient(45deg,rgba(229,100,37,.06) 0 14px,transparent 14px 28px),
+      linear-gradient(160deg,#2a2624,#1E1B1A 70%);
+    display:grid;place-items:center;text-align:center;padding:24px;color:var(--gris);
+  }
+  .media-ph strong{font-family:var(--slab);color:var(--hueso);display:block;margin-bottom:6px}
+  .list-check{list-style:none;margin:22px 0 30px}
+  .list-check li{padding-left:30px;position:relative;margin-bottom:12px;color:var(--hueso)}
+  .list-check li::before{content:"✓";position:absolute;left:0;color:var(--amarillo);font-weight:700}
+  #realestate{background:#242020}
+
+  /* ==================== ESTUDIO ==================== */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:44px}
+  @media(max-width:640px){.stats{grid-template-columns:1fr}}
+  .stat{border-left:3px solid var(--amarillo);padding:6px 0 6px 20px}
+  .stat b{font-family:var(--slab);font-size:1.9rem;display:block;color:var(--amarillo)}
+  .stat span{color:var(--gris);font-size:.92rem}
+
+  /* ==================== PRECIOS ==================== */
+  #precios{background:#242020}
+  .price-rule{
+    max-width:720px;margin:0 auto;text-align:center;
+    border:2px solid var(--amarillo);border-radius:var(--radius);padding:44px 32px;
+    background:rgba(241,199,65,.05);
+  }
+  .price-rule h3{font-size:clamp(1.4rem,3vw,2rem);font-weight:900;margin-bottom:14px}
+  .price-rule h3 em{font-style:normal;color:var(--amarillo)}
+  .price-rule p{color:var(--gris);max-width:520px;margin:0 auto 26px}
+
+  /* ==================== CONTACTO ==================== */
+  .contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px}
+  @media(max-width:860px){.contact-grid{grid-template-columns:1fr}}
+  .field{margin-bottom:18px}
+  .field label{display:block;font-size:.85rem;font-weight:700;margin-bottom:7px;letter-spacing:.03em}
+  .field input,.field textarea{
+    width:100%;padding:13px 16px;border-radius:10px;font-family:var(--sans);font-size:.95rem;
+    background:#262221;border:1px solid var(--borde);color:var(--hueso);
+  }
+  .field input:focus,.field textarea:focus{outline:2px solid var(--amarillo);border-color:transparent}
+  .contact-item{display:flex;gap:14px;margin-bottom:22px;align-items:flex-start}
+  .contact-item .svc-ico{width:40px;height:40px;flex:0 0 auto;margin:0}
+  .contact-item b{display:block;font-family:var(--slab)}
+  .contact-item span{color:var(--gris);font-size:.92rem}
+
+  /* ==================== FOOTER ==================== */
+  footer{border-top:1px solid var(--borde);padding:34px 0;font-size:.85rem;color:var(--gris)}
+  footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+  /* ==================== FLOTANTES: WHATSAPP + CHAT ==================== */
+  .float-stack{position:fixed;right:22px;bottom:22px;z-index:80;display:flex;flex-direction:column;gap:14px;align-items:flex-end}
+  .fab{
+    width:56px;height:56px;border-radius:50%;display:grid;place-items:center;cursor:pointer;
+    border:0;box-shadow:0 8px 30px rgba(0,0,0,.4);transition:transform .18s ease;text-decoration:none;
+  }
+  .fab:hover{transform:scale(1.08)}
+  .fab-wa{background:#25D366;color:#fff}
+  .fab-chat{background:var(--amarillo);color:var(--carbon)}
+  .chat-panel{
+    position:fixed;right:22px;bottom:160px;z-index:80;width:min(320px,calc(100vw - 44px));
+    background:#262221;border:1px solid var(--borde);border-radius:var(--radius);
+    box-shadow:0 20px 60px rgba(0,0,0,.5);display:none;overflow:hidden;
+  }
+  .chat-panel.open{display:block}
+  .chat-head{background:var(--amarillo);color:var(--carbon);padding:14px 18px;font-weight:700;font-family:var(--slab)}
+  .chat-body{padding:18px}
+  .chat-msg{background:#1E1B1A;border:1px solid var(--borde);border-radius:10px;padding:12px 14px;font-size:.9rem;margin-bottom:12px}
+  .chat-body .btn{width:100%;text-align:center;font-size:.85rem;padding:11px 0}
+
+  /* ==================== MOVIMIENTO REDUCIDO ==================== */
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{transition:none!important;animation:none!important}
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== HEADER ==================== -->
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#top" aria-label="Barranco Amarillo — inicio">
+      <span class="logo-mark" aria-hidden="true">BA</span>
+      <span class="logo-text">Barranco <span>Amarillo</span></span>
+    </a>
+    <nav aria-label="Principal">
+      <ul>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#realestate">Real Estate</a></li>
+        <li><a href="#tours3d">Tours 3D</a></li>
+        <li><a href="#estudio">Estudio</a></li>
+        <li><a href="#precios">Precios</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn-solid nav-cta" href="#contacto">Hablemos</a>
+  </div>
+</header>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Productora audiovisual</span>
+      <h1>Historias con <em>luz propia</em>.</h1>
+      <p>Ficción, documental, música en vivo y festivales. De la idea a la pantalla, con un equipo que cuida cada plano.</p>
+      <div class="hero-actions">
+        <a class="btn btn-solid" href="#portfolio">Ver portfolio</a>
+        <a class="btn btn-ghost" href="#contacto">Cuéntanos tu proyecto</a>
+      </div>
+    </div>
+    <!-- TODO: showreel propio pendiente (no incrustar YouTube en el hero) -->
+    <div class="showreel-ph" role="img" aria-label="Espacio reservado para el showreel de Barranco Amarillo">
+      <div>
+        <span class="play-badge" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="#1E1B1A"><path d="M8 5v14l11-7z"/></svg>
+        </span>
+        <strong>Showreel próximamente</strong>
+        <small>Mientras tanto, el trabajo real está justo debajo ↓</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PORTFOLIO ==================== -->
+<section id="portfolio">
+  <div class="wrap">
+    <span class="eyebrow">Portfolio</span>
+    <h2 class="section-title">Trabajo real, en pantalla</h2>
+    <p class="section-intro">Ocho piezas producidas o grabadas por Barranco Amarillo. Filtra por categoría y dale al play: el vídeo se abre aquí mismo.</p>
+
+    <div class="chips" role="group" aria-label="Filtrar portfolio por categoría">
+      <button class="chip" data-filter="todo" aria-pressed="true">Todo</button>
+      <button class="chip" data-filter="ficcion" aria-pressed="false">Ficción</button>
+      <button class="chip" data-filter="documental" aria-pressed="false">Documental</button>
+      <button class="chip" data-filter="musica" aria-pressed="false">Música en vivo</button>
+      <button class="chip" data-filter="festival" aria-pressed="false">Festival</button>
+    </div>
+
+    <div class="grid" id="portfolio-grid"><!-- tarjetas renderizadas desde PORTFOLIO (JS) --></div>
+  </div>
+</section>
+
+<!-- Lightbox (el iframe se crea solo al abrir y se elimina al cerrar) -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Reproductor de vídeo">
+  <div class="lb-inner">
+    <button class="lb-close" id="lb-close" aria-label="Cerrar vídeo">✕</button>
+    <div class="lb-frame" id="lb-frame"></div>
+    <p class="lb-title" id="lb-title"></p>
+  </div>
+</div>
+
+<!-- ==================== SERVICIOS ==================== -->
+<section id="servicios">
+  <div class="wrap">
+    <span class="eyebrow">Servicios</span>
+    <h2 class="section-title">Qué hacemos</h2>
+    <p class="section-intro">Producción integral con equipo propio. Cada servicio enlaza con ejemplos reales del portfolio.</p>
+    <div class="svc-grid">
+      <a class="svc" href="#portfolio" data-goto-filter="ficcion">
+        <span class="svc-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V4h-4z"/></svg></span>
+        <h3>Ficción / Cine</h3>
+        <p>Cortometrajes y ficción con vocación de festival: desarrollo, rodaje y postproducción.</p>
+        <span class="svc-link">Ver piezas de ficción →</span>
+      </a>
+      <a class="svc" href="#portfolio" data-goto-filter="documental">
+        <span class="svc-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17 10.5V7a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1v-3.5l4 4v-11l-4 4z"/></svg></span>
+        <h3>Documental</h3>
+        <p>Historias reales contadas con tiempo, escucha y una cámara que no molesta.</p>
+        <span class="svc-link">Ver documental →</span>
+      </a>
+      <a class="svc" href="#portfolio" data-goto-filter="musica">
+        <span class="svc-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55A4 4 0 1014 17V7h4V3h-6z"/></svg></span>
+        <h3>Videoclips y música en vivo</h3>
+        <p>Conciertos multicámara y resúmenes con la energía del directo intacta.</p>
+        <span class="svc-link">Ver música en vivo →</span>
+      </a>
+      <a class="svc" href="#portfolio" data-goto-filter="festival">
+        <span class="svc-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.3-6.2-4.5-6.2 4.5 2.4-7.3L2 9.4h7.6z"/></svg></span>
+        <h3>Festivales y eventos</h3>
+        <p>Aftermovies y cobertura completa: del backstage al último bis.</p>
+        <span class="svc-link">Ver festival →</span>
+      </a>
+      <a class="svc" href="#realestate">
+        <span class="svc-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-4v-6H10v6H6v-9H3z"/></svg></span>
+        <h3>Real Estate</h3>
+        <p>Vídeo inmobiliario que vende espacios: luz natural, ritmo y dron.</p>
+        <span class="svc-link">Más sobre Real Estate →</span>
+      </a>
+      <a class="svc" href="#tours3d">
+        <span class="svc-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm7.9 9h-3.4a15.5 15.5 0 00-1.2-6.2A8 8 0 0119.9 11zM12 4c.9 1.3 1.9 3.8 2.1 7H9.9c.2-3.2 1.2-5.7 2.1-7zM4.1 13h3.4c.1 2.3.5 4.4 1.2 6.2A8 8 0 014.1 13zm3.4-2H4.1a8 8 0 014.6-6.2A15.5 15.5 0 007.5 11zm4.5 9c-.9-1.3-1.9-3.8-2.1-7h4.2c-.2 3.2-1.2 5.7-2.1 7zm3.3-.8a15.5 15.5 0 001.2-6.2h3.4a8 8 0 01-4.6 6.2z"/></svg></span>
+        <h3>Tours virtuales 3D</h3>
+        <p>Recorridos inmersivos para inmuebles, hoteles y espacios culturales.</p>
+        <span class="svc-link">Más sobre Tours 3D →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== REAL ESTATE ==================== -->
+<section id="realestate">
+  <div class="wrap split">
+    <div>
+      <span class="eyebrow">Real Estate</span>
+      <h2 class="section-title">Espacios que se venden solos</h2>
+      <p class="section-intro" style="margin-bottom:0">Vídeo inmobiliario pensado para captar en los primeros cinco segundos.</p>
+      <ul class="list-check">
+        <li>Rodaje con luz natural y estabilizado</li>
+        <li>Tomas aéreas con dron</li>
+        <li>Edición vertical y horizontal para portales y redes</li>
+        <li>Entrega en 72 horas</li>
+      </ul>
+      <a class="btn btn-solid" href="#contacto">Pedir presupuesto</a>
+    </div>
+    <div class="media-ph" role="img" aria-label="Espacio reservado para vídeo de real estate">
+      <div><strong>Vídeo Real Estate</strong>Ejemplo en preparación</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== TOURS 3D ==================== -->
+<section id="tours3d">
+  <div class="wrap split">
+    <!-- TODO: incrustar tour 3D real cuando esté disponible -->
+    <div class="media-ph" role="img" aria-label="Espacio reservado para tour virtual 3D">
+      <div><strong>Tour virtual 3D</strong>Demo interactiva próximamente</div>
+    </div>
+    <div>
+      <span class="eyebrow">Tours 3D</span>
+      <h2 class="section-title">Camina por el espacio sin estar allí</h2>
+      <p class="section-intro" style="margin-bottom:0">Recorridos virtuales inmersivos, medibles y compartibles con un enlace.</p>
+      <ul class="list-check">
+        <li>Captura 3D de alta resolución</li>
+        <li>Planos de planta y medidas integradas</li>
+        <li>Compatible con móvil y visores VR</li>
+      </ul>
+      <a class="btn btn-ghost" href="#contacto">Quiero un tour 3D</a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ESTUDIO ==================== -->
+<section id="estudio">
+  <div class="wrap">
+    <span class="eyebrow">El estudio</span>
+    <h2 class="section-title">Barranco Amarillo</h2>
+    <p class="section-intro">Somos una productora pequeña a propósito: los mismos ojos que escuchan tu idea son los que están detrás de la cámara y en la sala de edición. Hacemos menos proyectos para hacerlos mejor.</p>
+    <div class="stats">
+      <div class="stat"><b>8+</b><span>producciones publicadas</span></div>
+      <div class="stat"><b>4</b><span>bandas grabadas en directo</span></div>
+      <div class="stat"><b>1</b><span>equipo, de la idea a la entrega</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PRECIOS ==================== -->
+<section id="precios">
+  <div class="wrap">
+    <span class="eyebrow" style="display:block;text-align:center">Precios</span>
+    <div class="price-rule">
+      <h3>El precio <em>no se negocia</em>. El alcance sí.</h3>
+      <p>Cada proyecto tiene un presupuesto cerrado y justo. Si no encaja, ajustamos el alcance — nunca la calidad ni el precio por hora de trabajo.</p>
+      <a class="btn btn-solid" href="#contacto">Pedir presupuesto cerrado</a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CONTACTO ==================== -->
+<section id="contacto">
+  <div class="wrap">
+    <span class="eyebrow">Contacto</span>
+    <h2 class="section-title">Cuéntanos tu proyecto</h2>
+    <p class="section-intro">Respondemos en menos de 24 horas laborables.</p>
+    <div class="contact-grid">
+      <form onsubmit="event.preventDefault();alert('Gracias. Este formulario se conectará próximamente; mientras tanto escríbenos por email o WhatsApp.');">
+        <div class="field">
+          <label for="f-nombre">Nombre</label>
+          <input id="f-nombre" type="text" name="nombre" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="f-email">Email</label>
+          <input id="f-email" type="email" name="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="f-msg">Tu proyecto</label>
+          <textarea id="f-msg" name="mensaje" rows="5" required></textarea>
+        </div>
+        <button class="btn btn-solid" type="submit">Enviar</button>
+      </form>
+      <div>
+        <div class="contact-item">
+          <span class="svc-ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></span>
+          <div><b>Email</b><span>infobarrancoamarillo@gmail.com</span></div>
+          <!-- TODO: confirmar email definitivo -->
+        </div>
+        <div class="contact-item">
+          <span class="svc-ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 00-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6a2.5 2.5 0 010 5.5z"/></svg></span>
+          <div><b>Estudio</b><span>Dirección próximamente</span></div>
+          <!-- TODO: dirección definitiva -->
+        </div>
+        <div class="contact-item">
+          <span class="svc-ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 3a1 1 0 011 1v4.6l3 1.7-.8 1.4L11 13V7a1 1 0 011-1z"/></svg></span>
+          <div><b>Agenda una llamada</b><span>Reserva online próximamente</span></div>
+          <!-- TODO: enlazar Calendly -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <div class="wrap">
+    <span>© 2026 Barranco Amarillo · Productora audiovisual</span>
+    <span>Hecho con luz amarilla · <a href="#top" style="color:var(--amarillo);text-decoration:none">Volver arriba ↑</a></span>
+  </div>
+</footer>
+
+<!-- ==================== FLOTANTES ==================== -->
+<div class="float-stack">
+  <button class="fab fab-chat" id="chat-toggle" aria-label="Abrir chat" aria-expanded="false">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"/></svg>
+  </button>
+  <!-- TODO: sustituir por el número de WhatsApp real -->
+  <a class="fab fab-wa" href="https://wa.me/34600000000" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2A10 10 0 002 12a9.9 9.9 0 001.5 5.3L2 22l4.8-1.4A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.2l-.3-.2-2.9.9.9-2.8-.2-.3A8.2 8.2 0 1112 20.2zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.6.1a6.7 6.7 0 01-2-1.2 7.4 7.4 0 01-1.4-1.7c-.1-.3 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5a.6.6 0 000-.5c0-.1-.6-1.4-.8-1.9s-.4-.4-.6-.4h-.5a1 1 0 00-.7.3 2.9 2.9 0 00-.9 2.1 5 5 0 001.1 2.7 11.4 11.4 0 004.4 3.8 14.6 14.6 0 001.5.6 3.6 3.6 0 001.6.1 2.7 2.7 0 001.8-1.3 2.2 2.2 0 00.2-1.3c-.1-.1-.3-.2-.6-.3z"/></svg>
+  </a>
+</div>
+
+<div class="chat-panel" id="chat-panel" role="dialog" aria-label="Chat de Barranco Amarillo">
+  <div class="chat-head">Barranco Amarillo</div>
+  <div class="chat-body">
+    <div class="chat-msg">👋 ¡Hola! ¿Tienes un proyecto entre manos? Cuéntanoslo por WhatsApp o déjanos un mensaje en el formulario.</div>
+    <a class="btn btn-solid" href="#contacto" id="chat-to-form">Ir al formulario</a>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   PORTFOLIO — datos reales
+   Títulos: la política de red del entorno de build bloqueó
+   youtube.com/oembed, por lo que se usan las notas de Carlos
+   como títulos provisionales (fallback previsto en el brief).
+   ============================================================ */
+const PORTFOLIO = [
+  { id: "snjU4GVItZ4", titulo: "Por la Victoria", categoria: "ficcion", etiqueta: "Ficción", sub: "Cortometraje · Producción Barranco Amarillo" }, // <!-- TODO: confirmar título exacto de YouTube -->
+  { id: "Aw8yax0awz8", titulo: "Aprendiendo a ver", categoria: "documental", etiqueta: "Documental", sub: "Documental · Producción Barranco Amarillo" }, // <!-- TODO: confirmar título exacto de YouTube -->
+  { id: "3Z0uXsxeu4M", titulo: "Eso que no decimos", categoria: "ficcion", etiqueta: "Ficción", sub: "Cortometraje de ficción" }, // <!-- TODO: confirmar título exacto de YouTube -->
+  { id: "KrFNvViIXfw", titulo: "La Vida Bohème en concierto", categoria: "musica", etiqueta: "Música en vivo", sub: "Vídeo resumen de concierto" }, // <!-- TODO: confirmar título exacto de YouTube -->
+  { id: "5H13hWWk5DY", titulo: "Okills en concierto", categoria: "musica", etiqueta: "Música en vivo", sub: "Vídeo resumen de concierto" }, // <!-- TODO: confirmar título exacto de YouTube y añadir sala/fecha/evento desde la descripción del vídeo -->
+  { id: "-9ta4nxsNxk", titulo: "Caramelos de Cianuro en concierto", categoria: "musica", etiqueta: "Música en vivo", sub: "Vídeo resumen de concierto" }, // <!-- TODO: confirmar título exacto de YouTube -->
+  { id: "AGacB0lB9fk", titulo: "Anakena en concierto", categoria: "musica", etiqueta: "Música en vivo", sub: "Vídeo resumen de concierto" }, // <!-- TODO: confirmar título exacto de YouTube -->
+  { id: "zwEpptfxsuQ", titulo: "Sunset Roll — Aftermovie", categoria: "festival", etiqueta: "Festival", sub: "Aftermovie de festival completo" }  // <!-- TODO: confirmar título exacto de YouTube -->
+];
+
+/* ---------- Render del grid (facade: sin iframes al cargar) ---------- */
+const grid = document.getElementById("portfolio-grid");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+PORTFOLIO.forEach(item => {
+  const card = document.createElement("button");
+  card.type = "button";
+  card.className = "card";
+  card.dataset.categoria = item.categoria;
+  card.dataset.id = item.id; // ojo: IDs pueden empezar por "-"; siempre se accede vía dataset/atributo, nunca como selector de #id
+  card.setAttribute("aria-label", "Reproducir: " + item.titulo);
+
+  const img = document.createElement("img");
+  img.loading = "lazy";
+  img.alt = "";
+  img.src = "https://i.ytimg.com/vi/" + item.id + "/maxresdefault.jpg";
+  let triedHq = false;
+  img.onerror = function(){
+    if (!triedHq) {
+      triedHq = true;
+      img.src = "https://i.ytimg.com/vi/" + item.id + "/hqdefault.jpg";
+    } else {
+      img.remove(); // queda el fondo degradado de marca del contenedor
+    }
+  };
+
+  const thumb = document.createElement("div");
+  thumb.className = "thumb";
+  thumb.appendChild(img);
+  const play = document.createElement("span");
+  play.className = "play";
+  play.setAttribute("aria-hidden", "true");
+  play.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="#1E1B1A"><path d="M8 5v14l11-7z"/></svg>';
+  thumb.appendChild(play);
+
+  const body = document.createElement("div");
+  body.className = "card-body";
+  const eyebrow = document.createElement("div");
+  eyebrow.className = "card-eyebrow";
+  eyebrow.textContent = item.etiqueta;
+  const title = document.createElement("div");
+  title.className = "card-title";
+  title.textContent = item.titulo;
+  const sub = document.createElement("div");
+  sub.className = "card-sub";
+  sub.textContent = item.sub;
+  body.append(eyebrow, title, sub);
+
+  card.append(thumb, body);
+  card.addEventListener("click", () => openLightbox(item, card));
+  grid.appendChild(card);
+});
+
+/* ---------- Lightbox (iframe creado al abrir, eliminado al cerrar) ---------- */
+const lightbox = document.getElementById("lightbox");
+const lbFrame  = document.getElementById("lb-frame");
+const lbTitle  = document.getElementById("lb-title");
+const lbClose  = document.getElementById("lb-close");
+let lastTrigger = null;
+
+function openLightbox(item, triggerEl){
+  lastTrigger = triggerEl || null;
+  const iframe = document.createElement("iframe");
+  iframe.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(item.id) + "?autoplay=1&rel=0";
+  iframe.title = item.titulo;
+  iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+  iframe.setAttribute("allowfullscreen", "");
+  lbFrame.replaceChildren(iframe);
+  lbTitle.textContent = item.titulo;
+  lightbox.classList.add("open");
+  document.body.style.overflow = "hidden";
+  lbClose.focus();
+}
+
+function closeLightbox(){
+  lightbox.classList.remove("open");
+  lbFrame.replaceChildren();      // elimina el iframe del DOM → corta el audio
+  lbTitle.textContent = "";
+  document.body.style.overflow = "";
+  if (lastTrigger) { lastTrigger.focus(); lastTrigger = null; }
+}
+
+lbClose.addEventListener("click", closeLightbox);
+lightbox.addEventListener("click", e => { if (e.target === lightbox) closeLightbox(); });
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && lightbox.classList.contains("open")) closeLightbox();
+});
+
+/* ---------- Filtros por categoría ---------- */
+const chips = Array.from(document.querySelectorAll(".chip"));
+
+function applyFilter(filtro){
+  chips.forEach(c => c.setAttribute("aria-pressed", String(c.dataset.filter === filtro)));
+  document.querySelectorAll("#portfolio-grid .card").forEach(card => {
+    const show = filtro === "todo" || card.dataset.categoria === filtro;
+    card.classList.toggle("is-hidden", !show);
+    card.classList.remove("anim-in");
+    if (show && !reduceMotion) {
+      void card.offsetWidth; // reinicia la animación
+      card.classList.add("anim-in");
+    }
+  });
+}
+
+chips.forEach(chip => chip.addEventListener("click", () => applyFilter(chip.dataset.filter)));
+
+/* Servicios → portfolio con filtro activo */
+document.querySelectorAll("[data-goto-filter]").forEach(link => {
+  link.addEventListener("click", () => applyFilter(link.dataset.gotoFilter));
+});
+
+/* ---------- Chat flotante ---------- */
+const chatToggle = document.getElementById("chat-toggle");
+const chatPanel  = document.getElementById("chat-panel");
+chatToggle.addEventListener("click", () => {
+  const open = chatPanel.classList.toggle("open");
+  chatToggle.setAttribute("aria-expanded", String(open));
+});
+document.getElementById("chat-to-form").addEventListener("click", () => {
+  chatPanel.classList.remove("open");
+  chatToggle.setAttribute("aria-expanded", "false");
+});
+</script>
+</body>
+</html>
