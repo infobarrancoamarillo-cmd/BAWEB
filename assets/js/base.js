@@ -1,6 +1,6 @@
 /* ==========================================================================
    BARRANCO AMARILLO — V6 · base.js
-   Loader, nav, revelados y favicon. Nada de esto es necesario para leer la
+   Nav, revelados y favicon. Nada de esto es necesario para leer la
    web: el JS solo añade movimiento.
    ========================================================================== */
 (function(){
@@ -12,64 +12,8 @@ document.documentElement.classList.add("js");
 
 var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/* ==========================================================================
-   LOADER — el texto real está en el HTML desde el principio. El barajado se
-   aplica encima; no lo sustituye.
-   ========================================================================== */
-(function loader(){
-  var el = document.getElementById("loader");
-  if(!el) return;
-
-  var yaVisto = false;
-  try{ yaVisto = sessionStorage.getItem("ba-loader") === "1"; }catch(e){}
-
-  if(yaVisto || reduceMotion){ el.remove(); return; }
-  try{ sessionStorage.setItem("ba-loader","1"); }catch(e){}
-
-  el.hidden = false;
-  document.body.style.overflow = "hidden";
-
-  var texto  = el.querySelector(".loader-texto");
-  var final  = texto.textContent;
-  var letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  var fijadas = 0;
-  var TOTAL = 1400;                       // + 300ms de reposo + 500 de fundido
-  var porLetra = TOTAL / final.length;
-  var t0 = null, fin = false;
-
-  function salir(){
-    if(fin) return;
-    fin = true;
-    texto.textContent = final;
-    setTimeout(function(){
-      el.classList.add("saliendo");
-      document.body.style.overflow = "";
-      setTimeout(function(){ el.remove(); }, 500);
-    }, 300);
-  }
-
-  function frame(ts){
-    if(fin) return;
-    if(t0 === null) t0 = ts;
-    fijadas = Math.min(final.length, Math.floor((ts - t0) / porLetra));
-
-    var s = "";
-    for(var i = 0; i < final.length; i++){
-      if(i < fijadas || final[i] === " ") s += final[i];
-      else s += letras[(Math.random() * letras.length) | 0];
-    }
-    texto.textContent = s;
-
-    if(fijadas >= final.length) return salir();
-    requestAnimationFrame(frame);
-  }
-  requestAnimationFrame(frame);
-
-  ["click","keydown","wheel","touchstart"].forEach(function(ev){
-    window.addEventListener(ev, salir, { once:true, passive:true });
-  });
-  setTimeout(salir, 1800);               // techo duro
-})();
+/* El loader vive en su propio archivo (assets/js/loader.js) y se carga desde
+   el <head>: tiene que existir antes del primer pintado. */
 
 /* ==========================================================================
    NAV

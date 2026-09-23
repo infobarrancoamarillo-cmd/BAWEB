@@ -2,7 +2,7 @@
 
 **Proyecto:** Barranco Amarillo · web de marca (V6)
 **Categoría:** productora audiovisual / entertainment company
-**Actualizado:** 10 de agosto de 2026
+**Actualizado:** 23 de septiembre de 2026
 
 Este archivo describe el sistema que **está implementado** en
 `assets/css/base.css`. Si algo aquí no coincide con ese archivo, manda el
@@ -77,7 +77,7 @@ Archivo.
 | Transición entre páginas | Ninguna. Carga normal. |
 | Scroll | **Nativo.** Sin lerp, sin suavizado por JS, sin secuestro en ninguna página. |
 | Cursor | Cursor del sistema |
-| Loader | Texto que se descifra, máximo 1.800 ms, una vez por sesión |
+| Loader | Anillos concéntricos en WebGL y el símbolo dibujándose trazo a trazo, 2.750 ms, una vez por sesión |
 
 `--ease-cine: cubic-bezier(0.16, 1, 0.3, 1)`
 
@@ -97,8 +97,12 @@ revelados y entradas.
 - HTML estático. Sin framework, sin build step, sin `package.json`.
 - `build.sh` copia a `dist/`; Vercel está en framework «Other», output `dist`.
 - Una sola hoja de estilo compartida: `assets/css/base.css`.
-- JS en tres archivos: `base.js` (loader, nav, revelados, favicon),
-  `piezas.js` (reproductor, parrilla, lightbox) y `form.js` (formularios).
+- JS en cuatro archivos: `loader.js` (el loader entero, cargado desde el
+  `<head>` porque tiene que existir antes del primer pintado), `base.js`
+  (nav, revelados, favicon), `piezas.js` (reproductor, parrilla, lightbox)
+  y `form.js` (formularios).
+- El símbolo vectorizado vive en `assets/ba-simbolo.svg`; su `d` está
+  embebido en `loader.js` y en ningún otro sitio.
 - **`data/work.json` es la única fuente de piezas.** Ninguna página lleva
   obra escrita a mano en el HTML. Ver `data/README.md`.
 - Cada página se lee y se navega sin JS. El JS solo añade movimiento y el
