@@ -509,31 +509,18 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   z-index:2;
   padding:0 20px 26px;
   display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-  gap:24px;
+  /* La barra ocupa el ancho del contenedor, así que no puede compartir fila
+     con el caption: el pie pasa a columna y el caption se alinea a la
+     derecha por su cuenta. */
+  flex-direction:column;
+  align-items:stretch;
+  gap:16px;
 }
 @media (min-width:768px){ .reproductor-pie{ padding:0 40px 34px; } }
 
-.paginador{
-  display:flex;
-  gap:14px;
-  font-family:var(--tipo-mono);
-  font-size:14px;
-  line-height:1;
-  flex:none;
-}
-.paginador button{
-  color:var(--tinta-media);
-  font-weight:400;
-  padding:6px 2px;
-  transition:color 200ms var(--ease-cine);
-}
-.paginador button:hover{ color:var(--tinta-alta); }
-.paginador button[aria-current="true"]{ color:var(--tinta-alta); font-weight:700; }
-
 /* Caption Somesuch: una sola frase, alineada a la derecha. */
 .reproductor-caption{
+  align-self:flex-end;
   text-align:right;
   font-size:clamp(18px,2vw,28px);
   font-weight:500;
@@ -542,8 +529,78 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 }
 .reproductor-caption em{ font-style:italic; }
 @media (max-width:600px){
-  .reproductor-pie{ flex-direction:column; align-items:flex-start; gap:14px; }
-  .reproductor-caption{ text-align:left; }
+  .reproductor-caption{ align-self:flex-start; text-align:left; }
+}
+
+/* ==========================================================================
+   BARRA SMPTE — sustituye al paginador numérico
+
+   Siete segmentos siempre, sean cuantas sean las piezas: el avance es un
+   frente que recorre la barra, no un segmento por pieza. El JS pinta los
+   colores, el filtro por segmento, el cabezal y las marcas; aquí solo va la
+   geometría.
+   ========================================================================== */
+.smpte{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.smpte-barra{
+  position:relative;
+  flex:1 1 auto;
+  height:5px;
+}
+.smpte-colores{
+  display:flex;
+  gap:0;              /* sin separación: es una carta de ajuste, no un gráfico */
+  height:100%;
+  width:100%;
+}
+.smpte-seg{ flex:1 1 0; height:100%; }
+
+/* Las marcas no son decorativas: junto al cabezal son lo que transmite la
+   posición sin depender del color, que es lo que hace la barra legible para
+   alguien que no distingue los siete tonos. No se pueden quitar. */
+.smpte-marca{
+  position:absolute;
+  top:-3px; bottom:-3px;
+  width:1px;
+  background:#0A0908;
+  box-shadow:0 0 0 .5px rgba(247,245,242,.35);
+  pointer-events:none;
+}
+.smpte-cabeza{
+  position:absolute;
+  top:0; bottom:0;
+  width:1px;
+  pointer-events:none;
+  transition:background .18s linear, box-shadow .18s linear;
+}
+
+/* Las zonas clicables son las de las PIEZAS, no las de las barras. Se
+   estiran 9 px arriba y abajo: 5 px de alto es un objetivo imposible para
+   el ratón y mucho más para un dedo. */
+.smpte-zona{
+  position:absolute;
+  top:-9px; bottom:-9px;
+  padding:0;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+}
+.smpte-tc{
+  flex:none;
+  font-family:var(--tipo-mono);
+  font-size:8px;
+  letter-spacing:.1em;
+  color:rgba(247,245,242,.5);
+  font-variant-numeric:tabular-nums;
+}
+
+@media (max-width:640px){
+  .smpte-barra{ height:7px; }
+  /* 18 + 7 + 19 = 44 px, el mínimo para un objetivo táctil. */
+  .smpte-zona{ top:-18px; bottom:-19px; }
 }
 
 /* ==========================================================================

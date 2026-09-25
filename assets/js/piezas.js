@@ -59,9 +59,47 @@ function medio(p, opts){
 }
 
 /* ==========================================================================
+   BARRA SMPTE — carta de ajuste al 75 %, en su orden normalizado.
+
+   El orden no se altera: es un patrón de televisión, no una decisión
+   estética. El color del cabezal es el COMPLEMENTARIO DE TONO de la barra
+   que recorre, no el inverso RGB: restar cada canal de 255 daría pasteles
+   que no existen en el patrón (el amarillo daría un azul lavado). El patrón
+   es un palíndromo de complementarios alrededor del centro —2↔7, 3↔6, 4↔5—
+   así que el cabezal siempre lleva el color de otra barra del propio patrón.
+   ========================================================================== */
+var SMPTE = [
+  { barra:"#BFBFBF", cabeza:"#0A0908" },  // blanco   → negro (el gris no tiene complementario)
+  { barra:"#BFBF00", cabeza:"#0000BF" },  // amarillo → azul
+  { barra:"#00BFBF", cabeza:"#BF0000" },  // cian     → rojo
+  { barra:"#00BF00", cabeza:"#BF00BF" },  // verde    → magenta
+  { barra:"#BF00BF", cabeza:"#00BF00" },  // magenta  → verde
+  { barra:"#BF0000", cabeza:"#00BFBF" },  // rojo     → cian
+  { barra:"#0000BF", cabeza:"#BFBF00" }   // azul     → amarillo
+];
+var SEGMENTOS  = SMPTE.length;   // 7. Todo lo demás se deriva de aquí.
+var FPS        = 25;
+var RESPALDO_S = 5;              // lo que dura una pieza sin MP4
+
+/* Las marcas se encajan al borde de barra. Cinco piezas no dividen a siete:
+   en k/N caerían a mitad de barra y se leería como un error de alineación.
+   Encajarlas hace que las piezas midan distinto, pero eso ya era así —los
+   clips duran entre 1,5 y 11,7 s, así que segmentos de ancho idéntico nunca
+   representaron el tiempo. */
+function marcaEn(k, n){ return Math.round(k * SEGMENTOS / n) / SEGMENTOS; }
+
+function formatoTC(t){
+  if(!isFinite(t) || t < 0) t = 0;
+  var m = Math.floor(t / 60);
+  var s = Math.floor(t % 60);
+  var f = Math.floor((t - Math.floor(t)) * FPS);
+  return m + ":" + (s < 10 ? "0" : "") + s + ":" + (f < 10 ? "0" : "") + f;
+}
+
+/* ==========================================================================
    REPRODUCTOR DE PORTADA
-   Avanza al terminar el vídeo, al clicar un número, al arrastrar y con las
-   flechas. El scroll vertical NUNCA lo controla.
+   Avanza al terminar el vídeo, al clicar una zona de la barra, al arrastrar
+   y con las flechas. El scroll vertical NUNCA lo controla.
    ========================================================================== */
 BA.montarReproductor = function(raiz){
   if(!raiz) return;
@@ -78,6 +116,8 @@ BA.montarReproductor = function(raiz){
       return;
     }
 
+    var n = piezas.length;
+
     var pista = document.createElement("div");
     pista.className = "reproductor-pista";
     pista.innerHTML = piezas.map(function(p,i){
@@ -85,49 +125,128 @@ BA.montarReproductor = function(raiz){
              medio(p,{}) + "</div>";
     }).join("");
 
+    // Los colores en sí no se leen: la posición la dan las marcas y el
+    // cabezal, que es lo que hace la barra utilizable sin distinguir tonos.
+    var segmentos = "";
+    for(var i = 0; i < SEGMENTOS; i++){
+      segmentos += '<span class="smpte-seg" style="background:' + SMPTE[i].barra + '"></span>';
+    }
+
+    var marcas = "";
+    for(var k = 1; k < n; k++){
+      marcas += '<span class="smpte-marca" style="left:' + (marcaEn(k,n)*100) + '%"></span>';
+    }
+
+    var zonas = "";
+    for(var z = 0; z < n; z++){
+      var a = marcaEn(z, n), b = marcaEn(z + 1, n);
+      zonas += '<button class="smpte-zona" type="button" data-i="' + z + '" ' +
+               'aria-label="Ir a la pieza ' + (z+1) + ' de ' + n + '"' +
+               (z === 0 ? ' aria-current="true"' : '') +
+               ' style="left:' + (a*100) + '%;width:' + ((b-a)*100) + '%"></button>';
+    }
+
     var pie = document.createElement("div");
     pie.className = "reproductor-pie";
     pie.innerHTML =
-      '<div class="paginador" role="group" aria-label="Piezas destacadas">' +
-        piezas.map(function(p,i){
-          return '<button type="button" data-i="' + i + '" aria-current="' +
-                 (i===0) + '">' + (i+1) + "</button>";
-        }).join("") +
-      "</div>" +
-      '<p class="reproductor-caption" aria-live="polite"></p>';
+      '<p class="reproductor-caption" aria-live="polite"></p>' +
+      '<div class="smpte" role="group" aria-label="Selector de pieza">' +
+        '<div class="smpte-barra">' +
+          '<div class="smpte-colores" aria-hidden="true">' + segmentos + '</div>' +
+          marcas +
+          '<span class="smpte-cabeza" aria-hidden="true"></span>' +
+          zonas +
+        '</div>' +
+        '<p class="smpte-tc" aria-hidden="true">0:00:00</p>' +
+      '</div>';
 
     raiz.appendChild(pista);
     raiz.appendChild(pie);
 
-    var slides   = pista.querySelectorAll(".reproductor-pieza");
-    var botones  = pie.querySelectorAll(".paginador button");
-    var caption  = pie.querySelector(".reproductor-caption");
-    var actual   = -1;
+    var slides  = pista.querySelectorAll(".reproductor-pieza");
+    var segs    = pie.querySelectorAll(".smpte-seg");
+    var zonasEl = pie.querySelectorAll(".smpte-zona");
+    var cabeza  = pie.querySelector(".smpte-cabeza");
+    var tc      = pie.querySelector(".smpte-tc");
+    var caption = pie.querySelector(".reproductor-caption");
+    var actual  = -1;
+    var t0      = 0;   // arranque de la pieza, para el respaldo sin MP4
+
+    function videoDe(i){
+      return slides[i] ? slides[i].querySelector("video") : null;
+    }
+    function duracionDe(i){
+      var v = videoDe(i);
+      return (v && v.duration && isFinite(v.duration) && v.duration > 0) ? v.duration : RESPALDO_S;
+    }
+    function progresoActual(){
+      var v = videoDe(actual);
+      if(v && v.duration && isFinite(v.duration) && v.duration > 0){
+        return Math.min(1, v.currentTime / v.duration);
+      }
+      // Sin MP4 se pinta un placeholder y el carrete lo mueve un temporizador:
+      // la barra tiene que seguir avanzando igual.
+      return Math.min(1, (performance.now() - t0) / (RESPALDO_S * 1000));
+    }
+
+    /* El frente recorre la barra entera de izquierda a derecha. Si los
+       segmentos fueran las piezas, con cinco quedarían dos barras muertas y
+       con ocho no cabría la última; así las siete se mantienen correctas con
+       cualquier número de piezas. */
+    function actualizarBarra(){
+      if(actual < 0) return;
+      var p = progresoActual();
+      var frente = (actual + p) / n;
+
+      for(var i = 0; i < SEGMENTOS; i++){
+        var local = Math.min(1, Math.max(0, (frente - i/SEGMENTOS) * SEGMENTOS));
+        // El brillo pesa tanto como la saturación: solo con saturar, el azul
+        // y el rojo apenas cambian y el efecto se pierde en la mitad derecha.
+        segs[i].style.filter = "saturate(" + (0.12 + 0.88*local).toFixed(3) + ") " +
+                               "brightness(" + (0.5 + 0.5*local).toFixed(3) + ")";
+      }
+
+      var idx = Math.min(SEGMENTOS - 1, Math.floor(frente * SEGMENTOS));
+      var col = SMPTE[idx].cabeza;
+      cabeza.style.left = "calc(" + (frente*100) + "% - 0.5px)";
+      if(cabeza._col !== col){
+        cabeza._col = col;
+        cabeza.style.background = col;
+        cabeza.style.boxShadow  = "0 0 9px " + col + ", 0 0 2px " + col;
+      }
+
+      var t = 0;                                   // acumulado del carrete
+      for(var j = 0; j < actual; j++) t += duracionDe(j);
+      tc.textContent = formatoTC(t + p * duracionDe(actual));
+    }
 
     function ir(i){
-      i = (i + piezas.length) % piezas.length;
+      i = (i + n) % n;
       if(i === actual) return;
       if(actual > -1){
         slides[actual].classList.remove("activa");
-        var vAnt = slides[actual].querySelector("video");
+        var vAnt = videoDe(actual);
         if(vAnt) vAnt.pause();
       }
       actual = i;
+      t0 = performance.now();
       slides[i].classList.add("activa");
-      botones.forEach(function(b,j){ b.setAttribute("aria-current", String(j===i)); });
+      zonasEl.forEach(function(b,j){
+        if(j === i) b.setAttribute("aria-current","true");
+        else b.removeAttribute("aria-current");
+      });
       caption.innerHTML = captionSomesuch(piezas[i]);
 
-      var v = slides[i].querySelector("video");
+      var v = videoDe(i);
       if(v){
         v.currentTime = 0;
         var pr = v.play();
         if(pr && pr.catch) pr.catch(function(){});
       } else {
-        // Sin MP4 todavía: el carrete sigue avanzando solo, para que se vea
-        // el mecanismo. Cuando existan los vídeos manda el evento `ended`.
         clearTimeout(ir._t);
-        ir._t = setTimeout(function(){ ir(actual + 1); }, 5000);
+        ir._t = setTimeout(function(){ ir(actual + 1); }, RESPALDO_S * 1000);
       }
+      actualizarBarra();
     }
 
     slides.forEach(function(s){
@@ -135,7 +254,7 @@ BA.montarReproductor = function(raiz){
       if(v) v.addEventListener("ended", function(){ ir(actual + 1); });
     });
 
-    botones.forEach(function(b){
+    zonasEl.forEach(function(b){
       b.addEventListener("click", function(){ ir(+b.dataset.i); });
     });
 
@@ -157,6 +276,18 @@ BA.montarReproductor = function(raiz){
     });
 
     ir(0);
+
+    /* Lo mueve el <video>, no un temporizador. Y se lee en rAF, no en
+       `timeupdate`: ese evento dispara unas 4 veces por segundo y el cabezal
+       iría a saltos. Con movimiento reducido no hay bucle: la barra se
+       actualiza solo al cambiar de pieza, desde ir(). */
+    if(!(window.BA && BA.reduceMotion)){
+      (function bucleBarra(){
+        requestAnimationFrame(bucleBarra);
+        if(document.hidden) return;
+        actualizarBarra();
+      })();
+    }
   });
 };
 

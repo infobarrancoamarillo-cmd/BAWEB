@@ -20,6 +20,23 @@ el HTML. Se toca este archivo y cambia la web entera.
 | `destacada_home` | `true` / `false` | `true` la mete en el reproductor de portada. |
 | `orden_home` | 1–6 | Posición en el reproductor. Lo decide Carlos, no es «lo último». |
 
+## Piezas de prueba (25 de septiembre de 2026)
+
+Las cuatro entradas `prueba-diamantes-0X` llevan `"_prueba": true` y **no son
+contenido real**: los cuatro clips son de la misma pieza (DIAMANTES) y están
+puestos como cuatro entradas distintas solo para poder probar el carrete de
+portada y la barra SMPTE con varias piezas y duraciones dispares. Hay que
+sustituirlas.
+
+- `poster` va vacío a propósito. Los fotogramas extraídos del segundo 0,5 no
+  valen: el póster es la primera imagen de la empresa y lo elige Carlos.
+- `diamantes-03.mp4` dura **1,54 s**. En un carrete de portada es un
+  parpadeo: el ojo no llega a posarse. Sirve para probar que el mecanismo
+  aguanta duraciones dispares, pero no debería quedarse. Para el hero lo
+  razonable son 8–15 s por pieza.
+- `diamantes-04.mp4` dura 11,7 s y pesa 4 MB, por encima del objetivo de
+  2–4 MB. Aceptable para la prueba, recortable después.
+
 ## Estado en fase 1
 
 Las diez entradas están **con la estructura completa y los textos vacíos**, a

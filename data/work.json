@@ -1,5 +1,61 @@
 [
   {
+    "id": "prueba-diamantes-01",
+    "cliente": "PRUEBA",
+    "titulo": "Diamantes 01",
+    "director": "Carlos Soto",
+    "anio": 2026,
+    "submarca": "music",
+    "video_loop": "assets/video/diamantes-01.mp4",
+    "poster": "",
+    "video_completo": "",
+    "destacada_home": true,
+    "orden_home": 1,
+    "_prueba": true
+  },
+  {
+    "id": "prueba-diamantes-02",
+    "cliente": "PRUEBA",
+    "titulo": "Diamantes 02",
+    "director": "Carlos Soto",
+    "anio": 2026,
+    "submarca": "music",
+    "video_loop": "assets/video/diamantes-02.mp4",
+    "poster": "",
+    "video_completo": "",
+    "destacada_home": true,
+    "orden_home": 2,
+    "_prueba": true
+  },
+  {
+    "id": "prueba-diamantes-03",
+    "cliente": "PRUEBA",
+    "titulo": "Diamantes 03",
+    "director": "Carlos Soto",
+    "anio": 2026,
+    "submarca": "music",
+    "video_loop": "assets/video/diamantes-03.mp4",
+    "poster": "",
+    "video_completo": "",
+    "destacada_home": true,
+    "orden_home": 3,
+    "_prueba": true
+  },
+  {
+    "id": "prueba-diamantes-04",
+    "cliente": "PRUEBA",
+    "titulo": "Diamantes 04",
+    "director": "Carlos Soto",
+    "anio": 2026,
+    "submarca": "music",
+    "video_loop": "assets/video/diamantes-04.mp4",
+    "poster": "",
+    "video_completo": "",
+    "destacada_home": true,
+    "orden_home": 4,
+    "_prueba": true
+  },
+  {
     "id": "pieza-01",
     "cliente": "",
     "titulo": "",
@@ -9,8 +65,8 @@
     "video_loop": "",
     "poster": "",
     "video_completo": "",
-    "destacada_home": true,
-    "orden_home": 1
+    "destacada_home": false,
+    "orden_home": null
   },
   {
     "id": "pieza-02",
@@ -22,8 +78,8 @@
     "video_loop": "",
     "poster": "",
     "video_completo": "",
-    "destacada_home": true,
-    "orden_home": 2
+    "destacada_home": false,
+    "orden_home": null
   },
   {
     "id": "pieza-03",
@@ -35,8 +91,8 @@
     "video_loop": "",
     "poster": "",
     "video_completo": "",
-    "destacada_home": true,
-    "orden_home": 3
+    "destacada_home": false,
+    "orden_home": null
   },
   {
     "id": "pieza-04",
@@ -48,8 +104,8 @@
     "video_loop": "",
     "poster": "",
     "video_completo": "",
-    "destacada_home": true,
-    "orden_home": 4
+    "destacada_home": false,
+    "orden_home": null
   },
   {
     "id": "pieza-05",
@@ -61,8 +117,8 @@
     "video_loop": "",
     "poster": "",
     "video_completo": "",
-    "destacada_home": true,
-    "orden_home": 5
+    "destacada_home": false,
+    "orden_home": null
   },
   {
     "id": "pieza-06",
@@ -74,8 +130,8 @@
     "video_loop": "",
     "poster": "",
     "video_completo": "",
-    "destacada_home": true,
-    "orden_home": 6
+    "destacada_home": false,
+    "orden_home": null
   },
   {
     "id": "pieza-07",
