@@ -443,12 +443,16 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   image-rendering:pixelated;   /* grano gordo, sin suavizar al escalar */
 }
 .descripcion::before,
-.descripcion::after{ content:""; position:absolute; inset:0; pointer-events:none; }
-.descripcion::before{
+.descripcion::after,
+.footer-superior::before,
+.footer-superior::after{ content:""; position:absolute; inset:0; pointer-events:none; }
+.descripcion::before,
+.footer-superior::before{
   background:repeating-linear-gradient(to bottom, rgba(0,0,0,.22) 0 1px, transparent 1px 3px);
   opacity:.5;
 }
-.descripcion::after{
+.descripcion::after,
+.footer-superior::after{
   background:radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.3) 100%);
 }
 .descripcion > .contenedor{ position:relative; z-index:2; }
@@ -872,24 +876,22 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
    FOOTER
    ========================================================================== */
 .footer{
-  position:relative;
-  /* El ruido de la descripción se funde con el amarillo: la franja de
-     arriba hereda el ink y se aclara hasta el amarillo del footer. */
-  --fundido: clamp(140px,18vw,260px);
-  background:linear-gradient(to bottom, var(--ba-ink), var(--ba-yellow) var(--fundido)) var(--ba-yellow);
+  background:var(--ba-yellow);
   color:var(--ba-black);
-  padding-block:calc(var(--fundido) * .55) 0;
+}
+/* Mitad de arriba: el mismo fondo de ruido analógico que la descripción
+   (canvas + scanlines + viñeta). La mitad de abajo, desde la línea del
+   copyright, es amarillo liso. */
+.footer-superior{
+  position:relative;
   overflow:hidden;
+  background:var(--ba-ink);
+  color:var(--ba-paper);
+  padding-block:clamp(48px,7vw,88px) 0;
 }
-.ruido--footer{
-  height:var(--fundido);
-  bottom:auto;
-  opacity:.14;
-  -webkit-mask-image:linear-gradient(to bottom, #000, transparent);
-          mask-image:linear-gradient(to bottom, #000, transparent);
-}
-.footer > .contenedor,
-.footer > .footer-firma{ position:relative; z-index:2; }
+.footer-superior > .contenedor{ position:relative; z-index:2; }
+.footer-inferior{ padding-top:22px; }
+.footer-firma{ position:relative; z-index:2; }
 /* Firma final: el wordmark en negro, de borde a borde del viewport. */
 .footer-firma{
   padding:clamp(40px,6vw,88px) 2vw 2vw;
@@ -917,22 +919,20 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   font-size:12px;
   letter-spacing:0.12em;
   text-transform:uppercase;
-  color:var(--ba-black);
+  color:var(--tinta-media);
 }
 .footer-col a,
 .footer-col span{
   font-family:var(--tipo-mono);
   font-size:12px;
   letter-spacing:0.06em;
-  color:var(--ba-black);
+  color:var(--ba-paper);
   overflow-wrap:anywhere;
 }
 .footer-col a:hover,
 .footer-legal a:hover{ text-decoration:underline; }
-.footer .pendiente{ color:var(--ba-black); border-color:rgba(30,27,26,.4); }
+.footer .pendiente{ color:var(--tinta-media); border-color:var(--linea-hairline); }
 .footer-legal{
-  border-top:1px solid rgba(30,27,26,.25);
-  padding-top:22px;
   display:flex;
   flex-wrap:wrap;
   gap:18px;
@@ -944,7 +944,7 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   color:var(--ba-black);
 }
 /* El enlace a real estate vive aquí y solo aquí. Discreto, a propósito. */
-.footer-real-estate{ color:var(--ba-black) !important; }
+.footer-real-estate{ color:var(--tinta-media) !important; }
 
 /* ==========================================================================
    MOVIMIENTO REDUCIDO — desactiva loader, revelados y entradas.
@@ -1087,13 +1087,14 @@ body.clareo .footer-col a,
 body.clareo .footer-col span,
 body.clareo .footer-real-estate{ color:inherit !important; }
 
-/* El footer es amarillo en todos los estados: su texto no se aclara. */
-body.clareo .footer-col h2,
-body.clareo .footer-legal,
-body.clareo .footer .pendiente{ color:var(--ba-black); opacity:1; }
+/* El footer no se aclara con el resto: arriba sigue oscuro (texto claro) y
+   abajo sigue amarillo (texto negro). */
+body.clareo .footer-col h2{ color:var(--tinta-media); opacity:1; }
 body.clareo .footer-col a,
-body.clareo .footer-col span,
-body.clareo .footer-real-estate{ color:var(--ba-black) !important; }
+body.clareo .footer-col span{ color:var(--ba-paper) !important; }
+body.clareo .footer-real-estate{ color:var(--tinta-media) !important; }
+body.clareo .footer .pendiente{ color:var(--tinta-media); opacity:1; }
+body.clareo .footer-legal{ color:var(--ba-black); opacity:1; }
 
 body.clareo .enlace-grande,
 body.clareo .footer,
