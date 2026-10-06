@@ -5,12 +5,10 @@
 (function(){
 "use strict";
 
-var seccion = document.querySelector(".descripcion");
-if(!seccion) return;
 var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* ---- Barrido del subrayado: solo la primera vez ---- */
-var marca = seccion.querySelector(".ba-mark");
+var marca = document.querySelector(".ba-mark");
 if(marca){
   if(reduce || !("IntersectionObserver" in window)){
     marca.classList.add("is-on");
@@ -24,10 +22,12 @@ if(marca){
 }
 
 /* ---- Ruido analógico ---- */
-var canvas = seccion.querySelector(".descripcion-ruido");
-if(!canvas) return;
+Array.prototype.forEach.call(document.querySelectorAll(".ruido"), ruido);
+
+function ruido(canvas){
 var ctx = canvas.getContext("2d");
 if(!ctx) return;
+var seccion = canvas.parentElement;
 
 var ESCALA = 3;          // el canvas es 1/3 del tamaño real: grano gordo
 var FPS = 24, PASO = 1000 / FPS;
@@ -44,8 +44,8 @@ function rnd(){
 }
 
 function medir(){
-  var nw = Math.max(1, Math.ceil(seccion.clientWidth  / ESCALA));
-  var nh = Math.max(1, Math.ceil(seccion.clientHeight / ESCALA));
+  var nw = Math.max(1, Math.ceil(canvas.clientWidth  / ESCALA));
+  var nh = Math.max(1, Math.ceil(canvas.clientHeight / ESCALA));
   if(nw === w && nh === h) return;
   w = canvas.width = nw; h = canvas.height = nh;
   datos = ctx.createImageData(w, h);       // un único ImageData
@@ -88,7 +88,7 @@ function pintar(ahora, conBanda){
 }
 
 medir();
-if(window.ResizeObserver) new ResizeObserver(medir).observe(seccion);
+if(window.ResizeObserver) new ResizeObserver(medir).observe(canvas);
 else window.addEventListener("resize", medir);
 
 if(reduce){
@@ -111,6 +111,7 @@ function actualizar(){
   if(debe && !raf){ programar(performance.now()); raf = requestAnimationFrame(bucle); }
   else if(!debe && raf){ cancelAnimationFrame(raf); raf = 0; }
 }
-new IntersectionObserver(function(e){ visible = e[0].isIntersecting; actualizar(); }).observe(seccion);
+new IntersectionObserver(function(e){ visible = e[0].isIntersecting; actualizar(); }).observe(canvas);
 document.addEventListener("visibilitychange", actualizar);
+}
 })();
