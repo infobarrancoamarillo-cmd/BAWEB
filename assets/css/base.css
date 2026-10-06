@@ -5,7 +5,14 @@
    ========================================================================== */
 
 :root{
-  --amarillo:       #F1C741;  /* Pantone 123C — único acento */
+  /* Tokens de marca (línea gráfica oficial). El amarillo es el de los logos. */
+  --ba-yellow: #FBC817;
+  --ba-black:  #1E1B1A;
+  --ba-ink:    #141213;   /* fondo de secciones oscuras */
+  --ba-paper:  #F4F1EA;   /* texto claro */
+  --ba-orange: #E56425;   /* acento */
+
+  --amarillo:       var(--ba-yellow);  /* único acento */
   --negro:          #1E1B1A;  /* Pantone Neutral Black C */
   --negro-profundo: #121010;
   --naranja:        #E56425;  /* Pantone 165C — micro-acento, uso mínimo */

@@ -20,7 +20,7 @@ Un solo acento. El amarillo es la marca; todo lo demás es neutro.
 
 | Rol | Token | Hex |
 |---|---|---|
-| Acento | `--amarillo` / `--acento-proyector` | `#F1C741` (Pantone 123C) |
+| Acento | `--amarillo` / `--acento-proyector` | `#FBC817` (el de los logos) |
 | Superficie elevada | `--negro` / `--superficie-elevada` | `#1E1B1A` (Pantone Neutral Black C) |
 | Superficie base | `--negro-profundo` / `--superficie-base` | `#121010` |
 | Micro-acento | `--naranja` | `#E56425` (Pantone 165C) |

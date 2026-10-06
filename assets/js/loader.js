@@ -50,9 +50,9 @@ ov.innerHTML =
   '<canvas id="ba-loader-cv"></canvas>' +
   '<div class="ba-loader-mark">' +
     '<svg viewBox="0 0 1000 414.3" preserveAspectRatio="xMidYMid meet" aria-hidden="true">' +
-      '<path class="ba-mark-line" pathLength="1" fill="none" stroke="#F1C741" ' +
+      '<path class="ba-mark-line" pathLength="1" fill="none" stroke="#FBC817" ' +
             'stroke-width="1.8" stroke-linejoin="round" vector-effect="non-scaling-stroke" d="' + D + '"/>' +
-      '<path class="ba-mark-fill" fill="#F1C741" fill-rule="evenodd" d="' + D + '"/>' +
+      '<path class="ba-mark-fill" fill="#FBC817" fill-rule="evenodd" d="' + D + '"/>' +
     '</svg>' +
   '</div>';
 
