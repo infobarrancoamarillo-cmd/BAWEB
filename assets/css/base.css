@@ -256,18 +256,16 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 }
 
 .lockup{
-  font-family:var(--tipo);
-  font-size:12px;
-  letter-spacing:0.12em;
-  line-height:1;
-  text-transform:uppercase;
-  white-space:nowrap;
-  color:var(--tinta-alta);
+  display:block;
+  line-height:0;
+  color:var(--ba-yellow);
   flex:none;
+  transition:opacity 200ms;
 }
-.lockup-base{ font-weight:700; }
-/* El sufijo de submarca: mismo tamaño, peso más ligero. No es otro logo. */
-.lockup-sufijo{ font-weight:300; }
+.lockup:hover{ opacity:.8; }
+/* Solo el logotipo; el ancho sale solo de la proporción 6,17:1. */
+.lockup-svg{ height:22px; width:auto; display:block; }
+@media (max-width:767px){ .lockup-svg{ height:18px; } }
 
 .nav-centro,
 .nav-derecha{

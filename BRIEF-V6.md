@@ -45,7 +45,7 @@
 
 ```css
 :root{
-  --amarillo:       #F1C741;  /* Pantone 123C — único acento */
+  --amarillo:       #FBC817;  /* Pantone 123C — único acento */
   --negro:          #1E1B1A;  /* Pantone Neutral Black C */
   --negro-profundo: #121010;
   --naranja:        #E56425;  /* Pantone 165C — micro-acento, uso mínimo */
