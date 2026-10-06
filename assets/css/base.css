@@ -872,18 +872,18 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
    FOOTER
    ========================================================================== */
 .footer{
-  border-top:1px solid var(--linea-hairline);
-  padding-block:clamp(48px,7vw,88px) 32px;
+  background:var(--ba-yellow);
+  color:var(--ba-black);
+  padding-block:clamp(48px,7vw,88px) 0;
+  overflow:hidden;
 }
-.footer-marca{
-  font-size:clamp(28px,6vw,64px);
-  font-weight:700;
-  letter-spacing:-0.01em;
-  text-transform:uppercase;
-  line-height:1;
-  margin-bottom:clamp(36px,6vw,72px);
+/* Firma final: el wordmark en blanco, de borde a borde del viewport. Solo
+   el logo gigante va en blanco (es un gráfico); el texto va en negro. */
+.footer-firma{
+  padding:clamp(40px,6vw,88px) 2vw 2vw;
+  line-height:0;
 }
-@supports (font-stretch: 115%){ .footer-marca{ font-stretch:115%; } }
+.footer-firma-svg{ display:block; width:100%; height:auto; color:#fff; }
 .footer-grid{
   display:grid;
   gap:32px;
@@ -901,24 +901,25 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 }
 .footer-col h2{
   font-family:var(--tipo-mono);
-  font-weight:400;
+  font-weight:500;
   font-size:12px;
   letter-spacing:0.12em;
   text-transform:uppercase;
-  color:var(--tinta-media);
+  color:var(--ba-black);
 }
 .footer-col a,
 .footer-col span{
   font-family:var(--tipo-mono);
   font-size:12px;
   letter-spacing:0.06em;
-  color:var(--tinta-alta);
+  color:var(--ba-black);
   overflow-wrap:anywhere;
 }
-.footer-col a{ transition:color 200ms var(--ease-cine); }
-.footer-col a:hover{ color:var(--acento-proyector); }
+.footer-col a:hover,
+.footer-legal a:hover{ text-decoration:underline; }
+.footer .pendiente{ color:var(--ba-black); border-color:rgba(30,27,26,.4); }
 .footer-legal{
-  border-top:1px solid var(--linea-hairline);
+  border-top:1px solid rgba(30,27,26,.25);
   padding-top:22px;
   display:flex;
   flex-wrap:wrap;
@@ -928,12 +929,10 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
   font-size:11px;
   letter-spacing:0.1em;
   text-transform:uppercase;
-  color:var(--tinta-media);
+  color:var(--ba-black);
 }
-.footer-legal a:hover{ color:var(--tinta-alta); }
 /* El enlace a real estate vive aquí y solo aquí. Discreto, a propósito. */
-.footer-real-estate{ color:var(--tinta-media) !important; }
-.footer-real-estate:hover{ color:var(--tinta-alta) !important; }
+.footer-real-estate{ color:var(--ba-black) !important; }
 
 /* ==========================================================================
    MOVIMIENTO REDUCIDO — desactiva loader, revelados y entradas.
@@ -1075,6 +1074,14 @@ body.clareo .re-precio-nota{ color:inherit; opacity:0.62; }
 body.clareo .footer-col a,
 body.clareo .footer-col span,
 body.clareo .footer-real-estate{ color:inherit !important; }
+
+/* El footer es amarillo en todos los estados: su texto no se aclara. */
+body.clareo .footer-col h2,
+body.clareo .footer-legal,
+body.clareo .footer .pendiente{ color:var(--ba-black); opacity:1; }
+body.clareo .footer-col a,
+body.clareo .footer-col span,
+body.clareo .footer-real-estate{ color:var(--ba-black) !important; }
 
 body.clareo .enlace-grande,
 body.clareo .footer,
