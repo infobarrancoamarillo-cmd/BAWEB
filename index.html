@@ -81,10 +81,11 @@
     </noscript>
   </section>
 
-  <!-- ZONA 2 — la declaración -->
-  <section class="bloque">
+  <!-- ZONA 2 — la declaración, sobre ruido de vídeo analógico -->
+  <section class="bloque descripcion">
+    <canvas class="descripcion-ruido" aria-hidden="true"></canvas>
     <div class="contenedor">
-      <p class="declaracion declaracion--ancha revelar-frase">Barranco Amarillo is an entertainment company that has worked around the world for almost a decade. We exist for one wonderful reason: the creator&rsquo;s vision, and what an image can do to people.</p>
+      <p class="declaracion declaracion--ancha"><span class="ba-mark">Barranco Amarillo</span> is an entertainment company that has worked around the world for almost a decade. We exist for one wonderful reason: the creator&rsquo;s vision, and what an image can do to people.</p>
 
       <nav class="submarcas" aria-label="Sub-brands">
         <a class="enlace-mono" href="/films/">Films</a>
@@ -133,6 +134,7 @@
 </footer>
 <script src="/assets/js/base.js"></script>
 <script src="/assets/js/piezas.js"></script>
+<script src="/assets/js/descripcion.js"></script>
 <script>
   BA.montarReproductor(document.getElementById("reproductor"));
 </script>

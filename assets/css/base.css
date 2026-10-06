@@ -426,6 +426,50 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 .hairline{ border-top:1px solid var(--linea-hairline); }
 
 /* ==========================================================================
+   DESCRIPCIÓN (portada) — barrido amarillo + ruido de vídeo analógico
+   Capas: base ink · canvas de grano · scanlines · viñeta · texto.
+   ========================================================================== */
+.descripcion{
+  position:relative;
+  overflow:hidden;
+  background:var(--ba-ink);
+  color:var(--ba-paper);
+}
+.descripcion-ruido{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  pointer-events:none;
+  opacity:.12;
+  image-rendering:pixelated;   /* grano gordo, sin suavizar al escalar */
+}
+.descripcion::before,
+.descripcion::after{ content:""; position:absolute; inset:0; pointer-events:none; }
+.descripcion::before{
+  background:repeating-linear-gradient(to bottom, rgba(0,0,0,.22) 0 1px, transparent 1px 3px);
+  opacity:.5;
+}
+.descripcion::after{
+  background:radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.3) 100%);
+}
+.descripcion > .contenedor{ position:relative; z-index:2; }
+
+.ba-mark{
+  background-image:linear-gradient(var(--ba-yellow), var(--ba-yellow));
+  background-repeat:no-repeat;
+  background-position:0 50%;
+  background-size:0% 100%;
+  color:var(--ba-paper);
+  padding:0 .08em;
+  -webkit-box-decoration-break:clone; box-decoration-break:clone;
+  transition:background-size .9s cubic-bezier(.77,0,.18,1) .15s,
+             color .45s ease .5s;
+}
+.ba-mark.is-on{ background-size:100% 100%; color:var(--ba-black); }
+@media (prefers-reduced-motion: reduce){
+  .ba-mark{ transition:none; background-size:100% 100%; color:var(--ba-black); }
+}
+
+/* ==========================================================================
    ENLACES DE TEXTO
    ========================================================================== */
 .enlace-mono{
