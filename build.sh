@@ -10,6 +10,8 @@ mkdir -p dist
 
 # Páginas sueltas en la raíz
 cp index.html aviso-legal.html privacidad.html sitemap.xml robots.txt dist/
+# Favicon "Ba" en la raíz: /favicon.ico, /favicon.svg, /apple-touch-icon.png…
+cp favicon.ico favicon.svg apple-touch-icon.png icon-192.png icon-512.png site.webmanifest dist/
 
 # Cada sección es una carpeta con index.html dentro: así la URL queda limpia
 # y sin extensión.
